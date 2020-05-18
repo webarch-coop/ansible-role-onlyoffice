@@ -1,0 +1,11 @@
+---
+image: registry.git.coop/webarch/containers/images/ansible:0.3
+
+stages:
+  - lint
+
+lint:
+  stage: lint
+  script:
+    - yamllint .
+...
