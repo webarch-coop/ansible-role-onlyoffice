@@ -11,7 +11,7 @@ provisioner:
   name: ansible
 lint: |
  set -e
-  yamllint -c .yamllint.yml .
+  yamllint -c .yamllint .
   ansible-lint -c .ansible-lint.yml .
 # vim: syntax=yaml
 ...
