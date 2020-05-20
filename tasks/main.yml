@@ -12,20 +12,28 @@
   tags:
     - onlyoffice
 
-- name: ONLYOFFICE support@onlyoffice.com GPG public key present
-  copy:
-    src: 8320CA65CB2DE8E5.asc
-    dest: /root/8320CA65CB2DE8E5.asc
-  tags:
-    - onlyoffice
-
-- name: Import the support@onlyoffice.com GPG public key
+ - name: ONLYOFFICE support@onlyoffice.com GPG public key present
   apt_key:
+    keyserver: keyserver.ubuntu.com
     id: 8320CA65CB2DE8E5
-    file: /root/8320CA65CB2DE8E5.asc
     state: present
-  tags:
-    - onlyoffice
+    tags:
+      - onlyoffice
+
+# - name: ONLYOFFICE support@onlyoffice.com GPG public key present
+#   copy:
+#     src: 8320CA65CB2DE8E5.asc
+#     dest: /root/8320CA65CB2DE8E5.asc
+#   tags:
+#     - onlyoffice
+# 
+# - name: Import the support@onlyoffice.com GPG public key
+#   apt_key:
+#     id: 8320CA65CB2DE8E5
+#     file: /root/8320CA65CB2DE8E5.asc
+#     state: present
+#   tags:
+#     - onlyoffice
 
 - name: ONLYOFFICE apt repo available
   apt_repository:
