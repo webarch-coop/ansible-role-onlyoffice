@@ -37,7 +37,7 @@
 
 - name: ONLYOFFICE apt repo available
   apt_repository:
-    name: onlyoffice
+    filename: onlyoffice
     repo: deb https://download.onlyoffice.com/repo/debian squeeze main
     state: present
   tags:
