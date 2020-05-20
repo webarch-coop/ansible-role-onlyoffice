@@ -47,6 +47,7 @@
   apt:
     pkg:
       - onlyoffice-documentserver
+    install_recommends: true
     state: present
     update_cache: true
   tags:
