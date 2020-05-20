@@ -5,7 +5,7 @@
     name: onlyoffice-documentserver
     question: onlyoffice/ds-port
     vtype: select
-    value: "{{ onlyoffice_documentserver_port | default('80') }}" 
+    value: "{{ onlyoffice_documentserver_port | default('80') }}"
   when:
     - onlyoffice_documentserver_port is defined
     - onlyoffice_documentserver_port | length > 0
