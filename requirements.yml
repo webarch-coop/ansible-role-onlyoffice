@@ -1,0 +1,56 @@
+---
+- name: debug
+  src: https://git.coop/webarch/debug.git
+  version: master
+  scm: git
+
+- name: apt
+  src: https://git.coop/webarch/apt.git
+  version: master
+  scm: git
+
+- name: ssh
+  src: https://git.coop/webarch/ssh.git
+  version: master
+  scm: git
+
+- name: fail2ban
+  src: https://git.coop/webarch/fail2ban.git
+  version: master
+  scm: git
+
+- name: sudo
+  src: https://git.coop/webarch/sudo.git
+  version: master
+  scm: git
+
+- name: users
+  src: https://git.coop/webarch/users.git
+  version: master
+  scm: git
+
+- name: postgresql
+  src: https://git.coop/webarch/postgresql.git
+  version: master
+  scm: git
+
+- name: nginx
+  src: https://git.coop/webarch/nginx.git
+  version: master
+  scm: git
+
+- name: acmesh
+  src: https://git.coop/webarch/acmesh.git
+  version: master
+  scm: git
+
+- name: redis
+  src: https://git.coop/webarch/redis.git
+  version: master
+  scm: git
+
+- name: rabbitmq
+  src: https://git.coop/webarch/rabbitmq.git
+  version: master
+  scm: git
+...
