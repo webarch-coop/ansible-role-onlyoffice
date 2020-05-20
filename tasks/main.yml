@@ -21,8 +21,8 @@
 
 - name: Import the support@onlyoffice.com GPG public key
   apt_key:
-    file: /root/8320CA65CB2DE8E5.asc
     id: 8320CA65CB2DE8E5
+    file: /root/8320CA65CB2DE8E5.asc
     state: present
   tags:
     - onlyoffice
