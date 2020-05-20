@@ -12,7 +12,7 @@
   tags:
     - onlyoffice
 
- - name: ONLYOFFICE support@onlyoffice.com GPG public key present
+- name: ONLYOFFICE support@onlyoffice.com GPG public key present
   apt_key:
     keyserver: keyserver.ubuntu.com
     id: 8320CA65CB2DE8E5
