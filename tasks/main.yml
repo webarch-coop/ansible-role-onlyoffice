@@ -1,0 +1,41 @@
+---
+# https://helpcenter.onlyoffice.com/server/linux/document/linux-installation.aspx
+- name: Debconf port for ONLYOFFICE
+  debconf:
+    name: onlyoffice-documentserver
+    question: onlyoffice/ds-port
+    vtype: select
+    value: "{{ onlyoffice_documentserver_port | default('80') }}" 
+  when:
+    - onlyoffice_documentserver_port is defined
+    - onlyoffice_documentserver_port | length > 0
+  tags:
+    - onlyoffice
+
+- name: Import the support@onlyoffice.com GPG public key
+  apt_key:
+    file: 8320CA65CB2DE8E5.asc
+    id: 8320CA65CB2DE8E5
+    state: present
+  tags:
+    - onlyoffice
+
+- name: ONLYOFFICE apt repo available
+  apt_repository:
+    name: onlyoffice
+    repo: deb https://download.onlyoffice.com/repo/debian squeeze main
+    state: present
+  tags:
+    - onlyoffice
+
+- name: ONLYOFFICE Document Server package present
+  apt:
+    pkg:
+      - onlyoffice-documentserver
+    state: present
+    update_cache: true
+  tags:
+    - onlyoffice
+
+# TODO HTTPS https://helpcenter.onlyoffice.com/server/linux/document/switch-to-https.aspx
+...
