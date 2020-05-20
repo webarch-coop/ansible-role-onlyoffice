@@ -12,9 +12,16 @@
   tags:
     - onlyoffice
 
+- name: ONLYOFFICE support@onlyoffice.com GPG public key present
+  copy:
+    src: 8320CA65CB2DE8E5.asc
+    dest: /root/8320CA65CB2DE8E5.asc
+  tags:
+    - onlyoffice
+
 - name: Import the support@onlyoffice.com GPG public key
   apt_key:
-    file: files/8320CA65CB2DE8E5.asc
+    file: /root/8320CA65CB2DE8E5.asc
     id: 8320CA65CB2DE8E5
     state: present
   tags:
