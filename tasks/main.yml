@@ -1,14 +1,14 @@
 ---
 # https://helpcenter.onlyoffice.com/server/linux/document/linux-installation.aspx
-- name: Debconf port for ONLYOFFICE
+- name: Debconf password for ONLYOFFICE
   debconf:
     name: onlyoffice-documentserver
-    question: onlyoffice/ds-port
-    vtype: select
-    value: "{{ onlyoffice_documentserver_port | default('80') }}"
+    question: onlyoffice/db-pwd
+    vtype: password
+    value: "{{ postgresql_passwd }}"
   when:
-    - onlyoffice_documentserver_port is defined
-    - onlyoffice_documentserver_port | length > 0
+    - postgresql_passwd is defined
+    - postgresql_passwd | length > 0
   tags:
     - onlyoffice
 
