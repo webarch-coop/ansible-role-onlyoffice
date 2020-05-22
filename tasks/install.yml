@@ -1,0 +1,15 @@
+---
+- name: ONLYOFFICE installed
+  block:
+
+    - name: ONLYOFFICE Document Server package present
+      apt:
+        pkg:
+          - onlyoffice-documentserver
+        install_recommends: true
+        state: present
+        update_cache: true
+
+  tags:
+    - onlyoffice
+...
