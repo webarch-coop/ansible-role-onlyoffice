@@ -36,7 +36,7 @@ server {
   ssl_certificate {{ onlyoffice_ssl_certificate }};
   ssl_certificate_key {{ onlyoffice_ssl_certificate_key }};
   # Uncomment string below and specify the path to the file with the password if you use encrypted certificate key
-  # ssl_password_file {{SSL_PASSWORD_PATH}};
+  # ssl_password_file /foo/bar;
   ssl_verify_client off;
 
   ssl_ciphers "EECDH+AESGCM:EDH+AESGCM:AES256+EECDH:AES256+EDH";

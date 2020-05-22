@@ -8,5 +8,5 @@ The ONLYOFFICE code is [available on GitHub under the
 AGPL](https://github.com/ONLYOFFICE/DocumentServer).
 
 There is a [development repo available
-here](https://git.coop/webarch/nextcloud-server) that buolds a ONLYOFFICE
+here](https://git.coop/webarch/nextcloud-server) that builds a ONLYOFFICE
 server using this role.
