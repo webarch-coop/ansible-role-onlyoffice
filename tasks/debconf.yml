@@ -28,7 +28,7 @@
       debconf:
         name: onlyoffice
         question: onlyoffice/db-port
-        value: "{{ onlyoffice_db-port | default('') }}"
+        value: "{{ onlyoffice_db_port | default('5432') }}"
         vtype: text
 
     - name: Debconf db-pwd
