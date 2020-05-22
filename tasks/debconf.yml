@@ -15,18 +15,21 @@
         name: onlyoffice
         question: onlyoffice/db-host
         value: "{{ onlyoffice_db_host | default('localhost') }}"
+        vtype: text
 
     - name: Debconf db-name
       debconf:
         name: onlyoffice
         question: onlyoffice/db-name
         value: "{{ onlyoffice_db_name | default('onlyoffice') }}"
+        vtype: text
 
     - name: Debconf db-port
       debconf:
         name: onlyoffice
         question: onlyoffice/db-port
         value: "{{ onlyoffice_db-port | default('') }}"
+        vtype: text
 
     - name: Debconf db-pwd
       debconf:
@@ -40,30 +43,35 @@
         name: onlyoffice
         question: onlyoffice/db-type
         value: "{{ onlyoffice_db_type | default('postgres') }}"
+        vtype: text
 
     - name: Debconf db-user
       debconf:
         name: onlyoffice
         question: onlyoffice/db-user
         value: "{{ onlyoffice_db_user | default('onlyoffice') }}"
+        vtype: text
 
     - name: Debconf docservice-port
       debconf:
         name: onlyoffice
         question: onlyoffice/docservice-port
         value: "{{ onlyoffice_docservice_port | default('8000') }}"
+        vtype: text
 
     - name: Debconf ds-port
       debconf:
         name: onlyoffice
         question: onlyoffice/ds-port
         value: "{{ onlyoffice_ds_port | default('80') }}"
+        vtype: text
 
     - name: Debconf example-port
       debconf:
         name: onlyoffice
         question: onlyoffice/example-port
         value: "{{ onlyoffice_example_port | default('3000') }}"
+        vtype: text
 
     - name: Debconf jwt-enabled
       debconf:
@@ -77,18 +85,21 @@
         name: onlyoffice
         question: onlyoffice/jwt-header
         value: "{{ onlyoffice_jwt_header | default('Authorization') }}"
+        vtype: text
 
     - name: Debconf jwt-secret
       debconf:
         name: onlyoffice
         question: onlyoffice/jwt-secret
         value: "{{ onlyoffice_jwt_secret }}"
+        vtype: password
 
     - name: Debconf rabbitmq-host
       debconf:
         name: onlyoffice
         question: onlyoffice/rabbitmq-host
         value: "{{ onlyoffice_rabbitmq_host | default('localhost') }}"
+        vtype: text
 
     - name: Debconf rabbitmq-pwd
       debconf:
@@ -102,12 +113,14 @@
         name: onlyoffice
         question: onlyoffice/rabbitmq-user
         value: "{{ onlyoffice_rabbitmq_user | default('guest') }}"
+        vtype: text
 
     - name: Debconf redis-host
       debconf:
         name: onlyoffice
         question: onlyoffice/redis-host
         value: "{{ onlyoffice_redis_host | default('localhost') }}"
+        vtype: text
 
     - name: Debconf remove-db
       debconf:
@@ -121,7 +134,7 @@
         name: onlyoffice
         question: onlyoffice/spellchecker-port
         value: "{{ onlyoffice_spellchecker_port | default('8080') }}"
-        vtype:
+        vtype: text
 
   tags:
     - onlyoffice
