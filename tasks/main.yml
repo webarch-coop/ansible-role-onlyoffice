@@ -28,7 +28,7 @@
 # https://helpcenter.onlyoffice.com/server/linux/document/switch-to-https.aspx
 - name: Nginx configuration in place
   template:
-    name: ds.conf.j2
+    src: ds.conf.j2
     dest: /etc/onlyoffice/documentserver/nginx/ds.conf
   tags:
     - onlyoffice
