@@ -1,79 +1,26 @@
 ---
-- name: Enable ONLYOFFICE apt repo
-  include_tasks: apt.yml
+- name: Apt package facts checked
+  package_facts:
+    manager: apt
   tags:
     - onlyoffice
 
-- name: Read and set variables needed for Debconf
-  include_tasks: vars.yml
-  tags:
-    - onlyoffice
+- name: Install onlyoffice-documentserver if it isn't installed
+  block:
 
-- name: Set debconf variables for ONLYOFFICE
-  include_tasks: debconf.yml
-  tags:
-    - onlyoffice
+    - name: Enable ONLYOFFICE apt repo
+      include_tasks: apt.yml
 
-- name: Install ONLYOFFICE
-  include_tasks: install.yml
-  tags:
-    - onlyoffice
+    - name: Read and set variables
+      include_tasks: vars.yml
 
+    - name: Debconf for ONLYOFFICE
+      include_tasks: debconf.yml
 
-    
+    - name: Install ONLYOFFICE
+      include_tasks: install.yml
 
-
-# https://helpcenter.onlyoffice.com/server/linux/document/linux-installation.aspx
-- name: Debconf password for ONLYOFFICE
-  debconf:
-    name: onlyoffice-documentserver
-    question: onlyoffice/db-pwd
-    vtype: password
-    value: "{{ postgresql_passwd }}"
-  when:
-    - postgresql_passwd is defined
-    - postgresql_passwd | length > 0
-  tags:
-    - onlyoffice
-
-- name: ONLYOFFICE support@onlyoffice.com GPG public key present
-  apt_key:
-    keyserver: keyserver.ubuntu.com
-    id: 8320CA65CB2DE8E5
-    state: present
-  tags:
-    - onlyoffice
-
-# - name: ONLYOFFICE support@onlyoffice.com GPG public key present
-#   copy:
-#     src: 8320CA65CB2DE8E5.asc
-#     dest: /root/8320CA65CB2DE8E5.asc
-#   tags:
-#     - onlyoffice
-# 
-# - name: Import the support@onlyoffice.com GPG public key
-#   apt_key:
-#     id: 8320CA65CB2DE8E5
-#     file: /root/8320CA65CB2DE8E5.asc
-#     state: present
-#   tags:
-#     - onlyoffice
-
-- name: ONLYOFFICE apt repo available
-  apt_repository:
-    filename: onlyoffice
-    repo: deb https://download.onlyoffice.com/repo/debian squeeze main
-    state: present
-  tags:
-    - onlyoffice
-
-- name: ONLYOFFICE Document Server package present
-  apt:
-    pkg:
-      - onlyoffice-documentserver
-    install_recommends: true
-    state: present
-    update_cache: true
+  when: ( "onlyoffice-documentserver" not in ansible_facts.packages )
   tags:
     - onlyoffice
 
