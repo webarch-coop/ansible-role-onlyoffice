@@ -6,14 +6,23 @@
       include_role: postgresql
       tasks_from: pgpass_read.yml
       vars:
-        postgresql_db: onlyoffice
+        postgresql_db: "{{ onlyoffice_db_name | default('onlyoffice') }}"
         postgresql_user: "{{ onlyoffice_db_user | default('onlyoffice') }}"
+
+    - name: Include RabbitMQ role to load ONLYOFFICE RabbitMQ user account password
+      include_role: rabbitmq
+      tasks_from: password.yml
+      vars:
+        rabbitmq_user: "{{ onlyoffice_rabbitmq_user | default('onlyoffice') }}"
+
+    - name: Include JSON Web Token tasks
+      include_tasks: jwt.yml
 
     - name: Set facts for ONLYOFFICE variables
       set_fact:
         onlyoffice_db_pwd: "{{ postgresql_password }}"
         # onlyoffice_jwt_secret:
-        # onlyoffice_rabbitmq_pwd:
+        onlyoffice_rabbitmq_pwd: "{{ rabbitmq_password }}"
 
   tags:
     - onlyoffice

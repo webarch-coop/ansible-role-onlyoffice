@@ -1,17 +1,19 @@
 ---
-- name: ONLYOFFICE support@onlyoffice.com GPG public key present
-  apt_key:
-    keyserver: keyserver.ubuntu.com
-    id: 8320CA65CB2DE8E5
-    state: present
-  tags:
-    - onlyoffice
+- name: ONLYOFFICE apt configured
+  block:
 
-- name: ONLYOFFICE apt repo available
-  apt_repository:
-    filename: onlyoffice
-    repo: deb https://download.onlyoffice.com/repo/debian squeeze main
-    state: present
+    - name: ONLYOFFICE support@onlyoffice.com GPG public key present
+      apt_key:
+        keyserver: keyserver.ubuntu.com
+        id: 8320CA65CB2DE8E5
+        state: present
+
+    - name: ONLYOFFICE apt repo available
+      apt_repository:
+        filename: onlyoffice
+        repo: deb https://download.onlyoffice.com/repo/debian squeeze main
+        state: present
+
   tags:
     - onlyoffice
 ...
