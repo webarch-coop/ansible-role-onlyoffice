@@ -5,6 +5,7 @@
   tags:
     - onlyoffice
 
+# Should these always be run together with a dpkg-reconfigure onlyoffice-documentserver?
 - name: Install onlyoffice-documentserver if it isn't installed
   block:
 
@@ -24,5 +25,18 @@
   tags:
     - onlyoffice
 
-# TODO HTTPS https://helpcenter.onlyoffice.com/server/linux/document/switch-to-https.aspx
+# https://helpcenter.onlyoffice.com/server/linux/document/switch-to-https.aspx
+- name: Nginx configuration in place
+  template:
+    name: ds.conf.j2
+    dest: /etc/onlyoffice/documentserver/nginx/ds.conf
+  tags:
+    - onlyoffice
+
+- name: Ngnix restarted
+  service:
+    name: nginx
+    state: restarted
+  tags:
+    - onlyoffice
 ...
