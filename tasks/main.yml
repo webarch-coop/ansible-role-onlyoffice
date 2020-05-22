@@ -1,4 +1,28 @@
 ---
+- name: Enable ONLYOFFICE apt repo
+  include_tasks: apt.yml
+  tags:
+    - onlyoffice
+
+- name: Read and set variables needed for Debconf
+  include_tasks: vars.yml
+  tags:
+    - onlyoffice
+
+- name: Set debconf variables for ONLYOFFICE
+  include_tasks: debconf.yml
+  tags:
+    - onlyoffice
+
+- name: Install ONLYOFFICE
+  include_tasks: install.yml
+  tags:
+    - onlyoffice
+
+
+    
+
+
 # https://helpcenter.onlyoffice.com/server/linux/document/linux-installation.aspx
 - name: Debconf password for ONLYOFFICE
   debconf:

@@ -1,0 +1,22 @@
+---
+# debconf-show onlyoffice-documentserver
+onlyoffice_cluster_mode: false
+onlyoffice_db_host: localhost
+onlyoffice_db_name: onlyoffice
+onlyoffice_db_port: 5432
+# onlyoffice_db_pwd: (password omitted)
+onlyoffice_db_type: postgres
+onlyoffice_db_user: onlyoffice
+onlyoffice_docservice_port: 8000
+onlyoffice_ds_port: 80
+onlyoffice_example_port: 3000
+onlyoffice_jwt_enabled: true
+onlyoffice_jwt_header: Authorization
+# onlyoffice_jwt_secret: secret
+onlyoffice_rabbitmq_host: localhost
+# onlyoffice_rabbitmq_pwd:
+onlyoffice_rabbitmq_user: guest
+onlyoffice_redis_host: localhost
+onlyoffice_remove_db: false
+onlyoffice_spellchecker_port: 8080
+...

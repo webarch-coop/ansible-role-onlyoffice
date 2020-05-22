@@ -1,0 +1,20 @@
+---
+- name: Set variables needed for the install
+  block:
+
+    - name: Include PostgreSQL role to load ONLYOFFICE database user account password
+      include_role: postgresql
+      tasks_from: pgpass_read.yml
+      vars:
+        postgresql_db: onlyoffice
+        postgresql_user: "{{ onlyoffice_db_user | default('onlyoffice') }}"
+
+    - name: Set facts for ONLYOFFICE variables
+      set_fact:
+        onlyoffice_db_pwd: "{{ postgresql_password }}"
+        # onlyoffice_jwt_secret:
+        # onlyoffice_rabbitmq_pwd:
+
+  tags:
+    - onlyoffice
+...

@@ -1,0 +1,127 @@
+---
+- name: Set variabled from debconf-show onlyoffice-documentserver
+  block:
+
+    - name: Debconf cluster-mode
+      debconf:
+        name: onlyoffice
+        question: onlyoffice/cluster-mode
+        value: "{{ onlyoffice_cluster_mode | default(False) }}"
+        vtype: boolean
+
+    - name: Debconf
+      debconf:
+        name: onlyoffice
+        question: onlyoffice/db-host
+        value: "{{ onlyoffice_db_host | default('localhost') }}"
+
+    - name: Debconf
+      debconf:
+        name: onlyoffice
+        question: onlyoffice/db-name
+        value: "{{ onlyoffice_db_name | default('onlyoffice') }}"
+
+    - name: Debconf
+      debconf:
+        name: onlyoffice
+        question: onlyoffice/db-port
+        value: "{{ onlyoffice_db-port | default('') }}"
+
+    - name: Debconf
+      debconf:
+        name: onlyoffice
+        question: onlyoffice/db-pwd
+        value: "{{ onlyoffice_db_pwd }}"
+        vtype: password
+
+    - name: Debconf
+      debconf:
+        name: onlyoffice
+        question: onlyoffice/db-type
+        value: "{{ onlyoffice_db_type | default('postgres') }}"
+
+    - name: Debconf
+      debconf:
+        name: onlyoffice
+        question: onlyoffice/db-user
+        value: "{{ onlyoffice_db_user | default('onlyoffice') }}"
+
+    - name: Debconf
+      debconf:
+        name: onlyoffice
+        question: onlyoffice/docservice-port
+        value: "{{ onlyoffice_docservice_port | default('8000') }}"
+
+    - name: Debconf
+      debconf:
+        name: onlyoffice
+        question: onlyoffice/ds-port
+        value: "{{ onlyoffice_ds_port | default('80') }}"
+
+    - name: Debconf
+      debconf:
+        name: onlyoffice
+        question: onlyoffice/example-port
+        value: "{{ onlyoffice_example_port | default('3000') }}"
+
+    - name: Debconf
+      debconf:
+        name: onlyoffice
+        question: onlyoffice/jwt-enabled
+        value: "{{ onlyoffice_jwt_enabled | default(False) }}"
+        vtype: boolean
+
+    - name: Debconf
+      debconf:
+        name: onlyoffice
+        question: onlyoffice/jwt-header
+        value: "{{ onlyoffice_jwt_header | default('Authorization') }}"
+
+    - name: Debconf
+      debconf:
+        name: onlyoffice
+        question: onlyoffice/jwt-secret
+        value: "{{ onlyoffice_jwt_secret }}"
+
+    - name: Debconf
+      debconf:
+        name: onlyoffice
+        question: onlyoffice/rabbitmq-host
+        value: "{{ onlyoffice_rabbitmq_host | default('localhost') }}"
+
+    - name: Debconf
+      debconf:
+        name: onlyoffice
+        question: onlyoffice/rabbitmq-pwd
+        value: "{{ onlyoffice_rabbitmq_pwd }}"
+        vtype: password
+
+    - name: Debconf
+      debconf:
+        name: onlyoffice
+        question: onlyoffice/rabbitmq-user
+        value: "{{ onlyoffice_rabbitmq_user | default('guest') }}"
+
+    - name: Debconf
+      debconf:
+        name: onlyoffice
+        question: onlyoffice/redis-host
+        value: "{{ onlyoffice_redis_host | default('localhost') }}"
+
+    - name: Debconf
+      debconf:
+        name: onlyoffice
+        question: onlyoffice/remove-db
+        value: "{{ onlyoffice_remove_db | default('False') }}"
+        vtype: boolean
+
+    - name: Debconf
+      debconf:
+        name: onlyoffice
+        question: onlyoffice/spellchecker-port
+        value: "{{ onlyoffice_spellchecker_port | default('8080') }}"
+        vtype:
+
+  tags:
+    - onlyoffice
+... 
