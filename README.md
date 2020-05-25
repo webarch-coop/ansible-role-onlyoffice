@@ -1,4 +1,4 @@
-# ONLYOFFICE Document Server Asnible Role
+# ONLYOFFICE Document Server Ansible Role
 
 This Ansible role is based on the instructions for [Installing Document Server
 for Linux on Debian, Ubuntu and
