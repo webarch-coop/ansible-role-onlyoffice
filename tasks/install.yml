@@ -2,9 +2,11 @@
 - name: ONLYOFFICE installed
   block:
 
-    - name: ONLYOFFICE Document Server package present
+    - name: ONLYOFFICE Document Server and font packages present
       apt:
         pkg:
+          - fonts-liberation2
+          - ttf-mscorefonts-installer
           - onlyoffice-documentserver
         install_recommends: true
         state: present
