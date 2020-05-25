@@ -12,6 +12,10 @@
         state: present
         update_cache: true
 
+    # https://helpcenter.onlyoffice.com/de/server/linux/document/install-fonts.aspx
+    - name: Fonts added
+      command: documentserver-generate-allfonts.sh
+
   tags:
     - onlyoffice
 ...
