@@ -1,3 +1,5 @@
+## {{ ansible_managed }}
+
 include /etc/nginx/includes/http-common.conf;
 
 ## Normal HTTP host
@@ -6,13 +8,19 @@ server {
   listen [::]:80 default_server;
   server_name _;
   server_tokens off;
-
-  ## Redirects all traffic to the HTTPS host
-  root /nowhere; ## root doesn't have to be a valid path since we are redirecting
-  rewrite ^ https://$host$request_uri? permanent;
+  # Let's Encrypt Requests
+  root /var/www/html;
+  location /.well-known/acme-challenge/ {
+       allow all;
+       try_files $uri $uri/;
+  }
+  ## Redirects all non Let's Encrypt requests to the HTTPS host
+  location / {
+       return 301 https://$host$request_uri;
+  }
 }
 
-#HTTP host for internal services
+## HTTP host for internal services
 server {
   listen 127.0.0.1:80;
   listen [::1]:80;
