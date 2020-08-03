@@ -4,7 +4,7 @@ include /etc/nginx/includes/http-common.conf;
 
 ## Normal HTTP host
 server {
-  listen 0.0.0.0:80;
+  listen 0.0.0.0:80 default_server;
   listen [::]:80 default_server;
   server_name _;
   server_tokens off;
@@ -12,6 +12,7 @@ server {
   root /var/www/html;
   location /.well-known/acme-challenge/ {
        allow all;
+       default_type text/plain;
        try_files $uri $uri/;
   }
   ## Redirects all non Let's Encrypt requests to the HTTPS host
@@ -33,7 +34,7 @@ server {
 
 ## HTTPS host
 server {
-  listen 0.0.0.0:443 ssl;
+  listen 0.0.0.0:443 ssl default_server;
   listen [::]:443 ssl default_server;
   server_tokens off;
   root /usr/share/nginx/html;
