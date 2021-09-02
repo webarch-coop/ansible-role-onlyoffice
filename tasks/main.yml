@@ -34,10 +34,23 @@
     - onlyoffice
     - nginx
 
-- name: Ngnix restarted
-  service:
-    name: nginx
-    state: restarted
+- name: Nginx default sites-enabled absent
+  file:
+    path: "/etc/nginx/sites-enabled/{{ file }}"
+    state: absent
+  loop:
+    - default
+    - default.conf
+  loop_control:
+    loop_var: file
+  notify: Restart nginx
+  tags:
+    - onlyoffice
+    - nginx
+
+- name: Ngnix configtest
+  command: service nginx configtest
+  notify: Restart nginx
   tags:
     - onlyoffice
     - nginx
