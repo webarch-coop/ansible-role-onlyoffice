@@ -11,6 +11,16 @@ There is a [development repo available
 here](https://git.coop/webarch/nextcloud-server) that builds a ONLYOFFICE
 server using this role.
 
+## Upgrading from Debian Buster to Bullseye
+
+After upgrading the OS PostgreSQL need to be upgraded:
+
+```bash
+pg_dropcluster --stop 13 main
+pg_upgradecluster 11 main
+apt remove postgresql-11 postgresql-client-11
+```
+
 ## Role name and repo URL
 
 This role has been renamed from `onlyoffice-documentserver` to `onlyoffice` and
