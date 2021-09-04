@@ -51,6 +51,17 @@
     - onlyoffice
     - nginx
 
+- name: Robots.txt in place
+  template:
+    src: robots.txt.j2
+    dest: /usr/share/nginx/html/robots.txt
+    owner: root
+    group: root
+    mode: 0644
+  tags:
+    - onlyoffice
+    - nginx
+
 - name: Ngnix configtest
   command: service nginx configtest
   check_mode: false

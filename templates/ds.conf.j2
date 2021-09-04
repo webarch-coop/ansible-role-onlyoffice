@@ -78,6 +78,12 @@ server {
   ##
   ssl_dhparam /etc/nginx/ssl_dhparam.pem;
 
+  # force utf-8 and content type for /robots.txt
+  # https://www.cyberciti.biz/faq/how-to-override-content-type-with-nginx-web-server/
+  location = /robots.txt {
+      types { } default_type "text/plain; charset=us-ascii";
+  }
+
   include /etc/nginx/includes/ds-*.conf;
 
 }
