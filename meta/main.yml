@@ -1,6 +1,6 @@
 ---
 galaxy_info:
-  role_name: onlyoffice-documentserver
+  role_name: onlyoffice
   author: Chris Croome
   description: Ansible role for installing ONLYOFFICE Document Server
   company: Webarchitects Co-operative
@@ -9,6 +9,7 @@ galaxy_info:
   platforms:
     - name: debian
       versions:
+        - bullseye
         - buster
   galaxy_tags: []
   # List tags for your role here, one per line. A tag is a keyword that describes
