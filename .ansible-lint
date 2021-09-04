@@ -1,9 +1,7 @@
 ---
 # https://docs.ansible.com/ansible-lint/rules/default_rules.html
 skip_list:
-  - "602"
-  - "204"
-  - "503"
-  - "301"
+  # [303] service used in place of service module
+  - "303"
 # vim: syntax=yaml
 ...

@@ -50,6 +50,8 @@
 
 - name: Ngnix configtest
   command: service nginx configtest
+  check_mode: false
+  changed_when: false
   notify: Restart nginx
   tags:
     - onlyoffice
