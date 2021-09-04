@@ -11,9 +11,10 @@ There is a [development repo available
 here](https://git.coop/webarch/nextcloud-server) that builds a ONLYOFFICE
 server using this role.
 
-## Repo URL
+## Role name and repo URL
 
-This repo was at `https://git.coop/webarch/onlyoffice-documentserver` but has
-now been moved to `https://git.coop/webarch/onlyoffice` and the (not working)
-repo at that at this URL has been archived at
-`https://git.coop/webarch/onlyoffice_docker`.
+This role has been renamed from `onlyoffice-documentserver` to `onlyoffice` and
+also the repository has been moved, it was at
+`https://git.coop/webarch/onlyoffice-documentserver` but is now at
+`https://git.coop/webarch/onlyoffice` and the (not working) repo that was at
+this URL has been archived at `https://git.coop/webarch/onlyoffice_docker`.
