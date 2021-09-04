@@ -85,6 +85,9 @@ server {
 
   include /etc/nginx/includes/ds-*.conf;
 
+  access_log /var/log/nginx/ds_access.log;
+  error_log /var/log/nginx/ds_error.log;
+
 }
 
 # vim: syntax=nginx
