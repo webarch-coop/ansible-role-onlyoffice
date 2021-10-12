@@ -5,6 +5,7 @@
     - name: ONLYOFFICE Document Server and font packages present
       apt:
         pkg:
+          - fonts-freefont-ttf
           - fonts-liberation2
           - ttf-mscorefonts-installer
           - onlyoffice-documentserver
