@@ -25,48 +25,9 @@
   tags:
     - onlyoffice
 
-# https://helpcenter.onlyoffice.com/server/linux/document/switch-to-https.aspx
-- name: Nginx configuration in place
-  template:
-    src: ds.conf.j2
-    dest: /etc/onlyoffice/documentserver/nginx/ds.conf
-    owner: root
-    group: root
-    mode: 0644
-  tags:
-    - onlyoffice
-    - nginx
-
-- name: Nginx default sites-enabled absent
-  file:
-    path: "/etc/nginx/sites-enabled/{{ file }}"
-    state: absent
-  loop:
-    - default
-    - default.conf
-  loop_control:
-    loop_var: file
-  notify: Restart nginx
-  tags:
-    - onlyoffice
-    - nginx
-
-- name: Robots.txt in place
-  template:
-    src: robots.txt.j2
-    dest: /usr/share/nginx/html/robots.txt
-    owner: root
-    group: root
-    mode: 0644
-  tags:
-    - onlyoffice
-    - nginx
-
-- name: Ngnix configtest
-  command: service nginx configtest
-  check_mode: false
-  changed_when: false
-  notify: Restart nginx
+- name: Include Nginx tasks
+  include_tasks: nginx.yml
+  when: ( onlyoffice_webserver is defined ) and ( onlyoffice_webserver == "nginx" )
   tags:
     - onlyoffice
     - nginx
