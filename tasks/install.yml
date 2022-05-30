@@ -2,20 +2,21 @@
 - name: ONLYOFFICE installed
   block:
 
-    - name: ONLYOFFICE Document Server and font packages present
-      apt:
+    - name: ONLYOFFICE Document Server present
+      ansible.builtin.apt:
         pkg:
-          - fonts-freefont-ttf
-          - fonts-liberation2
-          - ttf-mscorefonts-installer
           - onlyoffice-documentserver
         install_recommends: true
         state: present
-        update_cache: true
+      notify:
+        - Restart docservice
 
     # https://helpcenter.onlyoffice.com/de/server/linux/document/install-fonts.aspx
-    - name: Fonts added
-      command: documentserver-generate-allfonts.sh
+    - name: ONLYOFFICE Document Server fonts configured
+      ansible.builtin.command: documentserver-generate-allfonts.sh
+      notify:
+        - Restart docservice
+        - Restart converter
 
   tags:
     - onlyoffice

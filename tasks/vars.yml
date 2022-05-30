@@ -3,7 +3,7 @@
   block:
 
     - name: Include PostgreSQL role to load ONLYOFFICE database user account password
-      include_role:
+      ansible.builtin.include_role:
         name: postgresql
         tasks_from: pgpass_read.yml
       vars:
@@ -11,17 +11,17 @@
         postgresql_user: "{{ onlyoffice_db_user | default('onlyoffice') }}"
 
     - name: Include RabbitMQ role to load ONLYOFFICE RabbitMQ user account password
-      include_role:
+      ansible.builtin.include_role:
         name: rabbitmq
         tasks_from: password.yml
       vars:
         rabbitmq_user: "{{ onlyoffice_rabbitmq_user | default('onlyoffice') }}"
 
     - name: Include JSON Web Token tasks
-      include_tasks: jwt.yml
+      ansible.builtin.include_tasks: jwt.yml
 
     - name: Set facts for ONLYOFFICE variables
-      set_fact:
+      ansible.builtin.set_fact:
         onlyoffice_db_pwd: "{{ postgresql_password }}"
         onlyoffice_rabbitmq_pwd: "{{ rabbitmq_password }}"
 

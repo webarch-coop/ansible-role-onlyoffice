@@ -3,17 +3,17 @@
   block:
 
     - name: JWT secret present
-      shell: pwgen -cns 32 1 > /root/.onlyoffice.jwt.secret
+      ansible.builtin.shell: pwgen -cns 32 1 > /root/.onlyoffice.jwt.secret
       args:
         creates: /root/.onlyoffice.jwt.secret
 
     - name: Slurp a base64 encoded version of the JWT secret
-      slurp:
+      ansible.builtin.slurp:
         src: /root/.onlyoffice.jwt.secret
       register: onlyoffice_jwt_secret_b64encoded
 
     - name: Decode the base64 encoded version of the file and set a variable
-      set_fact:
+      ansible.builtin.set_fact:
         onlyoffice_jwt_secret: "{{ onlyoffice_jwt_secret_b64encoded['content'] | b64decode | trim }}"
 
   tags:

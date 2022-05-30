@@ -1,7 +1,19 @@
 ---
 - name: Nginx restarted
-  service:
+  ansible.builtin.service:
     name: nginx
     state: restarted
   listen: Restart nginx
+
+- name: docservice restarted
+  community.general.supervisorctl:
+    name: ds:docservice
+    state: restarted
+  listen: Restart docservice
+
+- name: converter restarted
+  community.general.supervisorctl:
+    name: ds:converter
+    state: restarted
+  listen: Restart converter
 ...

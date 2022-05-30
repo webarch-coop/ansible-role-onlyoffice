@@ -1,18 +1,33 @@
 ---
-- name: ONLYOFFICE apt configured
+- name: ONLYOFFICE apt configured and packages installed
   block:
 
     - name: ONLYOFFICE support@onlyoffice.com GPG public key present
-      apt_key:
+      ansible.builtin.apt_key:
         keyserver: keyserver.ubuntu.com
         id: 8320CA65CB2DE8E5
         state: present
 
     - name: ONLYOFFICE apt repo available
-      apt_repository:
+      ansible.builtin.apt_repository:
         filename: onlyoffice
         repo: deb https://download.onlyoffice.com/repo/debian squeeze main
         state: present
+
+    - name: Font and other packages present
+      ansible.builtin.apt:
+        pkg:
+          - fonts-dejavu
+          - fonts-crosextra-carlito
+          - fonts-liberation2
+          - fonts-freefont-ttf
+          - fonts-takao-gothic
+          - fonts-opensymbol
+          - pwgen
+          - ttf-bitstream-vera
+          - ttf-mscorefonts-installer
+        update_cache: true
+        install_recommends: true
 
   tags:
     - onlyoffice

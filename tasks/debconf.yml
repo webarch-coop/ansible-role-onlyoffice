@@ -4,35 +4,35 @@
   block:
 
     - name: Debconf cluster-mode
-      debconf:
+      ansible.builtin.debconf:
         name: onlyoffice
         question: onlyoffice/cluster-mode
         value: "{{ onlyoffice_cluster_mode | default(False) }}"
         vtype: boolean
 
     - name: Debconf db-host
-      debconf:
+      ansible.builtin.debconf:
         name: onlyoffice
         question: onlyoffice/db-host
         value: "{{ onlyoffice_db_host | default('localhost') }}"
         vtype: text
 
     - name: Debconf db-name
-      debconf:
+      ansible.builtin.debconf:
         name: onlyoffice
         question: onlyoffice/db-name
         value: "{{ onlyoffice_db_name | default('onlyoffice') }}"
         vtype: text
 
     - name: Debconf db-port
-      debconf:
+      ansible.builtin.debconf:
         name: onlyoffice
         question: onlyoffice/db-port
         value: "{{ onlyoffice_db_port | default('5432') }}"
         vtype: text
 
     - name: Debconf db-pwd
-      debconf:
+      ansible.builtin.debconf:
         name: onlyoffice
         question: onlyoffice/db-pwd
         value: "{{ onlyoffice_db_pwd }}"
@@ -40,56 +40,56 @@
       no_log: true
 
     - name: Debconf db-type
-      debconf:
+      ansible.builtin.debconf:
         name: onlyoffice
         question: onlyoffice/db-type
         value: "{{ onlyoffice_db_type | default('postgres') }}"
         vtype: text
 
     - name: Debconf db-user
-      debconf:
+      ansible.builtin.debconf:
         name: onlyoffice
         question: onlyoffice/db-user
         value: "{{ onlyoffice_db_user | default('onlyoffice') }}"
         vtype: text
 
     - name: Debconf docservice-port
-      debconf:
+      ansible.builtin.debconf:
         name: onlyoffice
         question: onlyoffice/docservice-port
         value: "{{ onlyoffice_docservice_port | default('8000') }}"
         vtype: text
 
     - name: Debconf ds-port
-      debconf:
+      ansible.builtin.debconf:
         name: onlyoffice
         question: onlyoffice/ds-port
         value: "{{ onlyoffice_ds_port | default('80') }}"
         vtype: text
 
     - name: Debconf example-port
-      debconf:
+      ansible.builtin.debconf:
         name: onlyoffice
         question: onlyoffice/example-port
         value: "{{ onlyoffice_example_port | default('3000') }}"
         vtype: text
 
     - name: Debconf jwt-enabled
-      debconf:
+      ansible.builtin.debconf:
         name: onlyoffice
         question: onlyoffice/jwt-enabled
         value: "{{ onlyoffice_jwt_enabled | default(False) }}"
         vtype: boolean
 
     - name: Debconf jwt-header
-      debconf:
+      ansible.builtin.debconf:
         name: onlyoffice
         question: onlyoffice/jwt-header
         value: "{{ onlyoffice_jwt_header | default('Authorization') }}"
         vtype: text
 
     - name: Debconf jwt-secret
-      debconf:
+      ansible.builtin.debconf:
         name: onlyoffice
         question: onlyoffice/jwt-secret
         value: "{{ onlyoffice_jwt_secret }}"
@@ -97,14 +97,14 @@
       no_log: true
 
     - name: Debconf rabbitmq-host
-      debconf:
+      ansible.builtin.debconf:
         name: onlyoffice
         question: onlyoffice/rabbitmq-host
         value: "{{ onlyoffice_rabbitmq_host | default('localhost') }}"
         vtype: text
 
     - name: Debconf rabbitmq-pwd
-      debconf:
+      ansible.builtin.debconf:
         name: onlyoffice
         question: onlyoffice/rabbitmq-pwd
         value: "{{ onlyoffice_rabbitmq_pwd }}"
@@ -112,28 +112,28 @@
       no_log: true
 
     - name: Debconf rabbitmq-user
-      debconf:
+      ansible.builtin.debconf:
         name: onlyoffice
         question: onlyoffice/rabbitmq-user
         value: "{{ onlyoffice_rabbitmq_user | default('guest') }}"
         vtype: text
 
     - name: Debconf redis-host
-      debconf:
+      ansible.builtin.debconf:
         name: onlyoffice
         question: onlyoffice/redis-host
         value: "{{ onlyoffice_redis_host | default('localhost') }}"
         vtype: text
 
     - name: Debconf remove-db
-      debconf:
+      ansible.builtin.debconf:
         name: onlyoffice
         question: onlyoffice/remove-db
         value: "{{ onlyoffice_remove_db | default('False') }}"
         vtype: boolean
 
     - name: Debconf spellchecker-port
-      debconf:
+      ansible.builtin.debconf:
         name: onlyoffice
         question: onlyoffice/spellchecker-port
         value: "{{ onlyoffice_spellchecker_port | default('8080') }}"
