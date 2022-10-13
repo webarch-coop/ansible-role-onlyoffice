@@ -2,6 +2,12 @@
 - name: ONLYOFFICE Document Server Nginx configuration
   block:
 
+    - name: Ensure that the JWT is defined
+      ansible.builtin.assert:
+        that:
+          - onlyoffice_jwt_secret is defined
+          - onlyoffice_jwt_secret | length > 0
+
     # https://helpcenter.onlyoffice.com/server/linux/document/switch-to-https.aspx
     - name: Nginx configuration in place
       ansible.builtin.template:

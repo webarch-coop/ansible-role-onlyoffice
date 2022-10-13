@@ -27,7 +27,7 @@ server {
   listen [::1]:80;
   server_name localhost;
   server_tokens off;
-  
+  set $secure_link_secret {{ onlyoffice_jwt_secret }}; 
   include /etc/nginx/includes/ds-common.conf;
   include /etc/nginx/includes/ds-docservice.conf;
 }
@@ -37,6 +37,7 @@ server {
   listen 0.0.0.0:443 ssl default_server;
   listen [::]:443 ssl default_server;
   server_tokens off;
+  set $secure_link_secret {{ onlyoffice_jwt_secret }};
   root /usr/share/nginx/html;
 
   ## Strong SSL Security
