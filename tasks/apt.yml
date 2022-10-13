@@ -75,7 +75,7 @@
           register: onlyoffice_asc_file
 
         - name: Check the ONLYOFFICE gpg ascii armored file sha256sum
-          assert:
+          ansible.builtin.assert:
             that:
               - onlyoffice_asc_file.stat.checksum == onlyoffice_gpg_checksum_raw
 
@@ -83,6 +83,9 @@
           ansible.builtin.shell: |
             set -e -o pipefail
             gpg --dearmor < /root/onlyoffice.asc > /etc/apt/keyrings/onlyoffice.gpg
+            sha256sum /etc/apt/keyrings/onlyoffice.gpg
+          register: onlyoffice_gpg_file_dearmored
+          changed_when: onlyoffice_gpg_checksum_raw not in onlyoffice_gpg_file_dearmored.stdout
           args:
             executable: "{{ ansible_local.bash.path }}"
 
