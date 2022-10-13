@@ -1,5 +1,5 @@
 ---
-# ASCII armored GPG public key URL linked from 
+# ASCII armored GPG public key URL linked from
 # https://keyserver.ubuntu.com/pks/lookup?search=8320CA65CB2DE8E5&fingerprint=on&op=index
 onlyoffice_gpg_url: "https://keyserver.ubuntu.com/pks/lookup?op=get&search=0xe09ca29f6e178040ef22b4098320ca65cb2de8e5"
 
