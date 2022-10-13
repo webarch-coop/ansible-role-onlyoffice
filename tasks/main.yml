@@ -19,7 +19,7 @@
 
     - name: Include Nginx tasks
       ansible.builtin.include_tasks: nginx.yml
-      when: ( onlyoffice_webserver is defined ) and ( onlyoffice_webserver == "nginx" )
+      when: (onlyoffice_webserver is defined) and (onlyoffice_webserver == "nginx")
       tags:
         - nginx
 

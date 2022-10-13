@@ -15,7 +15,7 @@
       loop_control:
         loop_var: file
         label: "{{ file.path | basename }}"
-      when: ( onlyoffice_old_apt_list_files.matched >= 1 )
+      when: (onlyoffice_old_apt_list_files.matched >= 1)
 
     - name: Disable legacy ONLYOFFICE apt list files
       ansible.builtin.command: "mv {{ file.path }} {{ file.path }}.ansible.save"
@@ -23,7 +23,7 @@
       loop_control:
         loop_var: file
         label: "{{ file.path | basename }}"
-      when: ( onlyoffice_old_apt_list_files.matched >= 1 )
+      when: (onlyoffice_old_apt_list_files.matched >= 1)
 
     - name: Legacy ONLYOFFICE support@onlyoffice.com GPG public key absent
       ansible.builtin.apt_key:
@@ -103,14 +103,14 @@
             --show-keys
             {% endif %}
             /etc/apt/keyrings/onlyoffice.gpg
-          when: ( onlyoffice_gpg_file.stat.exists | bool )
+          when: (onlyoffice_gpg_file.stat.exists | bool)
           check_mode: false
           changed_when: false
           register: onlyoffice_gpg
 
         - name: Set a fact for the ONLYOFFICE GPG fingerprints on the server
           ansible.builtin.set_fact:
-            onlyoffice_gpg_fingerprints_found: "{{ onlyoffice_gpg.stdout | community.general.jc('gpg') | community.general.json_query('[?type==`fpr`].user_id') | list }}"
+            onlyoffice_gpg_fingerprints_found: "{{ onlyoffice_gpg.stdout | community.general.jc('gpg') | community.general.json_query(onlyoffice_gpg_fingerprints_query) | list }}"
 
         - name: ONLYOFFICE gpg key check first fingerprint for GPG versions less that 2.2.12
           ansible.builtin.assert:
@@ -125,7 +125,7 @@
               - onlyoffice_gpg_fingerprints | difference(onlyoffice_gpg_fingerprints_found) | length == 0
           when: ansible_local.gpg.version is version('2.2.12', '>=')
 
-      when: ( not ansible_check_mode | bool )
+      when: (not ansible_check_mode | bool)
 
     - name: ONLYOFFICE repository sources file present
       ansible.builtin.template:
@@ -148,7 +148,7 @@
     - name: Update apt cache
       ansible.builtin.apt:
         update_cache: true
-      when: ( onlyoffice_sources.changed | bool ) or ( onlyoffice_preferences.changed | bool )
+      when: (onlyoffice_sources.changed | bool) or (onlyoffice_preferences.changed | bool)
 
     - name: Font and other packages present
       ansible.builtin.apt:

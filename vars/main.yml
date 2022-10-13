@@ -14,6 +14,9 @@ onlyoffice_gpg_fingerprints:
   - E09CA29F6E178040EF22B4098320CA65CB2DE8E5
   - F0DDC1B50C11AB0938CC41CB3573F47D0C4F207B
 
+# JMESPath query for ONLYOFFICE GPG fingerprints
+onlyoffice_gpg_fingerprints_query: "[?type=='fpr'].user_id"
+
 # Get the packages available using the following command
 # grep Package /var/lib/apt/lists/*onlyoffice*_Packages | awk '{print $2}' | sort -u | sed 's/^/  - /'
 #
