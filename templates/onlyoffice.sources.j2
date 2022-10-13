@@ -1,0 +1,8 @@
+# {{ ansible_managed }}
+
+Types: deb
+URIs: https://download.onlyoffice.com/repo/debian
+Suites: squeeze
+Architectures: {{ ansible_facts.ansible_local.dpkg.arch }}
+Components: main
+Signed-By: /etc/apt/keyrings/onlyoffice.gpg

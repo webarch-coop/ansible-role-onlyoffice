@@ -1,0 +1,33 @@
+---
+# ASCII armored GPG public key URL linked from 
+# https://keyserver.ubuntu.com/pks/lookup?search=8320CA65CB2DE8E5&fingerprint=on&op=index
+onlyoffice_gpg_url: "https://keyserver.ubuntu.com/pks/lookup?op=get&search=0xe09ca29f6e178040ef22b4098320ca65cb2de8e5"
+
+# Get the sha256 checksum using the following command
+# wget -q 'https://keyserver.ubuntu.com/pks/lookup?op=get&search=0xe09ca29f6e178040ef22b4098320ca65cb2de8e5' -O - | grep -v -e '^Comment: .*$' -e '^Version: .*$' | sha256sum - | awk '{ print $1 }' | sed 's/^/"sha256:/' | sed 's/$/"/'
+onlyoffice_gpg_checksum: "sha256:42a69b92dd7c5347e21fde22013eb3f8c7248d087029584bda56324e59e8b243"
+onlyoffice_gpg_checksum_raw: "{{ onlyoffice_gpg_checksum | regex_replace('^sha256:') }}"
+
+# Get the GPG fingerprints using the following command
+# wget -q 'https://keyserver.ubuntu.com/pks/lookup?op=get&search=0xe09ca29f6e178040ef22b4098320ca65cb2de8e5' -O - | gpg --dearmor | gpg --with-colons --show-keys - | grep ^fpr | sed 's/^fpr//' | sed 's/://g' | sed 's/^/  - /'
+onlyoffice_gpg_fingerprints:
+  - E09CA29F6E178040EF22B4098320CA65CB2DE8E5
+  - F0DDC1B50C11AB0938CC41CB3573F47D0C4F207B
+
+# Get the packages available using the following command
+# grep Package /var/lib/apt/lists/*onlyoffice*_Packages | awk '{print $2}' | sort -u | sed 's/^/  - /'
+#
+# This list was generated on Ubuntu 18.04, 20.04 and 22.04 and then merged
+onlyoffice_pkg:
+  - onlyoffice-communityserver
+  - onlyoffice-controlpanel
+  - onlyoffice-desktopeditors
+  - onlyoffice-desktopeditors-help
+  - onlyoffice-documentbuilder
+  - onlyoffice-documentserver
+  - onlyoffice-documentserver-de
+  - onlyoffice-documentserver-ee
+  - onlyoffice-documentserver-enterprise
+  - onlyoffice-documentserver-ie
+  - onlyoffice-xmppserver
+...

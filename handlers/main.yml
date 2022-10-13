@@ -5,13 +5,13 @@
     state: restarted
   listen: Restart nginx
 
-- name: docservice restarted
+- name: ONLYOFFICE docservice restarted
   community.general.supervisorctl:
     name: ds:docservice
     state: restarted
   listen: Restart docservice
 
-- name: converter restarted
+- name: ONLYOFFICE converter restarted
   community.general.supervisorctl:
     name: ds:converter
     state: restarted

@@ -2,17 +2,150 @@
 - name: ONLYOFFICE apt configured and packages installed
   block:
 
-    - name: ONLYOFFICE support@onlyoffice.com GPG public key present
-      ansible.builtin.apt_key:
-        keyserver: keyserver.ubuntu.com
-        id: 8320CA65CB2DE8E5
-        state: present
+    - name: Find legacy ONLYOFFICE apt list files
+      ansible.builtin.find:
+        paths: /etc/apt/sources.list.d
+        patterns: "*onlyoffice*.list"
+      register: onlyoffice_old_apt_list_files
 
-    - name: ONLYOFFICE apt repo available
-      ansible.builtin.apt_repository:
-        filename: onlyoffice
-        repo: deb https://download.onlyoffice.com/repo/debian squeeze main
-        state: present
+    - name: List legacy ONLYOFFICE apt list files to be disabled
+      ansible.builtin.debug:
+        msg: "apt list file {{ file.path }} to be moved to {{ file.path }}.ansible.save"
+      loop: "{{ onlyoffice_old_apt_list_files.files }}"
+      loop_control:
+        loop_var: file
+        label: "{{ file.path | basename }}"
+      when: ( onlyoffice_old_apt_list_files.matched >= 1 )
+
+    - name: Disable legacy ONLYOFFICE apt list files
+      ansible.builtin.command: "mv {{ file.path }} {{ file.path }}.ansible.save"
+      loop: "{{ onlyoffice_old_apt_list_files.files }}"
+      loop_control:
+        loop_var: file
+        label: "{{ file.path | basename }}"
+      when: ( onlyoffice_old_apt_list_files.matched >= 1 )
+
+    - name: Legacy ONLYOFFICE support@onlyoffice.com GPG public key absent
+      ansible.builtin.apt_key:
+        # keyserver: keyserver.ubuntu.com
+        id: 8320CA65CB2DE8E5
+        state: absent
+
+    - name: Apt keyrings directory present
+      ansible.builtin.file:
+        path: /etc/apt/keyrings
+        state: directory
+        mode: 0755
+        owner: root
+        group: root
+
+    # Note that the Ubuntu GPG server returns a HTTP Error 405 Method Not Allowed when the get_url
+    # module does a HEAD request in check mode, so these tasks don't run when in check mode
+    # in addition the GPG public key comments change depending on the keyserver version, so those
+    # lines need to be removed before the checksum is calculated
+
+    - name: Download and check the ONLYOFFICE gpg key when not in check mode
+      block:
+
+        - name: ONLYOFFICE gpg asc key downloaded
+          ansible.builtin.get_url:
+            url: "{{ onlyoffice_gpg_url }}"
+            dest: /root/onlyoffice.asc
+            force: true
+            mode: 0644
+            owner: root
+            group: root
+
+        - name: Remove the Comment line from the ONLYOFFICE gpg asc key
+          ansible.builtin.lineinfile:
+            path: /root/onlyoffice.asc
+            regex: '^Comment: .*$'
+            state: absent
+
+        - name: Remove the Version line from the ONLYOFFICE gpg asc key
+          ansible.builtin.lineinfile:
+            path: /root/onlyoffice.asc
+            regex: '^Version: .*$'
+            state: absent
+
+        - name: Stat ONLYOFFICE gpg ascii armored file
+          ansible.builtin.stat:
+            path: /root/onlyoffice.asc
+            checksum_algorithm: sha256
+          register: onlyoffice_asc_file
+
+        - name: Check the ONLYOFFICE gpg ascii armored file sha256sum
+          assert:
+            that:
+              - onlyoffice_asc_file.stat.checksum == onlyoffice_gpg_checksum_raw
+
+        - name: ONLYOFFICE gpg key dearmored
+          ansible.builtin.shell: |
+            set -e -o pipefail
+            gpg --dearmor < /root/onlyoffice.asc > /etc/apt/keyrings/onlyoffice.gpg
+          args:
+            executable: "{{ ansible_local.bash.path }}"
+
+        - name: Stat ONLYOFFICE gpg dearmored file
+          ansible.builtin.stat:
+            path: /etc/apt/keyrings/onlyoffice.gpg
+          register: onlyoffice_gpg_file
+
+        - name: ONLYOFFICE gpg key check command
+          ansible.builtin.command: >
+            gpg --with-colons
+            {% if ansible_local.gpg.version is version('2.2.12', '<') %}
+            --with-fingerprint --with-subkey-fingerprint
+            {% else %}
+            --show-keys
+            {% endif %}
+            /etc/apt/keyrings/onlyoffice.gpg
+          when: ( onlyoffice_gpg_file.stat.exists | bool )
+          check_mode: false
+          changed_when: false
+          register: onlyoffice_gpg
+
+        - name: Set a fact for the ONLYOFFICE GPG fingerprints on the server
+          ansible.builtin.set_fact:
+            onlyoffice_gpg_fingerprints_found: "{{ onlyoffice_gpg.stdout | community.general.jc('gpg') | community.general.json_query('[?type==`fpr`].user_id') | list }}"
+
+        - name: ONLYOFFICE gpg key check first fingerprint for GPG versions less that 2.2.12
+          ansible.builtin.assert:
+            that:
+              - onlyoffice_gpg_fingerprints_found[0] == onlyoffice_gpg_fingerprints[0]
+          when: ansible_local.gpg.version is version('2.2.12', '<')
+
+        - name: ONLYOFFICE gpg key check all fingerprints
+          ansible.builtin.assert:
+            that:
+              - onlyoffice_gpg_fingerprints_found | difference(onlyoffice_gpg_fingerprints) | length == 0
+              - onlyoffice_gpg_fingerprints | difference(onlyoffice_gpg_fingerprints_found) | length == 0
+          when: ansible_local.gpg.version is version('2.2.12', '>=')
+
+      when: ( not ansible_check_mode | bool )
+
+    - name: ONLYOFFICE repository sources file present
+      ansible.builtin.template:
+        src: onlyoffice.sources.j2
+        dest: /etc/apt/sources.list.d/onlyoffice.sources
+        mode: 0644
+        owner: root
+        group: root
+      register: onlyoffice_sources
+
+    - name: ONLYOFFICE apt preferences present
+      ansible.builtin.template:
+        src: onlyoffice.pref.j2
+        dest: /etc/apt/preferences.d/onlyoffice.pref
+        mode: 0644
+        owner: root
+        group: root
+      register: onlyoffice_preferences
+
+    - name: Update apt cache
+      ansible.builtin.apt:
+        update_cache: true
+      when: ( onlyoffice_sources.changed | bool ) or ( onlyoffice_preferences.changed | bool )
 
     - name: Font and other packages present
       ansible.builtin.apt:

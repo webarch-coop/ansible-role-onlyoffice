@@ -1,0 +1,8 @@
+# {{ ansible_managed }}
+
+{% for pkg in onlyoffice_pkg %}
+Package: {{ pkg }}
+Pin: origin download.onlyoffice.com
+Pin-Priority: 100
+
+{% endfor %}

@@ -2,6 +2,9 @@
 - name: ONLYOFFICE Document Server
   block:
 
+    - name: Include local facts tasks
+      ansible.builtin.include_tasks: local_facts.yml
+
     - name: Include ONLYOFFICE apt repo config and install fonts and other package tasks
       ansible.builtin.include_tasks: apt.yml
 
