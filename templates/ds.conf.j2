@@ -4,8 +4,16 @@ include /etc/nginx/includes/http-common.conf;
 
 ## Normal HTTP host
 server {
+{% if ansible_default_ipv4.address is defined %}  
+  listen {{ ansible_default_ipv4.address }}:80 default_server;
+{% else %}
   listen 0.0.0.0:80 default_server;
+{% endif %}
+{% if ansible_default_ipv6.address is defined %}
+  listen {{ ansible_default_ipv6.address }}:80 default_server;
+{% else %}
   listen [::]:80 default_server;
+{% endif %}
   server_name _;
   server_tokens off;
   set $secure_link_secret "{{ onlyoffice_jwt_secret }}";
@@ -35,15 +43,24 @@ server {
 
 ## HTTPS host
 server {
+{% if ansible_default_ipv4.address is defined %}
+  listen {{ ansible_default_ipv4.address }}:443 ssl default_server;
+{% else %}
   listen 0.0.0.0:443 ssl default_server;
+{% endif %}
+{% if ansible_default_ipv6.address is defined %}
+  listen {{ ansible_default_ipv6.address }}:443 ssl default_server;
+{% else %}
   listen [::]:443 ssl default_server;
+{% endif %}
   server_tokens off;
   set $secure_link_secret "{{ onlyoffice_jwt_secret }}";
   root /usr/share/nginx/html;
 
   ## Strong SSL Security
   ## https://raymii.org/s/tutorials/Strong_SSL_Security_On_nginx.html
-  ssl on;
+  # the "ssl" directive is deprecated, use the "listen ... ssl" directive instead
+  # ssl on;
   ssl_certificate "{{ onlyoffice_ssl_certificate }}";
   ssl_certificate_key "{{ onlyoffice_ssl_certificate_key }}";
   # Uncomment string below and specify the path to the file with the password if you use encrypted certificate key
