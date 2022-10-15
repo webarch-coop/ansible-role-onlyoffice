@@ -2,6 +2,9 @@
 - name: ONLYOFFICE Document Server Nginx configuration
   block:
 
+    - name: Include JSON Web Token tasks
+      ansible.builtin.include_tasks: jwt.yml
+
     - name: Ensure that the JWT is defined
       ansible.builtin.assert:
         that:
@@ -26,18 +29,19 @@
         group: root
         mode: 0644
 
-    - name: Nginx default sites-enabled absent
+    - name: Nginx default and localhost sites disabled
       ansible.builtin.file:
         path: "/etc/nginx/sites-enabled/{{ file }}"
         state: absent
       loop:
         - default
         - default.conf
+        - localhost.conf
       loop_control:
         loop_var: file
       notify: Restart nginx
 
-    - name: Ngnix configtest
+    - name: Nginx configtest
       ansible.builtin.command: service nginx configtest
       check_mode: false
       changed_when: false
