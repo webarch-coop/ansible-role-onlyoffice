@@ -28,7 +28,7 @@
         question: onlyoffice/cluster-mode
         value: "{{ onlyoffice_cluster_mode }}"
         vtype: boolean
-      when: onlyoffice_debconf.cluster-mode != onlyoffice_cluster_mode
+      when: onlyoffice_debconf['cluster-mode'] != onlyoffice_cluster_mode
 
     - name: Debconf db-host
       ansible.builtin.debconf:
