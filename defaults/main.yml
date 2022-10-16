@@ -18,6 +18,7 @@ onlyoffice_rabbitmq_proto: amqp
 # onlyoffice_rabbitmq_pwd:
 onlyoffice_rabbitmq_user: onlyoffice
 onlyoffice_redis_host: localhost
+onlyoffice_redis_port: localhost
 onlyoffice_remove_db: false
 onlyoffice_spellchecker_port: 8080
 onlyoffice_webserver: nginx
