@@ -1,0 +1,86 @@
+---
+argument_specs:
+  main:
+    author: Chris Croome
+    description: ONLYOFFICE Document Server Ansible role
+    short_description: The main entry point for the ONLYOFFICE role
+    options:
+      onlyoffice:
+        type: bool
+        required: true
+        description: Run the tasks in this role
+      onlyoffice_cluster_mode:
+        type: bool
+        required: true
+        description: ONLYOFFICE cluster mode
+      onlyoffice_db_host:
+        type: str
+        required: true
+        description: ONLYOFFICE database host
+      onlyoffice_db_name:
+        type: str
+        required: true
+        description: ONLYOFFICE database name
+      onlyoffice_db_port:
+        type: int
+        required: true
+        description: ONLYOFFICE database port number
+      onlyoffice_db_type:
+        type: str
+        required: true
+        description: ONLYOFFICE database type
+        choices:
+          - postgres
+      onlyoffice_db_user:
+        type: str
+        required: true
+        description: ONLYOFFICE database user
+      onlyoffice_docservice_port:
+        type: int
+        required: true
+        description: ONLYOFFICE docservice port
+      onlyoffice_ds_port:
+        type: int
+        required: true
+        description: ONLYOFFICE ds port
+      onlyoffice_example_port:
+        type: int
+        required: true
+        description: ONLYOFFICE example port
+      onlyoffice_jwt_enabled:
+        type: bool
+        required: true
+        description: ONLYOFFICE enable JWT
+      onlyoffice_jwt_header:
+        type: str
+        required: true
+        description: ONLYOFFICE JWT header
+      onlyoffice_rabbitmq_host:
+        type: str
+        required: true
+        description: ONLYOFFICE RabbitMQ host
+      onlyoffice_rabbitmq_proto:
+        type: str     
+        required: true
+        description: ONLYOFFICE RabbitMQ protcol
+      onlyoffice_rabbitmq_user:
+        type: str
+        required: true
+        description: ONLYOFFICE RabbitMQ user
+      onlyoffice_remove_db:
+        type: bool
+        required: true
+        description: ONLYOFFICE remove database
+      onlyoffice_ssl_certificate:
+        type: str
+        required: true
+        description: Path to the TLS cert
+      onlyoffice_ssl_certificate_key:
+        type: str
+        required: true
+        description: Path to the TLS key
+      onlyoffice_webserver:
+        type: str
+        required: true
+        description: ONLYOFFICE web server
+...

@@ -1,5 +1,5 @@
 ---
-# debconf-show onlyoffice-documentserver
+onlyoffice: true
 onlyoffice_cluster_mode: false
 onlyoffice_db_host: localhost
 onlyoffice_db_name: onlyoffice
@@ -18,8 +18,8 @@ onlyoffice_rabbitmq_proto: amqp
 # onlyoffice_rabbitmq_pwd:
 onlyoffice_rabbitmq_user: onlyoffice
 onlyoffice_remove_db: false
-onlyoffice_webserver: nginx
 # https://helpcenter.onlyoffice.com/server/linux/document/switch-to-https.aspx
 onlyoffice_ssl_certificate: "/etc/ssl/le/{{ inventory_hostname }}.fullchain.pem"
 onlyoffice_ssl_certificate_key: "/etc/ssl/le/{{ inventory_hostname }}.key.pem"
+onlyoffice_webserver: nginx
 ...

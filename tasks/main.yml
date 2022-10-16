@@ -23,6 +23,7 @@
       tags:
         - nginx
 
+  when: onlyoffice | bool
   tags:
     - onlyoffice
 ...
