@@ -6,7 +6,7 @@
     - name: Read the debconf for onlyoffice-documentserver
       ansible.builtin.shell: |
         set -e -o pipefail
-        debconf-show onlyoffice-documentserver | sed 's/^[*]/ /'
+        debconf-show onlyoffice-documentserver | sed 's/^[*]/ /' | sed 's/onlyoffice\///'
       args:
         executable: "{{ ansible_local.bash.path }}"
       register: onlyoffice_debconf_show
