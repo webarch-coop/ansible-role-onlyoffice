@@ -21,6 +21,7 @@ onlyoffice_redis_host: localhost
 onlyoffice_redis_port: 6379
 onlyoffice_remove_db: false
 onlyoffice_webserver: nginx
+onlyoffice_cluster_mode: false
 # https://helpcenter.onlyoffice.com/server/linux/document/switch-to-https.aspx
 onlyoffice_ssl_certificate: "/etc/ssl/le/{{ inventory_hostname }}.fullchain.pem"
 onlyoffice_ssl_certificate_key: "/etc/ssl/le/{{ inventory_hostname }}.key.pem"
