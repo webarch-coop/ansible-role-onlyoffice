@@ -11,6 +11,20 @@
       notify:
         - Restart docservice
 
+    - name: Slurp the ONLYOFFICE Document Server local.json file
+      ansible.builtin.slurp:
+        src: /etc/onlyoffice/documentserver/local.json 
+      register: onlyoffice_local_json_b64encoded
+
+    - name: Set a fact for the ONLYOFFICE Document Server local.json
+      ansible.builtin.set_fact:
+        onlyoffice_local_json: "{{ onlyoffice_local_json_b64encoded['content'] | b64decode | from_json }}"
+
+    - name: Debug the storage secret string
+      ansible.builtin.debug:
+        var: onlyoffice_local_json.storage.fs.secretString
+        verbosity: 2
+
     # https://helpcenter.onlyoffice.com/de/server/linux/document/install-fonts.aspx
     - name: ONLYOFFICE Document Server fonts configured
       ansible.builtin.command: documentserver-generate-allfonts.sh
