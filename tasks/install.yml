@@ -22,6 +22,11 @@
         onlyoffice_local_json: "{{ onlyoffice_local_json_b64encoded['content'] | b64decode | from_json }}"
       # no_log: true
 
+    - name: Debug ONLYOFFICE Document Server local.json
+      ansible.bultin.debug:
+        var: onlyoffice_local_json
+        verbosity: 2
+
     - name: Update the storage secret string
       ansible.builtin.command: "/usr/bin/documentserver-update-securelink.sh -s {{ onlyoffice_jwt_secret }}"
       when: onlyoffice_local_json.storage.fs.secretString != onlyoffice_jwt_secret
@@ -43,7 +48,7 @@
       ansible.builtin.command: >-
         /var/www/onlyoffice/documentserver/npm/json -q -f /etc/onlyoffice/documentserver/local.json
         -I -e 'this.services.CoAuthoring.redis.port  = "{{ redis_server_port }}"'
-      when: onlyoffice_local_json.services.CoAuthoring.redis.port != redis_server_port
+      when: onlyoffice_local_json.services.CoAuthoring.redis.port | int != redis_server_port | int
 
     # https://helpcenter.onlyoffice.com/de/server/linux/document/install-fonts.aspx
     - name: ONLYOFFICE Document Server fonts configured
