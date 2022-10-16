@@ -36,7 +36,7 @@
       ansible.builtin.command: >-
         /var/www/onlyoffice/documentserver/npm/json -q -f /etc/onlyoffice/documentserver/local.json
         -I -e 'this.rabbitmq.url = "{{ onlyoffice_rabbitmq_url }}"'
-      when: onlyoffice_local_json.services.CoAuthoring.redis.host != onlyoffice_rabbitmq_url
+      when: onlyoffice_local_json.rabbitmq.url != onlyoffice_rabbitmq_url
 
     - name: Set the Redis host
       ansible.builtin.command: >-
