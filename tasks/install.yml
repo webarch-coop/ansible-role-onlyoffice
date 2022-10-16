@@ -55,7 +55,7 @@
       ansible.builtin.command: >-
         /var/www/onlyoffice/documentserver/npm/json -q -f /etc/onlyoffice/documentserver/local.json
         -I -e 'this.CoAuthoring.sql.dbPort = "{{ onlyoffice_db_port }}"'
-      when: onlyoffice_local_json.services.CoAuthoring.sql.dbPort != onlyoffice_db_port
+      when: onlyoffice_local_json.services.CoAuthoring.sql.dbPort | int != onlyoffice_db_port | int
 
     - name: Set the SQL database name
       ansible.builtin.command: >-
