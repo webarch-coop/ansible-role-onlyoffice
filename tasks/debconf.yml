@@ -37,6 +37,7 @@
         question: onlyoffice/db-pwd
         value: "{{ onlyoffice_db_pwd }}"
         vtype: password
+      changed_when: false
       no_log: true
 
     - name: Debconf db-type
@@ -94,6 +95,7 @@
         question: onlyoffice/jwt-secret
         value: "{{ onlyoffice_jwt_secret }}"
         vtype: password
+      changed_when: false
       no_log: true
 
     - name: Debconf rabbitmq-host
@@ -109,6 +111,7 @@
         question: onlyoffice/rabbitmq-pwd
         value: "{{ onlyoffice_rabbitmq_pwd }}"
         vtype: password
+      changed_when: false
       no_log: true
 
     - name: Debconf rabbitmq-user

@@ -55,18 +55,21 @@
             mode: 0644
             owner: root
             group: root
+          changed_when: false
 
         - name: Remove the Comment line from the ONLYOFFICE gpg asc key
           ansible.builtin.lineinfile:
             path: /root/onlyoffice.asc
             regex: '^Comment: .*$'
             state: absent
+          changed_when: false
 
         - name: Remove the Version line from the ONLYOFFICE gpg asc key
           ansible.builtin.lineinfile:
             path: /root/onlyoffice.asc
             regex: '^Version: .*$'
             state: absent
+          changed_when: false
 
         - name: Stat ONLYOFFICE gpg ascii armored file
           ansible.builtin.stat:
