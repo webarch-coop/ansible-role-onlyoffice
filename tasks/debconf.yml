@@ -4,12 +4,16 @@
   block:
 
     - name: Read the debconf for onlyoffice-documentserver
-      ansible.builtin.command: debconf-show onlyoffice-documentserver
+      ansible.builtin.shell: |
+        set -e -o pipefail
+        debconf-show onlyoffice-documentserver | sed 's/^[*]/ /'
+      args:
+        executable: "{{ ansible_local.bash.path }}"
       register: onlyoffice_debconf_show
 
     - name: Set a fact for the debconf for onlyoffice-documentserver
       ansible.builtin.set_fact:
-        onlyoffice_debconf: "{{ onlyoffice_debconf_show.stdout_lines | map('regex_replace', '^[*]', ' ') | community.general.jc('kv') | from_json }}"
+        onlyoffice_debconf: "{{ onlyoffice_debconf_show.stdout | community.general.jc('kv') }}"
 
     - name: Debuug the debconf settings for onlyoffice-documentserver
       ansible.builtin.debug:
