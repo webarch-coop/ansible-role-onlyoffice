@@ -13,7 +13,7 @@
 
     - name: Slurp the ONLYOFFICE Document Server local.json file
       ansible.builtin.slurp:
-        src: /etc/onlyoffice/documentserver/local.json 
+        src: /etc/onlyoffice/documentserver/local.json
       register: onlyoffice_local_json_b64encoded
 
     - name: Set a fact for the ONLYOFFICE Document Server local.json
