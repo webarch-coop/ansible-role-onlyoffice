@@ -17,8 +17,6 @@ onlyoffice_rabbitmq_host: localhost
 onlyoffice_rabbitmq_proto: amqp
 # onlyoffice_rabbitmq_pwd:
 onlyoffice_rabbitmq_user: onlyoffice
-onlyoffice_redis_host: localhost
-onlyoffice_redis_port: 6379
 onlyoffice_remove_db: false
 onlyoffice_webserver: nginx
 # https://helpcenter.onlyoffice.com/server/linux/document/switch-to-https.aspx
