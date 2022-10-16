@@ -42,13 +42,17 @@
       ansible.builtin.command: >-
         /var/www/onlyoffice/documentserver/npm/json -q -f /etc/onlyoffice/documentserver/local.json
         -I -e 'this.services.CoAuthoring.redis.host  = "{{ redis_server_host }}"'
-      when: onlyoffice_local_json.services.CoAuthoring.redis.host != redis_server_host
+      when: >-
+        (onlyoffice_local_json.services.CoAuthoring.redis.host is not defined) or
+        (onlyoffice_local_json.services.CoAuthoring.redis.host != redis_server_host)
 
     - name: Set the Redis port
       ansible.builtin.command: >-
         /var/www/onlyoffice/documentserver/npm/json -q -f /etc/onlyoffice/documentserver/local.json
         -I -e 'this.services.CoAuthoring.redis.port  = "{{ redis_server_port }}"'
-      when: onlyoffice_local_json.services.CoAuthoring.redis.port | int != redis_server_port | int
+      when: >-
+        (onlyoffice_local_json.services.CoAuthoring.redis.port is not defined) or
+        (onlyoffice_local_json.services.CoAuthoring.redis.port | int != redis_server_port | int)
 
     # https://helpcenter.onlyoffice.com/de/server/linux/document/install-fonts.aspx
     - name: ONLYOFFICE Document Server fonts configured
