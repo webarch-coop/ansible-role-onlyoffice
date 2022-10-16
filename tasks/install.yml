@@ -23,7 +23,7 @@
       # no_log: true
 
     - name: Debug ONLYOFFICE Document Server local.json
-      ansible.bultin.debug:
+      ansible.builtin.debug:
         var: onlyoffice_local_json
         verbosity: 2
 
