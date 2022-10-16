@@ -1,4 +1,4 @@
-# ONLYOFFICE Document Server Ansible Role
+# Webarchitects ONLYOFFICE Document Server Ansible Role
 
 [![pipeline status](https://git.coop/webarch/onlyoffice/badges/master/pipeline.svg)](https://git.coop/webarch/onlyoffice/-/commits/master)
 

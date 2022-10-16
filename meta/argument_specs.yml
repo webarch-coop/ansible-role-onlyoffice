@@ -60,7 +60,7 @@ argument_specs:
         required: true
         description: ONLYOFFICE RabbitMQ host
       onlyoffice_rabbitmq_proto:
-        type: str     
+        type: str
         required: true
         description: ONLYOFFICE RabbitMQ protcol
       onlyoffice_rabbitmq_user:
