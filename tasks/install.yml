@@ -20,12 +20,12 @@
     - name: Set a fact for the ONLYOFFICE Document Server local.json
       ansible.builtin.set_fact:
         onlyoffice_local_json: "{{ onlyoffice_local_json_b64encoded['content'] | b64decode | from_json }}"
-      # no_log: true
+      no_log: true
 
     - name: Debug ONLYOFFICE Document Server local.json
       ansible.builtin.debug:
         var: onlyoffice_local_json
-        verbosity: 2
+        verbosity: 3
 
     - name: Update the storage secret string
       ansible.builtin.command: "/usr/bin/documentserver-update-securelink.sh -s {{ onlyoffice_jwt_secret }}"
@@ -34,72 +34,9 @@
 
     - name: Set the RabbitMQ URL
       ansible.builtin.command: >-
-        /var/www/onlyoffice/documentserver/npm/json -q -f /etc/onlyoffice/documentserver/local.json
+        /var/www/onlyoffice/documentserver/npm/json -f /etc/onlyoffice/documentserver/local.json
         -I -e 'this.rabbitmq.url = "{{ onlyoffice_rabbitmq_url }}"'
       when: onlyoffice_local_json.rabbitmq.url != onlyoffice_rabbitmq_url
-      no_log: true
-
-    - name: Set the SQL database type
-      ansible.builtin.command: >-
-        /var/www/onlyoffice/documentserver/npm/json -q -f /etc/onlyoffice/documentserver/local.json
-        -I -e 'this.CoAuthoring.sql.type = "{{ onlyoffice_db_type }}"'
-      when: onlyoffice_local_json.services.CoAuthoring.sql.type != onlyoffice_db_type
-
-    - name: Set the SQL database host
-      ansible.builtin.command: >-
-        /var/www/onlyoffice/documentserver/npm/json -q -f /etc/onlyoffice/documentserver/local.json
-        -I -e 'this.CoAuthoring.sql.dbHost = "{{ onlyoffice_db_host }}"'
-      when: onlyoffice_local_json.services.CoAuthoring.sql.dbHost != onlyoffice_db_host
-
-    - name: Set the SQL database port
-      ansible.builtin.command: >-
-        /var/www/onlyoffice/documentserver/npm/json -q -f /etc/onlyoffice/documentserver/local.json
-        -I -e 'this.CoAuthoring.sql.dbPort = "{{ onlyoffice_db_port }}"'
-      when: onlyoffice_local_json.services.CoAuthoring.sql.dbPort | int != onlyoffice_db_port | int
-
-    - name: Set the SQL database name
-      ansible.builtin.command: >-
-        /var/www/onlyoffice/documentserver/npm/json -q -f /etc/onlyoffice/documentserver/local.json
-        -I -e 'this.CoAuthoring.sql.dbName = "{{ onlyoffice_db_name }}"'
-      when: onlyoffice_local_json.services.CoAuthoring.sql.dbName != onlyoffice_db_name
-
-    - name: Set the SQL database user
-      ansible.builtin.command: >-
-        /var/www/onlyoffice/documentserver/npm/json -q -f /etc/onlyoffice/documentserver/local.json
-        -I -e 'this.CoAuthoring.sql.dbUser = "{{ onlyoffice_db_user }}"'
-      when: onlyoffice_local_json.services.CoAuthoring.sql.dbUser != onlyoffice_db_user
-
-    - name: Set the SQL database password
-      ansible.builtin.command: >-
-        /var/www/onlyoffice/documentserver/npm/json -q -f /etc/onlyoffice/documentserver/local.json
-        -I -e 'this.CoAuthoring.sql.dbPass = "{{ onlyoffice_db_pwd }}"'
-      when: onlyoffice_local_json.services.CoAuthoring.sql.dbPass != onlyoffice_db_pwd
-      no_log: true
-
-    - name: Set the JWT inbox header
-      ansible.builtin.command: >-
-        /var/www/onlyoffice/documentserver/npm/json -q -f /etc/onlyoffice/documentserver/local.json
-        -I -e 'this.CoAuthoring.token.inbox.header = "{{ onlyoffice_jwt_header }}"'
-      when: onlyoffice_local_json.services.CoAuthoring.token.inbox.header != onlyoffice_jwt_header
-
-    - name: Set the JWT outbox header
-      ansible.builtin.command: >-
-        /var/www/onlyoffice/documentserver/npm/json -q -f /etc/onlyoffice/documentserver/local.json
-        -I -e 'this.CoAuthoring.token.outbox.header = "{{ onlyoffice_jwt_header }}"'
-      when: onlyoffice_local_json.services.CoAuthoring.token.outbox.header != onlyoffice_jwt_header
-
-    - name: Set the JWT inbox secret
-      ansible.builtin.command: >-
-        /var/www/onlyoffice/documentserver/npm/json -q -f /etc/onlyoffice/documentserver/local.json
-        -I -e 'this.CoAuthoring.secret.inbox.string = "{{ onlyoffice_jwt_secret }}"'
-      when: onlyoffice_local_json.services.CoAuthoring.secret.inbox.header != onlyoffice_jwt_secret
-      no_log: true
-
-    - name: Set the JWT outbox secret
-      ansible.builtin.command: >-
-        /var/www/onlyoffice/documentserver/npm/json -q -f /etc/onlyoffice/documentserver/local.json
-        -I -e 'this.CoAuthoring.secret.outbox.string = "{{ onlyoffice_jwt_secret }}"'
-      when: onlyoffice_local_json.services.CoAuthoring.secret.outbox.header != onlyoffice_jwt_secret
       no_log: true
 
     # https://helpcenter.onlyoffice.com/de/server/linux/document/install-fonts.aspx
