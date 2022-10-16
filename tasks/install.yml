@@ -15,19 +15,21 @@
       ansible.builtin.slurp:
         src: /etc/onlyoffice/documentserver/local.json
       register: onlyoffice_local_json_b64encoded
+      no_log: true
 
     - name: Set a fact for the ONLYOFFICE Document Server local.json
       ansible.builtin.set_fact:
         onlyoffice_local_json: "{{ onlyoffice_local_json_b64encoded['content'] | b64decode | from_json }}"
+      no_log: true
 
     - name: Update the storage secret string
       ansible.builtin.command: "/usr/bin/documentserver-update-securelink.sh -s {{ onlyoffice_jwt_secret }}"
-      no_log: true
       when: onlyoffice_local_json.storage.fs.secretString != onlyoffice_jwt_secret
+      no_log: true
 
     # https://helpcenter.onlyoffice.com/de/server/linux/document/install-fonts.aspx
     - name: ONLYOFFICE Document Server fonts configured
-      ansible.builtin.command: documentserver-generate-allfonts.sh
+      ansible.builtin.command: documentserver-generate-allfonts.sh true
       changed_when: true
       notify:
         - Restart docservice
