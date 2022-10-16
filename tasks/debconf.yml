@@ -19,7 +19,7 @@
 
     - name: Debuug the debconf settings for onlyoffice-documentserver
       ansible.builtin.debug:
-        var: onlyoffice_debconf  
+        var: onlyoffice_debconf
         verbosity: 2
 
     - name: Debconf cluster-mode
