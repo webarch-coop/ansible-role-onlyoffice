@@ -20,10 +20,10 @@
       ansible.builtin.set_fact:
         onlyoffice_local_json: "{{ onlyoffice_local_json_b64encoded['content'] | b64decode | from_json }}"
 
-    - name: Debug the storage secret string
-      ansible.builtin.debug:
-        var: onlyoffice_local_json.storage.fs.secretString
-        verbosity: 2
+    - name: Update the storage secret string
+      ansible.builtin.command: "/usr/bin/documentserver-update-securelink.sh -s {{ onlyoffice_jwt_secret }}"
+      no_log: true
+      when: onlyoffice_local_json.storage.fs.secretString != onlyoffice_jwt_secret
 
     # https://helpcenter.onlyoffice.com/de/server/linux/document/install-fonts.aspx
     - name: ONLYOFFICE Document Server fonts configured
