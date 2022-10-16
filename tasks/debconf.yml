@@ -28,7 +28,7 @@
         question: onlyoffice/cluster-mode
         value: "{{ onlyoffice_cluster_mode }}"
         vtype: boolean
-      when: onlyoffice_debconf['cluster-mode'] != onlyoffice_cluster_mode
+      when: onlyoffice_debconf['cluster-mode'] | bool != onlyoffice_cluster_mode | bool
 
     - name: Debconf db-host
       ansible.builtin.debconf:
@@ -52,7 +52,7 @@
         question: onlyoffice/db-port
         value: "{{ onlyoffice_db_port }}"
         vtype: text
-      when: onlyoffice_debconf['db-port'] != onlyoffice_db_port
+      when: onlyoffice_debconf['db-port'] | int != onlyoffice_db_port | int
 
     - name: Debconf db-pwd
       ansible.builtin.debconf:
@@ -85,7 +85,7 @@
         question: onlyoffice/docservice-port
         value: "{{ onlyoffice_docservice_port }}"
         vtype: text
-      when: onlyoffice_debconf['docservice-port'] != onlyoffice_docservice_port
+      when: onlyoffice_debconf['docservice-port'] | int != onlyoffice_docservice_port | int
 
     - name: Debconf ds-port
       ansible.builtin.debconf:
@@ -93,7 +93,7 @@
         question: onlyoffice/ds-port
         value: "{{ onlyoffice_ds_port }}"
         vtype: text
-      when: onlyoffice_debconf['ds-port'] != onlyoffice_ds_port
+      when: onlyoffice_debconf['ds-port'] | int != onlyoffice_ds_port | int
 
     - name: Debconf example-port
       ansible.builtin.debconf:
@@ -101,7 +101,7 @@
         question: onlyoffice/example-port
         value: "{{ onlyoffice_example_port }}"
         vtype: text
-      when: onlyoffice_debconf['example-port'] != onlyoffice_example_port
+      when: onlyoffice_debconf['example-port'] | int != onlyoffice_example_port | int
 
     - name: Debconf jwt-enabled
       ansible.builtin.debconf:
@@ -109,7 +109,7 @@
         question: onlyoffice/jwt-enabled
         value: "{{ onlyoffice_jwt_enabled }}"
         vtype: boolean
-      when: onlyoffice_debconf['jwt-enabled'] != onlyoffice_jwt_enabled
+      when: onlyoffice_debconf['jwt-enabled'] | bool != onlyoffice_jwt_enabled | bool
 
     - name: Debconf jwt-header
       ansible.builtin.debconf:
@@ -167,7 +167,7 @@
         question: onlyoffice/remove-db
         value: "{{ onlyoffice_remove_db | default('False') }}"
         vtype: boolean
-      when: onlyoffice_debconf['remove-db'] != onlyoffice_remove_db
+      when: onlyoffice_debconf['remove-db'] | bool != onlyoffice_remove_db | bool
 
   tags:
     - onlyoffice
