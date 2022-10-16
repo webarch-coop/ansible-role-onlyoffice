@@ -86,11 +86,9 @@
           ansible.builtin.shell: |
             set -e -o pipefail
             gpg --dearmor < /root/onlyoffice.asc > /etc/apt/keyrings/onlyoffice.gpg
-            sha256sum /etc/apt/keyrings/onlyoffice.gpg
-          register: onlyoffice_gpg_file_dearmored
-          changed_when: onlyoffice_gpg_checksum_raw not in onlyoffice_gpg_file_dearmored.stdout
           args:
             executable: "{{ ansible_local.bash.path }}"
+          changed_when: false
 
         - name: Stat ONLYOFFICE gpg dearmored file
           ansible.builtin.stat:
