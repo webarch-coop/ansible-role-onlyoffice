@@ -3,6 +3,19 @@
 - name: Set Debconf variables for ONLYOFFICE
   block:
 
+    - name: Read the debconf for onlyoffice-documentserver
+      ansible.builtin.command: debconf-show onlyoffice-documentserver
+      register: onlyoffice_debconf_show
+
+    - name: Set a fact for the debconf for onlyoffice-documentserver
+      ansible.builtin.set_fact:
+        onlyoffice_debconf: "{{ onlyoffice_debconf_show.stdout_lines | map('regex_replace', '^[*]', ' ') | community.general.jc('kv') | from_json }}"
+
+    - name: Debuug the debconf settings for onlyoffice-documentserver
+      ansible.builtin.debug:
+        var: onlyoffice_debconf  
+        verbosity: 2
+
     - name: Debconf cluster-mode
       ansible.builtin.debconf:
         name: onlyoffice
@@ -103,6 +116,13 @@
         name: onlyoffice
         question: onlyoffice/rabbitmq-host
         value: "{{ onlyoffice_rabbitmq_host | default('localhost') }}"
+        vtype: text
+
+    - name: Debconf rabbitmq-proto
+      ansible.builtin.debconf:
+        name: onlyoffice
+        question: onlyoffice/rabbitmq-proto
+        value: "{{ onlyoffice_rabbitmq_proto | default('amqp') }}"
         vtype: text
 
     - name: Debconf rabbitmq-pwd

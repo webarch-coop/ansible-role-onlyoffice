@@ -14,6 +14,7 @@ onlyoffice_jwt_enabled: true
 onlyoffice_jwt_header: Authorization
 # onlyoffice_jwt_secret: secret
 onlyoffice_rabbitmq_host: localhost
+onlyoffice_rabbitmq_proto: amqp
 # onlyoffice_rabbitmq_pwd:
 onlyoffice_rabbitmq_user: onlyoffice
 onlyoffice_redis_host: localhost
