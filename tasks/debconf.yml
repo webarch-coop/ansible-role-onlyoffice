@@ -17,7 +17,7 @@
       ansible.builtin.set_fact:
         onlyoffice_debconf: "{{ onlyoffice_debconf_show.stdout | community.general.jc('kv') }}"
 
-    - name: Debuug the debconf settings for onlyoffice-documentserver
+    - name: Debug the debconf settings for onlyoffice-documentserver
       ansible.builtin.debug:
         var: onlyoffice_debconf
         verbosity: 2
