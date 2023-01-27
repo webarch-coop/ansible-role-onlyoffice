@@ -10,7 +10,7 @@ There is a [development repo available here](https://git.coop/webarch/nextcloud-
 
 ## Upgrading from Debian Buster to Bullseye
 
-After upgrading the OS PostgreSQL need to be upgraded:
+After upgrading the Debian PostgreSQL needs to be upgraded:
 
 ```bash
 pg_dropcluster --stop 13 main
