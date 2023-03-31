@@ -38,6 +38,7 @@
 
     - name: Update the storage secret string
       ansible.builtin.command: "/usr/bin/documentserver-update-securelink.sh -s {{ onlyoffice_jwt_secret }}"
+      changed_when: true
       when: onlyoffice_local_json.storage.fs.secretString != onlyoffice_jwt_secret
       no_log: true
 
@@ -45,6 +46,7 @@
       ansible.builtin.command: >-
         /var/www/onlyoffice/documentserver/npm/json -f /etc/onlyoffice/documentserver/local.json
         -I -e 'this.rabbitmq.url = "{{ onlyoffice_rabbitmq_url }}"'
+      changed_when: true
       when: onlyoffice_local_json.rabbitmq.url != onlyoffice_rabbitmq_url
       no_log: true
 

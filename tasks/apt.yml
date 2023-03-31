@@ -28,6 +28,7 @@
 
     - name: Disable legacy ONLYOFFICE apt list files
       ansible.builtin.command: "mv {{ file.path }} {{ file.path }}.ansible.save"
+      changed_when: true
       loop: "{{ onlyoffice_old_apt_list_files.files }}"
       loop_control:
         loop_var: file
@@ -120,7 +121,7 @@
 
         - name: Set a fact for the ONLYOFFICE GPG fingerprints on the server
           ansible.builtin.set_fact:
-            onlyoffice_gpg_fingerprints_found: "{{ onlyoffice_gpg.stdout | community.general.jc('gpg') | community.general.json_query(onlyoffice_gpg_fingerprints_query) | list }}"
+            onlyoffice_gpg_fingerprints_found: "{{ onlyoffice_gpg.stdout | string | community.general.jc('gpg') | community.general.json_query(onlyoffice_gpg_fingerprints_query) | list }}"
 
         - name: ONLYOFFICE gpg key check first fingerprint for GPG versions less that 2.2.12
           ansible.builtin.assert:
@@ -155,7 +156,7 @@
         group: root
       register: onlyoffice_preferences
 
-    - name: Update apt cache
+    - name: Update apt cache  # noqa: no-handler
       ansible.builtin.apt:
         update_cache: true
       when: (onlyoffice_sources.changed | bool) or (onlyoffice_preferences.changed | bool)

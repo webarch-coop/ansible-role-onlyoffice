@@ -24,7 +24,7 @@
 
     - name: Set a fact for the debconf for onlyoffice-documentserver
       ansible.builtin.set_fact:
-        onlyoffice_debconf: "{{ onlyoffice_debconf_show.stdout | community.general.jc('kv') }}"
+        onlyoffice_debconf: "{{ onlyoffice_debconf_show.stdout | string | community.general.jc('kv') }}"
 
     - name: Debug the debconf settings for onlyoffice-documentserver
       ansible.builtin.debug:
