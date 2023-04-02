@@ -1,4 +1,4 @@
-# Copyright 2019-2023 Chris Croome
+# Copyright 2020-2023 Chris Croome
 #
 # This file is part of the Webarchitects ONLYOFFICE Ansible role.
 #
@@ -16,15 +16,15 @@
         name: postgresql
         tasks_from: pgpass_read.yml
       vars:
-        postgresql_db: "{{ onlyoffice_db_name | default('onlyoffice') }}"
-        postgresql_user: "{{ onlyoffice_db_user | default('onlyoffice') }}"
+        postgresql_db: "{{ onlyoffice_db_name }}"
+        postgresql_user: "{{ onlyoffice_db_user }}"
 
     - name: Include RabbitMQ role to load ONLYOFFICE RabbitMQ user account password
       ansible.builtin.include_role:
         name: rabbitmq
         tasks_from: password.yml
       vars:
-        rabbitmq_user: "{{ onlyoffice_rabbitmq_user | default('onlyoffice') }}"
+        rabbitmq_username: "{{ onlyoffice_rabbitmq_user }}"
 
     - name: Include JSON Web Token tasks
       ansible.builtin.include_tasks: jwt.yml

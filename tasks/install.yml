@@ -1,4 +1,4 @@
-# Copyright 2019-2023 Chris Croome
+# Copyright 2020-2023 Chris Croome
 #
 # This file is part of the Webarchitects ONLYOFFICE Ansible role.
 #
@@ -39,7 +39,9 @@
     - name: Update the storage secret string
       ansible.builtin.command: "/usr/bin/documentserver-update-securelink.sh -s {{ onlyoffice_jwt_secret }}"
       changed_when: true
-      when: onlyoffice_local_json.storage.fs.secretString != onlyoffice_jwt_secret
+      when:
+        - onlyoffice_jwt_secret is defined
+        - onlyoffice_local_json.storage.fs.secretString != onlyoffice_jwt_secret
       no_log: true
 
     - name: Set the RabbitMQ URL

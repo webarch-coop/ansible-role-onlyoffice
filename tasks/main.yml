@@ -1,4 +1,4 @@
-# Copyright 2019-2023 Chris Croome
+# Copyright 2020-2023 Chris Croome
 #
 # This file is part of the Webarchitects ONLYOFFICE Ansible role.
 #
@@ -10,6 +10,10 @@
 ---
 - name: ONLYOFFICE Document Server
   block:
+
+    - name: Validate ONLYOFFICE variables
+      ansible.builtin.include_tasks: validate.yml
+      when: onlyoffice_validate | bool
 
     - name: Include apt role local fact tasks if variables are not defined
       ansible.builtin.include_role:

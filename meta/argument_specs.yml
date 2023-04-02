@@ -1,4 +1,4 @@
-# Copyright 2019-2023 Chris Croome
+# Copyright 2020-2023 Chris Croome
 #
 # This file is part of the Webarchitects ONLYOFFICE Ansible role.
 #
@@ -12,84 +12,122 @@ argument_specs:
   main:
     author: Chris Croome
     description: ONLYOFFICE Document Server Ansible role
-    short_description: The main entry point for the ONLYOFFICE role
+    short_description: The main entry point for the ONLYOFFICE role.
     options:
       onlyoffice:
         type: bool
         required: true
-        description: Run the tasks in this role
+        description: Run the tasks in this role.
       onlyoffice_cluster_mode:
         type: bool
         required: true
-        description: ONLYOFFICE cluster mode
+        description: ONLYOFFICE cluster mode.
       onlyoffice_db_host:
         type: str
         required: true
-        description: ONLYOFFICE database host
+        description: ONLYOFFICE database host.
       onlyoffice_db_name:
         type: str
         required: true
-        description: ONLYOFFICE database name
+        description: ONLYOFFICE database name.
       onlyoffice_db_port:
         type: int
         required: true
-        description: ONLYOFFICE database port number
+        description: ONLYOFFICE database port number.
       onlyoffice_db_type:
         type: str
         required: true
-        description: ONLYOFFICE database type
+        description: ONLYOFFICE database type.
         choices:
           - postgres
       onlyoffice_db_user:
         type: str
         required: true
-        description: ONLYOFFICE database user
+        description: ONLYOFFICE database user.
       onlyoffice_docservice_port:
         type: int
         required: true
-        description: ONLYOFFICE docservice port
+        description: ONLYOFFICE docservice port.
       onlyoffice_ds_port:
         type: int
         required: true
-        description: ONLYOFFICE ds port
+        description: ONLYOFFICE ds port.
       onlyoffice_example_port:
         type: int
         required: true
-        description: ONLYOFFICE example port
+        description: ONLYOFFICE example port.
+      onlyoffice_gpg_checksum:
+        type: str
+        required: true
+        description: Internal ONLYOFFICE GPG checksum.
+      onlyoffice_gpg_checksum_raw:
+        type: str
+        required: true
+        description: Internal ONLYOFFICE GPG checksum including sha256 prefix.
+      onlyoffice_gpg_fingerprints:
+        type: list
+        elements: str
+        required: true
+        description: A internal list of the fingerprints of the ONLYOFFICE GPG key.
+      onlyoffice_gpg_fingerprints_query:
+        type: str
+        required: true
+        description: A internal JMESPath query for the ONLYOFFICE GPG fingerprints.
+      onlyoffice_gpg_url:
+        type: str
+        required: true
+        description: A internal URL for the ONLYOFFICE GPG key.
       onlyoffice_jwt_enabled:
         type: bool
         required: true
-        description: ONLYOFFICE enable JWT
+        description: ONLYOFFICE enable JWT.
       onlyoffice_jwt_header:
         type: str
         required: true
-        description: ONLYOFFICE JWT header
+        description: ONLYOFFICE JWT header.
+      onlyoffice_pkg:
+        type: list
+        elements: str
+        required: true
+        description: A list of required .deb packages.
       onlyoffice_rabbitmq_host:
         type: str
         required: true
-        description: ONLYOFFICE RabbitMQ host
+        description: ONLYOFFICE RabbitMQ host.
       onlyoffice_rabbitmq_proto:
         type: str
         required: true
-        description: ONLYOFFICE RabbitMQ protcol
+        description: ONLYOFFICE RabbitMQ protcol.
+      onlyoffice_rabbitmq_pwd:
+        type: str
+        required: false
+        description: RabbitMQ password for ONLYOFFICE, internally set using the RabbitMQ role.
+      onlyoffice_rabbitmq_url:
+        type: str
+        required: true
+        description: ONLYOFFICE RabbitMQ URL.
       onlyoffice_rabbitmq_user:
         type: str
         required: true
-        description: ONLYOFFICE RabbitMQ user
+        description: ONLYOFFICE RabbitMQ username.
       onlyoffice_remove_db:
         type: bool
         required: true
-        description: ONLYOFFICE remove database
+        description: ONLYOFFICE remove database.
       onlyoffice_ssl_certificate:
         type: str
         required: true
-        description: Path to the TLS cert
+        description: Path to the TLS cert.
       onlyoffice_ssl_certificate_key:
         type: str
         required: true
-        description: Path to the TLS key
+        description: Path to the TLS key.
       onlyoffice_webserver:
         type: str
         required: true
-        description: ONLYOFFICE web server
+        description: ONLYOFFICE web server.
+      onlyoffice_validate:
+        type: bool
+        required: true
+        description: Use ansible.builtin.validate_argument_spec module to validate role argument specs.
 ...

@@ -1,4 +1,4 @@
-# Copyright 2019-2023 Chris Croome
+# Copyright 2020-2023 Chris Croome
 #
 # This file is part of the Webarchitects ONLYOFFICE Ansible role.
 #
@@ -8,17 +8,24 @@
 #
 # You should have received a copy of the GNU General Public License along with the Webarchitects ONLYOFFICE Ansible role. If not, see <https://www.gnu.org/licenses/>.
 ---
+# https://docs.ansible.com/ansible/latest/playbook_guide/complex_data_manipulation.html
+onlyofficevarnames: "{{ q('varnames', '^onlyoffice_') | sort }}"
+onlyofficehostvars: "{{ dict(onlyofficevarnames | list | zip(q('vars', *onlyofficevarnames))) }}"
+
+# Variables reset when this role is run, defined here to avouce undefined variable erors
+onlyoffice_rabbitmq_pwd: ""
+
 # ASCII armored GPG public key URL linked from
-# https://keyserver.ubuntu.com/pks/lookup?search=8320CA65CB2DE8E5&fingerprint=on&op=index
-onlyoffice_gpg_url: "https://keyserver.ubuntu.com/pks/lookup?op=get&search=0xe09ca29f6e178040ef22b4098320ca65cb2de8e5"
+# https://helpcenter.onlyoffice.com/installation/docs-community-install-ubuntu.aspx
+onlyoffice_gpg_url: "https://download.onlyoffice.com/GPG-KEY-ONLYOFFICE"
 
 # Get the sha256 checksum using the following command
-# wget -q 'https://keyserver.ubuntu.com/pks/lookup?op=get&search=0xe09ca29f6e178040ef22b4098320ca65cb2de8e5' -O - | grep -v -e '^Comment: .*$' -e '^Version: .*$' | sha256sum - | awk '{ print $1 }' | sed 's/^/"sha256:/' | sed 's/$/"/'
-onlyoffice_gpg_checksum: "sha256:42a69b92dd7c5347e21fde22013eb3f8c7248d087029584bda56324e59e8b243"
+# wget -q 'https://download.onlyoffice.com/GPG-KEY-ONLYOFFICE' -O - | sha256sum - | awk '{ print $1 }' | sed 's/^/"sha256:/' | sed 's/$/"/'
+onlyoffice_gpg_checksum: "sha256:35470c0db19bed875fff786a2d65a62cdb056459a2b3e12fd846be96178388e4"
 onlyoffice_gpg_checksum_raw: "{{ onlyoffice_gpg_checksum | regex_replace('^sha256:') }}"
 
 # Get the GPG fingerprints using the following command
-# wget -q 'https://keyserver.ubuntu.com/pks/lookup?op=get&search=0xe09ca29f6e178040ef22b4098320ca65cb2de8e5' -O - | gpg --dearmor | gpg --with-colons --show-keys - | grep ^fpr | sed 's/^fpr//' | sed 's/://g' | sed 's/^/  - /'
+# wget -q 'https://download.onlyoffice.com/GPG-KEY-ONLYOFFICE' -O - | gpg --dearmor | gpg --with-colons --show-keys - | grep ^fpr | sed 's/^fpr//' | sed 's/://g' | sed 's/^/  - /'
 onlyoffice_gpg_fingerprints:
   - E09CA29F6E178040EF22B4098320CA65CB2DE8E5
   - F0DDC1B50C11AB0938CC41CB3573F47D0C4F207B

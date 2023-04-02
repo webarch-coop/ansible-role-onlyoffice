@@ -3,6 +3,5 @@
 skip_list:
   - command-instead-of-module
   - key-order[task]
-  - schema[meta]
 # vim: syntax=yaml
 ...

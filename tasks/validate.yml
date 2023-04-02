@@ -8,21 +8,24 @@
 #
 # You should have received a copy of the GNU General Public License along with the Webarchitects ONLYOFFICE Ansible role. If not, see <https://www.gnu.org/licenses/>.
 ---
-- name: Restart nginx
-  ansible.builtin.service:
-    name: nginx
-    state: restarted
-  listen: Restart nginx
+- name: Validate role variables
+  block:
 
-- name: Restart docservice
-  ansible.builtin.service:
-    name: ds-docservice
-    state: restarted
-  listen: Restart docservice
+    - name: Debug the hostvars variable names that start with onlyoffice_
+      ansible.builtin.debug:
+        var: onlyofficevarnames
+        verbosity: "{% if ansible_check_mode | bool %}3{% else %}4{% endif %}"
 
-- name: Restart converter
-  ansible.builtin.service:
-    name: ds-converter
-    state: restarted
-  listen: Restart converter
+    - name: Debug the hostvars variable names that start with onlyoffice_
+      ansible.builtin.debug:
+        var: onlyofficehostvars
+        verbosity: "{% if ansible_check_mode | bool %}3{% else %}4{% endif %}"
+
+    - name: Check onlyoffice_ variables using meta/argument_specs.yml
+      ansible.builtin.validate_argument_spec:
+        argument_spec: "{{ (lookup('ansible.builtin.file', 'meta/argument_specs.yml') | from_yaml)['argument_specs']['main']['options'] }}"
+        provided_arguments: "{{ onlyofficehostvars }}"
+
+  tags:
+    - onlyoffice
 ...

@@ -1,4 +1,4 @@
-# Copyright 2019-2023 Chris Croome
+# Copyright 2020-2023 Chris Croome
 #
 # This file is part of the Webarchitects ONLYOFFICE Ansible role.
 #
@@ -12,18 +12,34 @@
   block:
 
     - name: JWT secret present
-      ansible.builtin.shell: pwgen -cns 32 1 > /root/.onlyoffice.jwt.secret
+      ansible.builtin.shell: |-
+        set -e -o pipefail
+        pwgen -cns 32 1 > \
+        /root/.onlyoffice.jwt.secret && \
+        chmod 0600 /root/.onlyoffice.jwt.secret
       args:
         creates: /root/.onlyoffice.jwt.secret
+        executable: "{{ ansible_local.bash.path }}"
+      # no_log: true
 
-    - name: Slurp a base64 encoded version of the JWT secret
-      ansible.builtin.slurp:
-        src: /root/.onlyoffice.jwt.secret
-      register: onlyoffice_jwt_secret_b64encoded
+    - name: Check if the root JWT secret file exists
+      ansible.builtin.stat:
+        path: /root/.onlyoffice.jwt.secret
+      register: onlyoffice_jwt_secret_file_check
 
-    - name: Decode the base64 encoded version of the file and set a variable
-      ansible.builtin.set_fact:
-        onlyoffice_jwt_secret: "{{ onlyoffice_jwt_secret_b64encoded['content'] | b64decode | trim }}"
+    - name: Slurp and register a fact for the JWT secret
+      block:
+
+        - name: Slurp a base64 encoded version of the JWT secret
+          ansible.builtin.slurp:
+            src: /root/.onlyoffice.jwt.secret
+          register: onlyoffice_jwt_secret_b64encoded
+
+        - name: Decode the base64 encoded version of the file and set a variable
+          ansible.builtin.set_fact:
+            onlyoffice_jwt_secret: "{{ onlyoffice_jwt_secret_b64encoded['content'] | b64decode | trim }}"
+
+      when: onlyoffice_jwt_secret_file_check.stat.exists | bool
 
   tags:
     - onlyoffice

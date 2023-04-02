@@ -1,4 +1,4 @@
-# Copyright 2019-2023 Chris Croome
+# Copyright 2020-2023 Chris Croome
 #
 # This file is part of the Webarchitects ONLYOFFICE Ansible role.
 #
@@ -13,7 +13,7 @@
   block:
 
     - name: Read the debconf for onlyoffice-documentserver
-      ansible.builtin.shell: |
+      ansible.builtin.shell: |-
         set -e -o pipefail
         debconf-show onlyoffice-documentserver | sed 's/^[*]/ /' | sed 's/onlyoffice\///'
       args:
@@ -31,21 +31,15 @@
         var: onlyoffice_debconf
         verbosity: 2
 
-    - name: Debconf cluster-mode
-      ansible.builtin.debconf:
-        name: onlyoffice
-        question: onlyoffice/cluster-mode
-        value: "{{ onlyoffice_cluster_mode }}"
-        vtype: boolean
-      when: onlyoffice_debconf['cluster-mode'] | bool != onlyoffice_cluster_mode | bool
-
     - name: Debconf db-host
       ansible.builtin.debconf:
         name: onlyoffice
         question: onlyoffice/db-host
         value: "{{ onlyoffice_db_host }}"
         vtype: text
-      when: onlyoffice_debconf['db-host'] != onlyoffice_db_host
+      when: >-
+        ( onlyoffice_debconf == {} ) or
+        ( onlyoffice_debconf['db-host'] != onlyoffice_db_host )
 
     - name: Debconf db-name
       ansible.builtin.debconf:
@@ -53,7 +47,9 @@
         question: onlyoffice/db-name
         value: "{{ onlyoffice_db_name }}"
         vtype: text
-      when: onlyoffice_debconf['db-name'] != onlyoffice_db_name
+      when: >-
+        ( onlyoffice_debconf == {} ) or
+        ( onlyoffice_debconf['db-name'] != onlyoffice_db_name )
 
     - name: Debconf db-port
       ansible.builtin.debconf:
@@ -61,7 +57,9 @@
         question: onlyoffice/db-port
         value: "{{ onlyoffice_db_port }}"
         vtype: text
-      when: onlyoffice_debconf['db-port'] | int != onlyoffice_db_port | int
+      when: >-
+        ( onlyoffice_debconf == {} ) or
+        ( onlyoffice_debconf['db-port'] | int != onlyoffice_db_port | int )
 
     - name: Debconf db-pwd
       ansible.builtin.debconf:
@@ -78,7 +76,9 @@
         question: onlyoffice/db-type
         value: "{{ onlyoffice_db_type }}"
         vtype: text
-      when: onlyoffice_debconf['db-type'] != onlyoffice_db_type
+      when: >-
+        ( onlyoffice_debconf == {} ) or
+        ( onlyoffice_debconf['db-type'] != onlyoffice_db_type )
 
     - name: Debconf db-user
       ansible.builtin.debconf:
@@ -86,7 +86,9 @@
         question: onlyoffice/db-user
         value: "{{ onlyoffice_db_user }}"
         vtype: text
-      when: onlyoffice_debconf['db-user'] != onlyoffice_db_user
+      when: >-
+        ( onlyoffice_debconf == {} ) or
+        ( onlyoffice_debconf['db-user'] != onlyoffice_db_user )
 
     - name: Debconf docservice-port
       ansible.builtin.debconf:
@@ -94,7 +96,9 @@
         question: onlyoffice/docservice-port
         value: "{{ onlyoffice_docservice_port }}"
         vtype: text
-      when: onlyoffice_debconf['docservice-port'] | int != onlyoffice_docservice_port | int
+      when: >-
+        ( onlyoffice_debconf == {} ) or
+        ( onlyoffice_debconf['docservice-port'] | int != onlyoffice_docservice_port | int )
 
     - name: Debconf ds-port
       ansible.builtin.debconf:
@@ -102,7 +106,9 @@
         question: onlyoffice/ds-port
         value: "{{ onlyoffice_ds_port }}"
         vtype: text
-      when: onlyoffice_debconf['ds-port'] | int != onlyoffice_ds_port | int
+      when: >-
+        ( onlyoffice_debconf == {} ) or
+        ( onlyoffice_debconf['ds-port'] | int != onlyoffice_ds_port | int )
 
     - name: Debconf example-port
       ansible.builtin.debconf:
@@ -110,15 +116,19 @@
         question: onlyoffice/example-port
         value: "{{ onlyoffice_example_port }}"
         vtype: text
-      when: onlyoffice_debconf['example-port'] | int != onlyoffice_example_port | int
+      when: >-
+        ( onlyoffice_debconf == {} ) or
+        ( onlyoffice_debconf['example-port'] | int != onlyoffice_example_port | int )
 
     - name: Debconf jwt-enabled
       ansible.builtin.debconf:
         name: onlyoffice
         question: onlyoffice/jwt-enabled
-        value: "{{ onlyoffice_jwt_enabled }}"
+        value: "{{ onlyoffice_jwt_enabled | lower }}"
         vtype: boolean
-      when: onlyoffice_debconf['jwt-enabled'] | bool != onlyoffice_jwt_enabled | bool
+      when: >-
+        ( onlyoffice_debconf == {} ) or
+        ( onlyoffice_debconf['jwt-enabled'] | bool != onlyoffice_jwt_enabled | bool )
 
     - name: Debconf jwt-header
       ansible.builtin.debconf:
@@ -126,7 +136,9 @@
         question: onlyoffice/jwt-header
         value: "{{ onlyoffice_jwt_header }}"
         vtype: text
-      when: onlyoffice_debconf['jwt-header'] != onlyoffice_jwt_header
+      when: >-
+        ( onlyoffice_debconf == {} ) or
+        ( onlyoffice_debconf['jwt-header'] != onlyoffice_jwt_header )
 
     - name: Debconf jwt-secret
       ansible.builtin.debconf:
@@ -135,6 +147,7 @@
         value: "{{ onlyoffice_jwt_secret }}"
         vtype: password
       changed_when: false
+      when: onlyoffice_jwt_secret is defined
       no_log: true
 
     - name: Debconf rabbitmq-host
@@ -143,7 +156,9 @@
         question: onlyoffice/rabbitmq-host
         value: "{{ onlyoffice_rabbitmq_host }}"
         vtype: text
-      when: onlyoffice_debconf['rabbitmq-host'] != onlyoffice_rabbitmq_host
+      when: >-
+        ( onlyoffice_debconf == {} ) or
+        ( onlyoffice_debconf['rabbitmq-host'] != onlyoffice_rabbitmq_host )
 
     - name: Debconf rabbitmq-proto
       ansible.builtin.debconf:
@@ -151,7 +166,9 @@
         question: onlyoffice/rabbitmq-proto
         value: "{{ onlyoffice_rabbitmq_proto }}"
         vtype: text
-      when: onlyoffice_debconf['rabbitmq-proto'] != onlyoffice_rabbitmq_proto
+      when: >-
+        ( onlyoffice_debconf == {} ) or
+        ( onlyoffice_debconf['rabbitmq-proto'] != onlyoffice_rabbitmq_proto )
 
     - name: Debconf rabbitmq-pwd
       ansible.builtin.debconf:
@@ -160,6 +177,7 @@
         value: "{{ onlyoffice_rabbitmq_pwd }}"
         vtype: password
       changed_when: false
+      when: onlyoffice_jwt_secret is defined
       no_log: true
 
     - name: Debconf rabbitmq-user
@@ -168,15 +186,19 @@
         question: onlyoffice/rabbitmq-user
         value: "{{ onlyoffice_rabbitmq_user | default('guest') }}"
         vtype: text
-      when: onlyoffice_debconf['rabbitmq-user'] != onlyoffice_rabbitmq_user
+      when: >-
+        ( onlyoffice_debconf == {} ) or
+        ( onlyoffice_debconf['rabbitmq-user'] != onlyoffice_rabbitmq_user )
 
     - name: Debconf remove-db
       ansible.builtin.debconf:
         name: onlyoffice
         question: onlyoffice/remove-db
-        value: "{{ onlyoffice_remove_db | default('False') }}"
+        value: "{{ onlyoffice_remove_db | default('false') | lower }}"
         vtype: boolean
-      when: onlyoffice_debconf['remove-db'] | bool != onlyoffice_remove_db | bool
+      when: >-
+        ( onlyoffice_debconf == {} ) or
+        ( onlyoffice_debconf['remove-db'] | bool != onlyoffice_remove_db | bool )
 
   tags:
     - onlyoffice

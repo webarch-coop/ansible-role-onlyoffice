@@ -1,4 +1,4 @@
-# Copyright 2019-2023 Chris Croome
+# Copyright 2020-2023 Chris Croome
 #
 # This file is part of the Webarchitects ONLYOFFICE Ansible role.
 #
@@ -31,4 +31,5 @@ onlyoffice_remove_db: false
 onlyoffice_ssl_certificate: "/etc/ssl/le/{{ inventory_hostname }}.fullchain.pem"
 onlyoffice_ssl_certificate_key: "/etc/ssl/le/{{ inventory_hostname }}.key.pem"
 onlyoffice_webserver: nginx
+onlyoffice_validate: true
 ...

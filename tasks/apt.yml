@@ -1,4 +1,4 @@
-# Copyright 2019-2023 Chris Croome
+# Copyright 2020-2023 Chris Croome
 #
 # This file is part of the Webarchitects ONLYOFFICE Ansible role.
 #
@@ -67,20 +67,6 @@
             group: root
           changed_when: false
 
-        - name: Remove the Comment line from the ONLYOFFICE gpg asc key
-          ansible.builtin.lineinfile:
-            path: /root/onlyoffice.asc
-            regex: '^Comment: .*$'
-            state: absent
-          changed_when: false
-
-        - name: Remove the Version line from the ONLYOFFICE gpg asc key
-          ansible.builtin.lineinfile:
-            path: /root/onlyoffice.asc
-            regex: '^Version: .*$'
-            state: absent
-          changed_when: false
-
         - name: Stat ONLYOFFICE gpg ascii armored file
           ansible.builtin.stat:
             path: /root/onlyoffice.asc
@@ -93,7 +79,7 @@
               - onlyoffice_asc_file.stat.checksum == onlyoffice_gpg_checksum_raw
 
         - name: ONLYOFFICE gpg key dearmored
-          ansible.builtin.shell: |
+          ansible.builtin.shell: |-
             set -e -o pipefail
             gpg --dearmor < /root/onlyoffice.asc > /etc/apt/keyrings/onlyoffice.gpg
           args:
