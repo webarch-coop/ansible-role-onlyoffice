@@ -45,7 +45,20 @@
     - name: Debug onlyoffice_debconf_existing
       ansible.builtin.debug:
         var: onlyoffice_dcnf_current
-        verbosity: 1
+        verbosity: 3
+
+    - name: Create a list of the existing debconf values
+      ansible.builtin.set_fact:
+        onlyoffice_dcnf_existing: "{{ onlyoffice_dcnf_current.current | dict2items }}"
+      when:
+        - onlyoffice_dcnf_current.current is defined
+        - onlyoffice_dcnf_current.current != {}
+
+    - name: Debug onlyoffice_dcnf_existing
+      ansible.builtin.debug:
+        var: onlyoffice_dcnf_existing
+        verbosity: 2
+      when: onlyoffice_dcnf_existing is defined
 
   tags:
     - onlyoffice

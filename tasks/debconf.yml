@@ -11,34 +11,23 @@
 - name: Configure a .deb package
   block:
 
-    - name: Debug onlyoffice_dcnf_current
-      ansible.builtin.debug:
-        var: onlyoffice_dcnf_current.curent
-        verbosity: 1
-      when: onlyoffice_dcnf_current.curent is defined
-
-    - name: Check existing value when onlyoffice_dcnf_current.current != {}
+    - name: Check existing value when onlyoffice_dcnf_existing is defined
       block:
 
-        - name: Set a fact for a JMESPath query
+        - name: "Set a fact for an existing debconf value for the question {{ onlyoffice_dcnf.question }}"
           ansible.builtin.set_fact:
-            onlyoffice_jpq_dcnf_question: "current.'{{ onlyoffice_dcnf.question }}'"
-
-        - name: Debug onlyoffice_jpq_dcnf_question
-          ansible.builtin.debug:
-            var: onlyoffice_jpq_dcnf_question
-
-        - name: Set a fact for an existing debconf value
-          ansible.builtin.set_fact:
-            onlyoffice_dcnf_current_value: "{{ onlyoffice_dcnf_current | community.general.json_query(onlyoffice_jpq_dcnf_question) }}"
+            onlyoffice_dcnf_current_value: "{{ onlyoffice_dcnf_existing | community.general.json_query(onlyoffice_jpq_dcnf_question) }}"
+          vars:
+            onlyoffice_jpq_dcnf_question: "[?key=='{{ onlyoffice_dcnf.question }}'].value|[0]"
 
         - name: Debug onlyoffice_dcnf_current_value
           ansible.builtin.debug:
             var: onlyoffice_dcnf_current_value
+            verbosity: 2
 
       when:
-        - onlyoffice_dcnf_current.current is defined
-        - onlyoffice_dcnf_current.current != {}
+        - onlyoffice_dcnf_existing is defined
+        - onlyoffice_dcnf.vtype != "password"
 
     - name: "Set debconf value for {{ onlyoffice_dcnf.name }}"
       ansible.builtin.debconf:
@@ -46,10 +35,11 @@
         question: "{{ onlyoffice_dcnf.question }}"
         value: "{{ onlyoffice_dcnf.value }}"
         vtype: "{{ onlyoffice_dcnf.vtype }}"
+      no_log: "{% if onlyoffice_dcnf.vtype == 'password' %}true{% else %}false{% endif %}"
       when: >-
-        ( onlyoffice_dcnf_current.current is not defined ) or
-        ( ( onlyoffice_dcnf_current.current is defined ) and ( onlyoffice_dcnf_current.current == {} ) ) or
-        ( ( onlyoffice_dcnf_current_value is defined ) and ( onlyoffice_dcnf.value != onlyoffice_dcnf_current_value ) )
+        ( onlyoffice_dcnf_existing is not defined ) or
+        ( ( office_dcnf_current_value is defined ) and
+        ( onlyoffice_dcnf.value != onlyoffice_dcnf_current_value ) )
 
   tags:
     - onlyoffice
