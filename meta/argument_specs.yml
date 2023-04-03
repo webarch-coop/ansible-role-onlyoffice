@@ -18,44 +18,52 @@ argument_specs:
         type: bool
         required: true
         description: Run the tasks in this role.
-      onlyoffice_cluster_mode:
-        type: bool
+      onlyoffice_debconf:
+        type: list
+        elements: dict
         required: true
-        description: ONLYOFFICE cluster mode.
-      onlyoffice_db_host:
+        description: ONLYOFFICE debconf settings.
+        options:
+          name:
+            type: str
+            required: true
+            description: Name of package to configure.
+          question:
+            type: str
+            required: true
+            description: A debconf configuration setting.
+          value:
+            type: str
+            required: true
+            description: Value to set the configuration to.
+          vtype:
+            type: str
+            required: true
+            description: The type of the value supplied.
+            choices:
+              - boolean
+              - error
+              - multiselect
+              - note
+              - password
+              - seen
+              - select
+              - string
+              - text
+              - title
+      onlyoffice_db_pwd:
         type: str
         required: true
-        description: ONLYOFFICE database host.
-      onlyoffice_db_name:
-        type: str
-        required: true
-        description: ONLYOFFICE database name.
-      onlyoffice_db_port:
-        type: int
-        required: true
-        description: ONLYOFFICE database port number.
-      onlyoffice_db_type:
-        type: str
-        required: true
-        description: ONLYOFFICE database type.
-        choices:
-          - postgres
-      onlyoffice_db_user:
-        type: str
-        required: true
-        description: ONLYOFFICE database user.
-      onlyoffice_docservice_port:
-        type: int
-        required: true
-        description: ONLYOFFICE docservice port.
-      onlyoffice_ds_port:
-        type: int
-        required: true
-        description: ONLYOFFICE ds port.
-      onlyoffice_example_port:
-        type: int
-        required: true
-        description: ONLYOFFICE example port.
+        description: ONLYOFFICE database password.
+      onlyoffice_dcnf:
+        type: dict
+        required: false
+        description: Internal debconf loop variable.
+        options:
+          value:
+            type: str
+            required: true
+            description: Value for the debconf question.
       onlyoffice_gpg_checksum:
         type: str
         required: true
@@ -77,43 +85,31 @@ argument_specs:
         type: str
         required: true
         description: A internal URL for the ONLYOFFICE GPG key.
-      onlyoffice_jwt_enabled:
-        type: bool
-        required: true
-        description: ONLYOFFICE enable JWT.
-      onlyoffice_jwt_header:
+      onlyoffice_jpq_db_name:
         type: str
         required: true
-        description: ONLYOFFICE JWT header.
+        description: An internal JMESPath query.
+      onlyoffice_jpq_db_user:
+        type: str
+        required: true
+        description: An internal JMESPath query.
+      onlyoffice_jpq_rabbitmq_user:
+        type: str
+        required: true
+        description: An internal JMESPath query.
+      onlyoffice_jwt_secret:
+        type: str
+        required: true
+        description: Internal ONLYOFFICE JWT secret.
       onlyoffice_pkg:
         type: list
         elements: str
         required: true
         description: A list of required .deb packages.
-      onlyoffice_rabbitmq_host:
-        type: str
-        required: true
-        description: ONLYOFFICE RabbitMQ host.
-      onlyoffice_rabbitmq_proto:
-        type: str
-        required: true
-        description: ONLYOFFICE RabbitMQ protcol.
       onlyoffice_rabbitmq_pwd:
         type: str
         required: false
         description: RabbitMQ password for ONLYOFFICE, internally set using the RabbitMQ role.
-      onlyoffice_rabbitmq_url:
-        type: str
-        required: true
-        description: ONLYOFFICE RabbitMQ URL.
-      onlyoffice_rabbitmq_user:
-        type: str
-        required: true
-        description: ONLYOFFICE RabbitMQ username.
-      onlyoffice_remove_db:
-        type: bool
-        required: true
-        description: ONLYOFFICE remove database.
       onlyoffice_ssl_certificate:
         type: str
         required: true

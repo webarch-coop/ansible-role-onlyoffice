@@ -8,6 +8,13 @@ The ONLYOFFICE code is [available on GitHub under the AGPL](https://github.com/O
 
 There is a [development repo available here](https://git.coop/webarch/nextcloud-server) that builds a ONLYOFFICE server using this role.
 
+
+## References
+
+* [Installing ONLYOFFICE Docs Community Edition for Debian, Ubuntu, and derivatives](https://helpcenter.onlyoffice.com/installation/docs-community-install-ubuntu.aspx)
+* [Nextcloud ONLYOFFICE integration app](https://api.onlyoffice.com/editors/nextcloud)
+* [ONLYOFFICE Api Documentation - Signature](https://api.onlyoffice.com/editors/signature/)
+
 ## Upgrading from Debian Buster to Bullseye
 
 After upgrading the Debian PostgreSQL needs to be upgraded:

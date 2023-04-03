@@ -9,25 +9,79 @@
 # You should have received a copy of the GNU General Public License along with the Webarchitects ONLYOFFICE Ansible role. If not, see <https://www.gnu.org/licenses/>.
 ---
 onlyoffice: true
-onlyoffice_cluster_mode: false
-onlyoffice_db_host: localhost
-onlyoffice_db_name: onlyoffice
-onlyoffice_db_port: 5432
-# onlyoffice_db_pwd: (password omitted)
-onlyoffice_db_type: postgres
-onlyoffice_db_user: onlyoffice
-onlyoffice_docservice_port: 8000
-onlyoffice_ds_port: 80
-onlyoffice_example_port: 3000
-onlyoffice_jwt_enabled: true
-onlyoffice_jwt_header: Authorization
-# onlyoffice_jwt_secret: secret
-onlyoffice_rabbitmq_host: localhost
-onlyoffice_rabbitmq_proto: amqp
-# onlyoffice_rabbitmq_pwd:
-onlyoffice_rabbitmq_user: onlyoffice
-onlyoffice_remove_db: false
-# https://helpcenter.onlyoffice.com/server/linux/document/switch-to-https.aspx
+onlyoffice_debconf:
+  - name: onlyoffice-documentserver
+    question: onlyoffice/cluster-mode
+    value: "false"
+    vtype: boolean
+  - name: onlyoffice-documentserver
+    question: onlyoffice/db-host
+    value: localhost
+    vtype: string
+  - name: onlyoffice-documentserver
+    question: onlyoffice/db-name
+    value: onlyoffice
+    vtype: string
+  - name: onlyoffice-documentserver
+    question: onlyoffice/db-port
+    value: "5432"
+    vtype: string
+  - name: onlyoffice-documentserver
+    question: onlyoffice/db-pwd
+    value: "{{ onlyoffice_db_pwd }}"
+    vtype: password
+  - name: onlyoffice-documentserver
+    question: onlyoffice/db-type
+    value: postgres
+    vtype: string
+  - name: onlyoffice-documentserver
+    question: onlyoffice/db-user
+    value: onlyoffice
+    vtype: string
+  - name: onlyoffice-documentserver
+    question: onlyoffice/docservice-port
+    value: "8000"
+    vtype: string
+  - name: onlyoffice-documentserver
+    question: onlyoffice/ds-port
+    value: "80"
+    vtype: string
+  - name: onlyoffice-documentserver
+    question: onlyoffice/example-port
+    value: "3000"
+    vtype: string
+  - name: onlyoffice-documentserver
+    question: onlyoffice/jwt-enabled
+    value: "true"
+    vtype: boolean
+  - name: onlyoffice-documentserver
+    question: onlyoffice/jwt-header
+    value: Authorization
+    vtype: string
+  - name: onlyoffice-documentserver
+    question: jwt-secret
+    value: "{{ onlyoffice_jwt_secret }}"
+    vtype: string
+  - name: onlyoffice-documentserver
+    question: onlyoffice/rabbitmq-host
+    value: localhost
+    vtype: string
+  - name: onlyoffice-documentserver
+    question: onlyoffice/rabbitmq-proto
+    value: amqp
+    vtype: string
+  - name: onlyoffice-documentserver
+    question: onlyoffice/rabbitmq-pwd
+    value: "{{ onlyoffice_rabbitmq_pwd }}"
+    vtype: password
+  - name: onlyoffice-documentserver
+    question: onlyoffice/rabbitmq-user
+    value: onlyoffice
+    vtype: string
+  - name: onlyoffice-documentserver
+    question: onlyoffice/remove-db
+    value: "false"
+    vtype: boolean
 onlyoffice_ssl_certificate: "/etc/ssl/le/{{ inventory_hostname }}.fullchain.pem"
 onlyoffice_ssl_certificate_key: "/etc/ssl/le/{{ inventory_hostname }}.key.pem"
 onlyoffice_webserver: nginx

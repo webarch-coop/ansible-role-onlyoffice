@@ -12,8 +12,19 @@
 onlyofficevarnames: "{{ q('varnames', '^onlyoffice_') | sort }}"
 onlyofficehostvars: "{{ dict(onlyofficevarnames | list | zip(q('vars', *onlyofficevarnames))) }}"
 
-# Variables reset when this role is run, defined here to avouce undefined variable erors
+# Ansible JMESPath queries
+# https://docs.ansible.com/ansible/latest/collections/community/general/docsite/filter_guide_selecting_json_data.html
+onlyoffice_jpq_db_name: "[?question=='onlyoffice/db-name'].value|[0]"
+onlyoffice_jpq_db_user: "[?question=='onlyoffice/db-user'].value|[0]"
+onlyoffice_jpq_rabbitmq_user: "[?question=='onlyoffice/rabbitmq-user'].value|[0]"
+
+# These variables are reset when this role is run, they are defined here to avoid undefined variable erors
+onlyoffice_db_pwd: ""
+onlyoffice_jwt_secret: ""
 onlyoffice_rabbitmq_pwd: ""
+
+# URL for RabbitMQ
+# onlyoffice_rabbitmq_url: "{{ onlyoffice_rabbitmq_proto }}://{{ onlyoffice_rabbitmq_user }}:{{ onlyoffice_rabbitmq_pwd }}@{{ onlyoffice_rabbitmq_host }}"
 
 # ASCII armored GPG public key URL linked from
 # https://helpcenter.onlyoffice.com/installation/docs-community-install-ubuntu.aspx
@@ -49,7 +60,4 @@ onlyoffice_pkg:
   - onlyoffice-documentserver-enterprise
   - onlyoffice-documentserver-ie
   - onlyoffice-xmppserver
-
-# URL for RabbitMQ
-onlyoffice_rabbitmq_url: "{{ onlyoffice_rabbitmq_proto }}://{{ onlyoffice_rabbitmq_user }}:{{ onlyoffice_rabbitmq_pwd }}@{{ onlyoffice_rabbitmq_host }}"
 ...

@@ -16,23 +16,36 @@
         name: postgresql
         tasks_from: pgpass_read.yml
       vars:
-        postgresql_db: "{{ onlyoffice_db_name }}"
-        postgresql_user: "{{ onlyoffice_db_user }}"
+        postgresql_db: "{{ onlyoffice_debconf | community.general.json_query(onlyoffice_jpq_db_name) }}"
+        postgresql_user: "{{ onlyoffice_debconf | community.general.json_query(onlyoffice_jpq_db_user) }}"
+
+    - name: Set a fact for the PostgreSQL password
+      ansible.builtin.set_fact:
+        onlyoffice_db_pwd: "{{ postgresql_password }}"
 
     - name: Include RabbitMQ role to load ONLYOFFICE RabbitMQ user account password
       ansible.builtin.include_role:
         name: rabbitmq
         tasks_from: password.yml
       vars:
-        rabbitmq_username: "{{ onlyoffice_rabbitmq_user }}"
+        rabbitmq_username: "{{ onlyoffice_debconf | community.general.json_query(onlyoffice_jpq_rabbitmq_user) }}"
+
+    - name: Set a fact for the RabbitMQ password
+      ansible.builtin.set_fact:
+        onlyoffice_rabbitmq_pwd: "{{ rabbitmq_password }}"
 
     - name: Include JSON Web Token tasks
       ansible.builtin.include_tasks: jwt.yml
 
-    - name: Set facts for ONLYOFFICE variables
-      ansible.builtin.set_fact:
-        onlyoffice_db_pwd: "{{ postgresql_password }}"
-        onlyoffice_rabbitmq_pwd: "{{ rabbitmq_password }}"
+    - name: Get existing debconf values for onlyoffice-documentserver
+      ansible.builtin.debconf:
+        name: onlyoffice-documentserver
+      register: onlyoffice_dcnf_current
+
+    - name: Debug onlyoffice_debconf_existing
+      ansible.builtin.debug:
+        var: onlyoffice_dcnf_current
+        verbosity: 1
 
   tags:
     - onlyoffice

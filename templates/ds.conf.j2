@@ -4,7 +4,7 @@ include /etc/nginx/includes/http-common.conf;
 
 ## Normal HTTP host
 server {
-{% if ansible_default_ipv4.address is defined %}  
+{% if ansible_default_ipv4.address is defined %}
   listen {{ ansible_default_ipv4.address }}:80 default_server;
 {% else %}
   listen 0.0.0.0:80 default_server;

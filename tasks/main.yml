@@ -23,6 +23,8 @@
         ( ansible_local.dpkg.arch is not defined ) or
         ( ansible_local.gpg.version is not defined ) or
         ( ansible_local.bash.path is not defined )
+      tags:
+        - onlyoffice_apt
 
     - name: Include ONLYOFFICE apt repo config and install fonts and other package tasks
       ansible.builtin.include_tasks: apt.yml
@@ -32,15 +34,17 @@
 
     - name: Include debconf ONLYOFFICE tasks
       ansible.builtin.include_tasks: debconf.yml
+      loop: "{{ onlyoffice_debconf }}"
+      loop_control:
+        loop_var: onlyoffice_dcnf
+        label: "{{ onlyoffice_dcnf.question }}"
 
-    - name: Include install ONLYOFFICE tasks
-      ansible.builtin.include_tasks: install.yml
+    # - name: Include install ONLYOFFICE tasks
+    #   ansible.builtin.include_tasks: install.yml
 
-    - name: Include Nginx tasks
-      ansible.builtin.include_tasks: nginx.yml
-      when: (onlyoffice_webserver is defined) and (onlyoffice_webserver == "nginx")
-      tags:
-        - nginx
+    # - name: Include Nginx tasks
+    #   ansible.builtin.include_tasks: nginx.yml
+    #   when: (onlyoffice_webserver is defined) and (onlyoffice_webserver == "nginx")
 
   when: onlyoffice | bool
   tags:

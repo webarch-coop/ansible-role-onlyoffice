@@ -8,197 +8,48 @@
 #
 # You should have received a copy of the GNU General Public License along with the Webarchitects ONLYOFFICE Ansible role. If not, see <https://www.gnu.org/licenses/>.
 ---
-# debconf-show onlyoffice-documentserver
-- name: Set Debconf variables for ONLYOFFICE
+- name: Configure a .deb package
   block:
 
-    - name: Read the debconf for onlyoffice-documentserver
-      ansible.builtin.shell: |-
-        set -e -o pipefail
-        debconf-show onlyoffice-documentserver | sed 's/^[*]/ /' | sed 's/onlyoffice\///'
-      args:
-        executable: "{{ ansible_local.bash.path }}"
-      changed_when: false
-      check_mode: false
-      register: onlyoffice_debconf_show
-
-    - name: Set a fact for the debconf for onlyoffice-documentserver
-      ansible.builtin.set_fact:
-        onlyoffice_debconf: "{{ onlyoffice_debconf_show.stdout | string | community.general.jc('kv') }}"
-
-    - name: Debug the debconf settings for onlyoffice-documentserver
+    - name: Debug onlyoffice_dcnf_current
       ansible.builtin.debug:
-        var: onlyoffice_debconf
-        verbosity: 2
+        var: onlyoffice_dcnf_current.curent
+        verbosity: 1
+      when: onlyoffice_dcnf_current.curent is defined
 
-    - name: Debconf db-host
+    - name: Check existing value when onlyoffice_dcnf_current.current != {}
+      block:
+
+        - name: Set a fact for a JMESPath query
+          ansible.builtin.set_fact:
+            onlyoffice_jpq_dcnf_question: "current.'{{ onlyoffice_dcnf.question }}'"
+
+        - name: Debug onlyoffice_jpq_dcnf_question
+          ansible.builtin.debug:
+            var: onlyoffice_jpq_dcnf_question
+
+        - name: Set a fact for an existing debconf value
+          ansible.builtin.set_fact:
+            onlyoffice_dcnf_current_value: "{{ onlyoffice_dcnf_current | community.general.json_query(onlyoffice_jpq_dcnf_question) }}"
+
+        - name: Debug onlyoffice_dcnf_current_value
+          ansible.builtin.debug:
+            var: onlyoffice_dcnf_current_value
+
+      when:
+        - onlyoffice_dcnf_current.current is defined
+        - onlyoffice_dcnf_current.current != {}
+
+    - name: "Set debconf value for {{ onlyoffice_dcnf.name }}"
       ansible.builtin.debconf:
-        name: onlyoffice
-        question: onlyoffice/db-host
-        value: "{{ onlyoffice_db_host }}"
-        vtype: text
+        name: "{{ onlyoffice_dcnf.name }}"
+        question: "{{ onlyoffice_dcnf.question }}"
+        value: "{{ onlyoffice_dcnf.value }}"
+        vtype: "{{ onlyoffice_dcnf.vtype }}"
       when: >-
-        ( onlyoffice_debconf == {} ) or
-        ( onlyoffice_debconf['db-host'] != onlyoffice_db_host )
-
-    - name: Debconf db-name
-      ansible.builtin.debconf:
-        name: onlyoffice
-        question: onlyoffice/db-name
-        value: "{{ onlyoffice_db_name }}"
-        vtype: text
-      when: >-
-        ( onlyoffice_debconf == {} ) or
-        ( onlyoffice_debconf['db-name'] != onlyoffice_db_name )
-
-    - name: Debconf db-port
-      ansible.builtin.debconf:
-        name: onlyoffice
-        question: onlyoffice/db-port
-        value: "{{ onlyoffice_db_port }}"
-        vtype: text
-      when: >-
-        ( onlyoffice_debconf == {} ) or
-        ( onlyoffice_debconf['db-port'] | int != onlyoffice_db_port | int )
-
-    - name: Debconf db-pwd
-      ansible.builtin.debconf:
-        name: onlyoffice
-        question: onlyoffice/db-pwd
-        value: "{{ onlyoffice_db_pwd }}"
-        vtype: password
-      changed_when: false
-      no_log: true
-
-    - name: Debconf db-type
-      ansible.builtin.debconf:
-        name: onlyoffice
-        question: onlyoffice/db-type
-        value: "{{ onlyoffice_db_type }}"
-        vtype: text
-      when: >-
-        ( onlyoffice_debconf == {} ) or
-        ( onlyoffice_debconf['db-type'] != onlyoffice_db_type )
-
-    - name: Debconf db-user
-      ansible.builtin.debconf:
-        name: onlyoffice
-        question: onlyoffice/db-user
-        value: "{{ onlyoffice_db_user }}"
-        vtype: text
-      when: >-
-        ( onlyoffice_debconf == {} ) or
-        ( onlyoffice_debconf['db-user'] != onlyoffice_db_user )
-
-    - name: Debconf docservice-port
-      ansible.builtin.debconf:
-        name: onlyoffice
-        question: onlyoffice/docservice-port
-        value: "{{ onlyoffice_docservice_port }}"
-        vtype: text
-      when: >-
-        ( onlyoffice_debconf == {} ) or
-        ( onlyoffice_debconf['docservice-port'] | int != onlyoffice_docservice_port | int )
-
-    - name: Debconf ds-port
-      ansible.builtin.debconf:
-        name: onlyoffice
-        question: onlyoffice/ds-port
-        value: "{{ onlyoffice_ds_port }}"
-        vtype: text
-      when: >-
-        ( onlyoffice_debconf == {} ) or
-        ( onlyoffice_debconf['ds-port'] | int != onlyoffice_ds_port | int )
-
-    - name: Debconf example-port
-      ansible.builtin.debconf:
-        name: onlyoffice
-        question: onlyoffice/example-port
-        value: "{{ onlyoffice_example_port }}"
-        vtype: text
-      when: >-
-        ( onlyoffice_debconf == {} ) or
-        ( onlyoffice_debconf['example-port'] | int != onlyoffice_example_port | int )
-
-    - name: Debconf jwt-enabled
-      ansible.builtin.debconf:
-        name: onlyoffice
-        question: onlyoffice/jwt-enabled
-        value: "{{ onlyoffice_jwt_enabled | lower }}"
-        vtype: boolean
-      when: >-
-        ( onlyoffice_debconf == {} ) or
-        ( onlyoffice_debconf['jwt-enabled'] | bool != onlyoffice_jwt_enabled | bool )
-
-    - name: Debconf jwt-header
-      ansible.builtin.debconf:
-        name: onlyoffice
-        question: onlyoffice/jwt-header
-        value: "{{ onlyoffice_jwt_header }}"
-        vtype: text
-      when: >-
-        ( onlyoffice_debconf == {} ) or
-        ( onlyoffice_debconf['jwt-header'] != onlyoffice_jwt_header )
-
-    - name: Debconf jwt-secret
-      ansible.builtin.debconf:
-        name: onlyoffice
-        question: onlyoffice/jwt-secret
-        value: "{{ onlyoffice_jwt_secret }}"
-        vtype: password
-      changed_when: false
-      when: onlyoffice_jwt_secret is defined
-      no_log: true
-
-    - name: Debconf rabbitmq-host
-      ansible.builtin.debconf:
-        name: onlyoffice
-        question: onlyoffice/rabbitmq-host
-        value: "{{ onlyoffice_rabbitmq_host }}"
-        vtype: text
-      when: >-
-        ( onlyoffice_debconf == {} ) or
-        ( onlyoffice_debconf['rabbitmq-host'] != onlyoffice_rabbitmq_host )
-
-    - name: Debconf rabbitmq-proto
-      ansible.builtin.debconf:
-        name: onlyoffice
-        question: onlyoffice/rabbitmq-proto
-        value: "{{ onlyoffice_rabbitmq_proto }}"
-        vtype: text
-      when: >-
-        ( onlyoffice_debconf == {} ) or
-        ( onlyoffice_debconf['rabbitmq-proto'] != onlyoffice_rabbitmq_proto )
-
-    - name: Debconf rabbitmq-pwd
-      ansible.builtin.debconf:
-        name: onlyoffice
-        question: onlyoffice/rabbitmq-pwd
-        value: "{{ onlyoffice_rabbitmq_pwd }}"
-        vtype: password
-      changed_when: false
-      when: onlyoffice_jwt_secret is defined
-      no_log: true
-
-    - name: Debconf rabbitmq-user
-      ansible.builtin.debconf:
-        name: onlyoffice
-        question: onlyoffice/rabbitmq-user
-        value: "{{ onlyoffice_rabbitmq_user | default('guest') }}"
-        vtype: text
-      when: >-
-        ( onlyoffice_debconf == {} ) or
-        ( onlyoffice_debconf['rabbitmq-user'] != onlyoffice_rabbitmq_user )
-
-    - name: Debconf remove-db
-      ansible.builtin.debconf:
-        name: onlyoffice
-        question: onlyoffice/remove-db
-        value: "{{ onlyoffice_remove_db | default('false') | lower }}"
-        vtype: boolean
-      when: >-
-        ( onlyoffice_debconf == {} ) or
-        ( onlyoffice_debconf['remove-db'] | bool != onlyoffice_remove_db | bool )
+        ( onlyoffice_dcnf_current.current is not defined ) or
+        ( ( onlyoffice_dcnf_current.current is defined ) and ( onlyoffice_dcnf_current.current == {} ) ) or
+        ( ( onlyoffice_dcnf_current_value is defined ) and ( onlyoffice_dcnf.value != onlyoffice_dcnf_current_value ) )
 
   tags:
     - onlyoffice
