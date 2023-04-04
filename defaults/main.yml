@@ -59,7 +59,7 @@ onlyoffice_debconf:
     value: Authorization
     vtype: string
   - name: onlyoffice-documentserver
-    question: jwt-secret
+    question: onlyoffice/jwt-secret
     value: "{{ onlyoffice_jwt_secret }}"
     vtype: string
   - name: onlyoffice-documentserver
