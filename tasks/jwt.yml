@@ -8,81 +8,50 @@
 #
 # You should have received a copy of the GNU General Public License along with the Webarchitects ONLYOFFICE Ansible role. If not, see <https://www.gnu.org/licenses/>.
 ---
-- name: ONLYOFFICE JWT secret
+- name: Load ONLYOFFICE JWT secret
   block:
-
-    - name: Root JWT secret present
-      ansible.builtin.shell: |-
-        set -e -o pipefail
-        pwgen -cns 32 1 > \
-        /root/.onlyoffice.jwt.secret && \
-        chmod 0600 /root/.onlyoffice.jwt.secret
-      args:
-        creates: /root/.onlyoffice.jwt.secret
-        executable: "{{ ansible_local.bash.path }}"
-      # no_log: true
-
-    - name: Check if the root JWT secret file exists
-      ansible.builtin.stat:
-        path: /root/.onlyoffice.jwt.secret
-      register: onlyoffice_jwt_secret_file_check
-
-    - name: Slurp and register a fact for the root JWT secret
-      block:
-
-        - name: Slurp a base64 encoded version of the JWT secret
-          ansible.builtin.slurp:
-            src: /root/.onlyoffice.jwt.secret
-          register: onlyoffice_jwt_secret_b64encoded
-
-        - name: Decode the base64 encoded version of the file and set a variable
-          ansible.builtin.set_fact:
-            onlyoffice_jwt_secret: "{{ onlyoffice_jwt_secret_b64encoded['content'] | b64decode | trim }}"
-
-      when: onlyoffice_jwt_secret_file_check.stat.exists | bool
 
     - name: Check if the ONLYOFFICE Document Server local.json file exists
       ansible.builtin.stat:
         path: /etc/onlyoffice/documentserver/local.json
       register: onlyoffice_local_json_file
 
-    - name: ONLYOFFICE Document Server local.json file
+    - name: Read the ONLYOFFICE Document Server local.json file
       block:
 
         - name: Slurp the ONLYOFFICE Document Server local.json file
           ansible.builtin.slurp:
             src: /etc/onlyoffice/documentserver/local.json
           register: onlyoffice_local_json_b64encoded
-          # no_log: true
+          no_log: true
 
         - name: Set a fact for the ONLYOFFICE Document Server local.json
           ansible.builtin.set_fact:
             onlyoffice_local_json: "{{ onlyoffice_local_json_b64encoded['content'] | b64decode | from_json }}"
-          # no_log: true
+          no_log: true
 
         - name: Debug ONLYOFFICE Document Server local.json
           ansible.builtin.debug:
             var: onlyoffice_local_json
             verbosity: 3
 
-        - name: Set a fact for the ONLYOFFICE JWT secret
+        - name: Set a fact for the ONLYOFFICE services.CoAuthoring.secret.browser.string
           ansible.builtin.set_fact:
-            onlyoffice_local_json_jwt_secret: "{{ onlyoffice_local_json.services.CoAuthoring.secret.session.string }}"
+            onlyoffice_local_browser_string: "{{ onlyoffice_local_json.services.CoAuthoring.secret.browser.string }}"
+          no_log: true
           when:
-            - onlyoffice_local_json.services.CoAuthoring.secret.session.string is defined
-            - onlyoffice_local_json.services.CoAuthoring.secret.session.string | length > 0
+            - onlyoffice_local_json.services.CoAuthoring.secret.browser.string is defined
+            - onlyoffice_local_json.services.CoAuthoring.secret.browser.string | length > 0
+
+        - name: Set a fact for the ONLYOFFICE storage.fs.secretstring
+          ansible.builtin.set_fact:
+            onlyoffice_local_fs_secretstring: "{{ onlyoffice_local_json.storage.fs.secretString }}"
+          no_log: true
+          when:
+            - onlyoffice_local_json.storage.fs.secretString is defined
+            - onlyoffice_local_json.storage.fs.secretString | length > 0
 
       when: onlyoffice_local_json_file.stat.exists | bool
-
-    - name: Check that the /root/.onlyoffice.jwt.secret and /etc/onlyoffice/documentserver/local.json secrets match
-      ansible.builtin.assert:
-        that:
-          onlyoffice_jwt_secret == onlyoffice_local_json_jwt_secret
-      when:
-        - onlyoffice_jwt_secret is defined
-        - onlyoffice_jwt_secret | length > 0
-        - onlyoffice_local_json_jwt_secret is defined
-        - onlyoffice_local_json_jwt_secret | length > 0
 
   tags:
     - onlyoffice

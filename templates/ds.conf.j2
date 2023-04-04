@@ -16,7 +16,7 @@ server {
 {% endif %}
   server_name _;
   server_tokens off;
-  set $secure_link_secret "{{ onlyoffice_jwt_secret }}";
+  set $secure_link_secret "{{ onlyoffice_local_fs_secretstring }}";
   # Let's Encrypt Requests
   root /var/www/html;
   location /.well-known/acme-challenge/ {
@@ -43,7 +43,7 @@ server {
   listen [::]:443 ssl default_server;
 {% endif %}
   server_tokens off;
-  set $secure_link_secret "{{ onlyoffice_jwt_secret }}";
+  set $secure_link_secret "{{ onlyoffice_local_fs_secretstring }}";
   root /usr/share/nginx/html;
 
   ## Strong SSL Security

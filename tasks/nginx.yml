@@ -14,11 +14,11 @@
     - name: Include JSON Web Token tasks
       ansible.builtin.include_tasks: jwt.yml
 
-    - name: Ensure that the JWT is defined
+    - name: Ensure that the ONLYOFFICE storage.fs.secretstring is defined
       ansible.builtin.assert:
         that:
-          - onlyoffice_jwt_secret is defined
-          - onlyoffice_jwt_secret | length > 0
+          - onlyoffice_local_fs_secretstring is defined
+          - onlyoffice_local_fs_secretstring | length > 0
 
     - name: Check if the original /etc/onlyoffice/documentserver/nginx/ds.conf exists
       ansible.builtin.stat:

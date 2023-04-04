@@ -34,12 +34,66 @@
       ansible.builtin.set_fact:
         onlyoffice_rabbitmq_pwd: "{{ rabbitmq_password }}"
 
+    - name: Root JWT secret present
+      ansible.builtin.shell: |-
+        set -e -o pipefail
+        pwgen -cns 32 1 > \
+        /root/.onlyoffice.jwt.secret && \
+        chmod 0600 /root/.onlyoffice.jwt.secret
+      args:
+        creates: /root/.onlyoffice.jwt.secret
+        executable: "{{ ansible_local.bash.path }}"
+      no_log: true
+
+    - name: Check if the root JWT secret file exists
+      ansible.builtin.stat:
+        path: /root/.onlyoffice.jwt.secret
+      register: onlyoffice_jwt_secret_file_check
+
+    - name: Slurp and register a fact for the root JWT secret
+      block:
+
+        - name: Slurp a base64 encoded version of the JWT secret
+          ansible.builtin.slurp:
+            src: /root/.onlyoffice.jwt.secret
+          register: onlyoffice_jwt_secret_b64encoded
+          no_log: true
+
+        - name: Decode the base64 encoded version of the file and set a variable
+          ansible.builtin.set_fact:
+            onlyoffice_jwt_secret: "{{ onlyoffice_jwt_secret_b64encoded['content'] | b64decode | trim }}"
+          no_log: true
+
+      when: onlyoffice_jwt_secret_file_check.stat.exists | bool
+
     - name: Include JSON Web Token tasks
       ansible.builtin.include_tasks: jwt.yml
+
+    - name: Run documentserver-update-securelink.sh to update /etc/onlyoffice/documentserver/local.json
+      block:
+
+        - name: Check /usr/bin/documentserver-update-securelink.sh is present
+          ansible.builtin.stat:
+            path: /usr/bin/documentserver-update-securelink.sh
+          register: onlyoffice_documentserver_update_securelink
+          failed_when: not onlyoffice_documentserver_update_securelink.stat.exists
+
+        - name: Run /usr/bin/documentserver-update-securelink.sh
+          ansible.builtin.command: "/usr/bin/documentserver-update-securelink.sh {{ onlyoffice_jwt_secret }}"
+          no_log: true
+          changed_when: true
+
+      when: >-
+        ( onlyoffice_local_json.services.CoAuthoring.secret.browser.string is not defined ) or
+        ( onlyoffice_local_json.services.CoAuthoring.secret.browser.string | length == 0 ) or
+        ( onlyoffice_local_json.storage.fs.secretString is not defined ) or
+        ( onlyoffice_local_json.storage.fs.secretString | length == 0 ) or
+        ( onlyoffice_local_json.services.CoAuthoring.secret.browser.string != onlyoffice_jwt_secret )
 
     - name: Get existing debconf values for onlyoffice-documentserver
       ansible.builtin.debconf:
         name: onlyoffice-documentserver
+      no_log: true
       register: onlyoffice_dcnf_current
 
     - name: Debug onlyoffice_debconf_existing
@@ -50,6 +104,7 @@
     - name: Create a list of the existing debconf values
       ansible.builtin.set_fact:
         onlyoffice_dcnf_existing: "{{ onlyoffice_dcnf_current.current | dict2items }}"
+      no_log: true
       when:
         - onlyoffice_dcnf_current.current is defined
         - onlyoffice_dcnf_current.current != {}

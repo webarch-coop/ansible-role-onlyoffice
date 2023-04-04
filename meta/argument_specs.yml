@@ -133,4 +133,8 @@ argument_specs:
         type: bool
         required: true
         description: Use ansible.builtin.validate_argument_spec module to validate role argument specs.
+  # jwt:
+  #   author: Chris Croome
+  #   description: ONLYOFFICE Document Server Ansible role
+  #   short_description: The JWT entry point for the ONLYOFFICE role.
 ...
