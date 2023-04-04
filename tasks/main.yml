@@ -39,16 +39,17 @@
         loop_var: onlyoffice_dcnf
         label: "{{ onlyoffice_dcnf.question }}"
 
-    # - name: Include install ONLYOFFICE tasks
-    #   ansible.builtin.include_tasks: install.yml
+    - name: Include install ONLYOFFICE tasks
+      ansible.builtin.include_tasks: install.yml
 
+    # TODO
     # - name: Include Apache tasks
     #   ansible.builtin.include_tasks: apache.yml
     #   when: (onlyoffice_webserver is defined) and (onlyoffice_webserver == "apache")
 
-    # - name: Include Nginx tasks
-    #   ansible.builtin.include_tasks: nginx.yml
-    #   when: (onlyoffice_webserver is defined) and (onlyoffice_webserver == "nginx")
+    - name: Include Nginx tasks
+      ansible.builtin.include_tasks: nginx.yml
+      when: (onlyoffice_webserver is defined) and (onlyoffice_webserver == "nginx")
 
   when: onlyoffice | bool
   tags:

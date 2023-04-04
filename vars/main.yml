@@ -15,6 +15,7 @@ onlyofficehostvars: "{{ dict(onlyofficevarnames | list | zip(q('vars', *onlyoffi
 # Ansible JMESPath queries
 # https://docs.ansible.com/ansible/latest/collections/community/general/docsite/filter_guide_selecting_json_data.html
 onlyoffice_jpq_db_name: "[?question=='onlyoffice/db-name'].value|[0]"
+onlyoffice_jpq_ds_port: "[?question=='onlyoffice/ds-port'].value|[0]"
 onlyoffice_jpq_db_user: "[?question=='onlyoffice/db-user'].value|[0]"
 onlyoffice_jpq_rabbitmq_user: "[?question=='onlyoffice/rabbitmq-user'].value|[0]"
 

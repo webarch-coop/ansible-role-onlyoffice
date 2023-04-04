@@ -5,14 +5,14 @@ include /etc/nginx/includes/http-common.conf;
 ## Normal HTTP host
 server {
 {% if ansible_default_ipv4.address is defined %}
-  listen {{ ansible_default_ipv4.address }}:80 default_server;
+  listen {{ ansible_default_ipv4.address }}:{{ onlyoffice_debconf | community.general.json_query(onlyoffice_jpq_ds_port) }} default_server;
 {% else %}
-  listen 0.0.0.0:80 default_server;
+  listen 0.0.0.0:{{ onlyoffice_debconf | community.general.json_query(onlyoffice_jpq_ds_port) }} default_server;
 {% endif %}
 {% if ansible_default_ipv6.address is defined %}
-  listen {{ ansible_default_ipv6.address }}:80 default_server;
+  listen {{ ansible_default_ipv6.address }}:{{ onlyoffice_debconf | community.general.json_query(onlyoffice_jpq_ds_port) }} default_server;
 {% else %}
-  listen [::]:80 default_server;
+  listen [::]:{{ onlyoffice_debconf | community.general.json_query(onlyoffice_jpq_ds_port) }} default_server;
 {% endif %}
   server_name _;
   server_tokens off;
@@ -28,17 +28,6 @@ server {
   location / {
        return 301 https://$host$request_uri?;
   }
-}
-
-## HTTP host for internal services
-server {
-  listen 127.0.0.1:80;
-  listen [::1]:80;
-  server_name localhost;
-  server_tokens off;
-  set $secure_link_secret "{{ onlyoffice_jwt_secret }}";
-  include /etc/nginx/includes/ds-common.conf;
-  include /etc/nginx/includes/ds-docservice.conf;
 }
 
 ## HTTPS host
