@@ -11,23 +11,31 @@
 - name: Configure a .deb package
   block:
 
-    - name: Check existing value when onlyoffice_dcnf_existing is defined
-      block:
+    - name: Debug onlyoffice_dcnf
+      ansible.builtin.debug:
+        var: onlyoffice_dcnf
+        verbosity: 2
 
-        - name: "Set a fact for an existing debconf value for the question {{ onlyoffice_dcnf.question }}"
-          ansible.builtin.set_fact:
-            onlyoffice_dcnf_current_value: "{{ onlyoffice_dcnf_existing | community.general.json_query(onlyoffice_jpq_dcnf_question) }}"
-          vars:
-            onlyoffice_jpq_dcnf_question: "[?key=='{{ onlyoffice_dcnf.question }}'].value|[0]"
+    - name: Debug onlyoffice_dcnf_existing
+      ansible.builtin.debug:
+        var: onlyoffice_dcnf_existing
+        verbosity: 2
 
-        - name: Debug onlyoffice_dcnf_current_value
-          ansible.builtin.debug:
-            var: onlyoffice_dcnf_current_value
-            verbosity: 2
+    - name: "Set a fact for an existing debconf value for the debconf question {{ onlyoffice_dcnf.question }}"
+      ansible.builtin.set_fact:
+        onlyoffice_dcnf_current_value: "{% if onlyoffice_dcnf_existing is defined and onlyoffice_dcnf.vtype != 'password' %}{{ onlyoffice_dcnf_existing | community.general.json_query(onlyoffice_jpq_dcnf_question) }}{% endif %}"
+      vars:
+        onlyoffice_jpq_dcnf_question: "[?key=='{{ onlyoffice_dcnf.question }}'].value|[0]"
 
-      when:
-        - onlyoffice_dcnf_existing is defined
-        - onlyoffice_dcnf.vtype != "password"
+    - name: "Debug current value for the debconf question {{ onlyoffice_dcnf.question }}"
+      ansible.builtin.debug:
+        var: onlyoffice_dcnf_current_value
+        verbosity: 1
+
+    - name: "Debug proposed value for the debconf question {{ onlyoffice_dcnf.question }}"
+      ansible.builtin.debug:
+        var: onlyoffice_dcnf.value
+        verbosity: 1
 
     - name: "Set debconf value for {{ onlyoffice_dcnf.name }}"
       ansible.builtin.debconf:
@@ -37,9 +45,8 @@
         vtype: "{{ onlyoffice_dcnf.vtype }}"
       no_log: "{% if onlyoffice_dcnf.vtype == 'password' %}true{% else %}false{% endif %}"
       when: >-
-        ( onlyoffice_dcnf_existing is not defined ) or
-        ( ( office_dcnf_current_value is defined ) and
-        ( onlyoffice_dcnf.value != onlyoffice_dcnf_current_value ) )
+        ( onlyoffice_dcnf_current_value is not defined ) or
+        ( onlyoffice_dcnf_current_value != onlyoffice_dcnf.value )
 
   tags:
     - onlyoffice

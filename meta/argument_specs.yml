@@ -122,6 +122,9 @@ argument_specs:
         type: str
         required: true
         description: ONLYOFFICE web server.
+        choices:
+          - apache
+          - nginx
       onlyoffice_validate:
         type: bool
         required: true
