@@ -72,7 +72,7 @@
         loop_var: file
       notify: Restart nginx
 
-    - name: Nginx configtest
+    - name: Nginx configtest  # noqa: command-instead-of-module
       ansible.builtin.command: service nginx configtest
       check_mode: false
       changed_when: false
