@@ -95,7 +95,6 @@
         mode: "0644"
         owner: ds
         group: ds
-
       when: onlyoffice_local != onlyoffice_local_json
 
   tags:
