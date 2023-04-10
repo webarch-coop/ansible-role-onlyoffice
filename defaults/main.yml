@@ -44,7 +44,7 @@ onlyoffice_debconf:
     vtype: string
   - name: onlyoffice-documentserver
     question: onlyoffice/ds-port
-    value: "80"
+    value: "443"
     vtype: string
   - name: onlyoffice-documentserver
     question: onlyoffice/example-port
@@ -56,7 +56,7 @@ onlyoffice_debconf:
     vtype: boolean
   - name: onlyoffice-documentserver
     question: onlyoffice/jwt-header
-    value: Authorization
+    value: AuthorizationJwt
     vtype: string
   - name: onlyoffice-documentserver
     question: onlyoffice/jwt-secret
@@ -82,8 +82,40 @@ onlyoffice_debconf:
     question: onlyoffice/remove-db
     value: "false"
     vtype: boolean
+onlyoffice_local:
+  services:
+    CoAuthoring:
+      sql:
+        type: "{{ onlyoffice_debconf | community.general.json_query(onlyoffice_jpq_db_type) }}"
+        dbHost: "{{ onlyoffice_debconf | community.general.json_query(onlyoffice_jpq_db_host) }}"
+        dbPort: "{{ onlyoffice_debconf | community.general.json_query(onlyoffice_jpq_db_port) }}"
+        dbName: "{{ onlyoffice_debconf | community.general.json_query(onlyoffice_jpq_db_name) }}"
+        dbUser: "{{ onlyoffice_debconf | community.general.json_query(onlyoffice_jpq_db_user) }}"
+        dbPass: "{{ onlyoffice_db_pwd }}"
+      secret:
+        session:
+          string: "{{ onlyoffice_jwt_secret }}"
+        inbox:
+          string: "{{ onlyoffice_jwt_secret }}"
+        outbox:
+          string: "{{ onlyoffice_jwt_secret }}"
+      token:
+        enable:
+          browser: true
+          request:
+            itnbox: true
+            outbox: true
+        inbox:
+          header: "{{ onlyoffice_debconf | community.general.json_query(onlyoffice_jpq_jwt_header) }}"
+        outbox:
+          header: "{{ onlyoffice_debconf | community.general.json_query(onlyoffice_jpq_jwt_header) }}"
+  rabbitmq:
+    url: "{{ onlyoffice_debconf | community.general.json_query(onlyoffice_jpq_rabbitmq_proto) }}://{{ onlyoffice_debconf | community.general.json_query(onlyoffice_jpq_rabbitmq_user) }}:{{ onlyoffice_rabbitmq_pwd }}@{{ onlyoffice_debconf | community.general.json_query(onlyoffice_jpq_rabbitmq_host) }}"
+  storage:
+    fs:
+      secretString: "{{ onlyoffice_storage_fs_secret }}"
+onlyoffice_ssl: true
 onlyoffice_ssl_certificate: "/etc/ssl/le/{{ inventory_hostname }}.fullchain.pem"
 onlyoffice_ssl_certificate_key: "/etc/ssl/le/{{ inventory_hostname }}.key.pem"
-onlyoffice_webserver: nginx
 onlyoffice_validate: true
 ...

@@ -114,6 +114,10 @@ argument_specs:
         type: str
         required: false
         description: RabbitMQ password for ONLYOFFICE, internally set using the RabbitMQ role.
+      onlyoffice_ssl:
+        type: bool
+        required: true
+        description: Nginx TLS enabled.
       onlyoffice_ssl_certificate:
         type: str
         required: true
@@ -122,13 +126,6 @@ argument_specs:
         type: str
         required: true
         description: Path to the TLS key.
-      onlyoffice_webserver:
-        type: str
-        required: true
-        description: ONLYOFFICE web server.
-        choices:
-          # - apache
-          - nginx
       onlyoffice_validate:
         type: bool
         required: true

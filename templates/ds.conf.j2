@@ -2,50 +2,22 @@
 
 include /etc/nginx/includes/http-common.conf;
 
-## Normal HTTP host
 server {
 {% if ansible_default_ipv4.address is defined %}
-  listen {{ ansible_default_ipv4.address }}:{{ onlyoffice_debconf | community.general.json_query(onlyoffice_jpq_ds_port) }} default_server;
+  listen {{ ansible_default_ipv4.address }}:{{ onlyoffice_debconf | community.general.json_query(onlyoffice_jpq_ds_port) }} {% if onlyoffice_ssl | bool %}ssl {% endif %}default_server;
 {% else %}
-  listen 0.0.0.0:{{ onlyoffice_debconf | community.general.json_query(onlyoffice_jpq_ds_port) }} default_server;
+  listen 0.0.0.0:{{ onlyoffice_debconf | community.general.json_query(onlyoffice_jpq_ds_port) }} {% if onlyoffice_ssl | bool %}ssl {% endif %}default_server;
 {% endif %}
 {% if ansible_default_ipv6.address is defined %}
-  listen {{ ansible_default_ipv6.address }}:{{ onlyoffice_debconf | community.general.json_query(onlyoffice_jpq_ds_port) }} default_server;
+  listen {{ ansible_default_ipv6.address }}:{{ onlyoffice_debconf | community.general.json_query(onlyoffice_jpq_ds_port) }} {% if onlyoffice_ssl | bool %}ssl {% endif %}default_server;
 {% else %}
-  listen [::]:{{ onlyoffice_debconf | community.general.json_query(onlyoffice_jpq_ds_port) }} default_server;
-{% endif %}
-  server_name _;
-  server_tokens off;
-  set $secure_link_secret "{{ onlyoffice_local_fs_secretstring }}";
-  # Let's Encrypt Requests
-  root /var/www/html;
-  location /.well-known/acme-challenge/ {
-       allow all;
-       default_type text/plain;
-       try_files $uri $uri/;
-  }
-  ## Redirects all non Let's Encrypt requests to the HTTPS host
-  location / {
-       return 301 https://$host$request_uri?;
-  }
-}
-
-## HTTPS host
-server {
-{% if ansible_default_ipv4.address is defined %}
-  listen {{ ansible_default_ipv4.address }}:443 ssl default_server;
-{% else %}
-  listen 0.0.0.0:443 ssl default_server;
-{% endif %}
-{% if ansible_default_ipv6.address is defined %}
-  listen {{ ansible_default_ipv6.address }}:443 ssl default_server;
-{% else %}
-  listen [::]:443 ssl default_server;
+  listen [::]:{{ onlyoffice_debconf | community.general.json_query(onlyoffice_jpq_ds_port) }} {% if onlyoffice_ssl | bool %}ssl {% endif %}default_server;
 {% endif %}
   server_tokens off;
   set $secure_link_secret "{{ onlyoffice_local_fs_secretstring }}";
   root /usr/share/nginx/html;
 
+{% if onlyoffice_ssl | bool %}
   ## Strong SSL Security
   ## https://raymii.org/s/tutorials/Strong_SSL_Security_On_nginx.html
   # the "ssl" directive is deprecated, use the "listen ... ssl" directive instead
@@ -64,10 +36,6 @@ server {
 
   ssl_session_cache  builtin:1000  shared:SSL:10m;
 
-  add_header Strict-Transport-Security max-age=31536000;
-  # add_header X-Frame-Options SAMEORIGIN;
-  add_header X-Content-Type-Options nosniff;
-
   ## [Optional] If your certficate has OCSP, enable OCSP stapling to reduce the overhead and latency of running SSL.
   ## Replace with your ssl_trusted_certificate. For more info see:
   ## - https://medium.com/devops-programming/4445f4862461
@@ -84,12 +52,17 @@ server {
   ##   sudo openssl dhparam -out dhparam.pem 4096
   ##
   ssl_dhparam /etc/nginx/ssl_dhparam.pem;
+{% endif %}
 
   # force utf-8 and content type for /robots.txt
   # https://www.cyberciti.biz/faq/how-to-override-content-type-with-nginx-web-server/
   location = /robots.txt {
       types { } default_type "text/plain; charset=us-ascii";
   }
+
+  add_header Strict-Transport-Security max-age=31536000;
+  # add_header X-Frame-Options SAMEORIGIN;
+  add_header X-Content-Type-Options nosniff;
 
   include /etc/nginx/includes/ds-*.conf;
 

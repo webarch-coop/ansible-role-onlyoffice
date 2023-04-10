@@ -4,6 +4,10 @@
 
 This Ansible role is based on the instructions for [Installing ONLYOFFICE Docs Community Edition for Debian, Ubuntu, and derivatives](https://helpcenter.onlyoffice.com/installation/docs-community-install-ubuntu.aspx).
 
+## Usage
+
+This role can be used to configure a stand-alone ONLYOFFICE Document Server that uses Nginx and PostgreSQL or it can be used to install ONLYOFFICE Document Server on a LAMP server with Apache providing a reverse proxy service to Nginx and MariaDB / MySQL being used as the database.
+
 ## Role variables
 
 See the [defaults/main.yml](defaults/main.yml) file for the default variables, the [vars/main.yml](vars/main.yml) file for the preset variables and the [meta/argument_specs.yml](meta/argument_specs.yml) file for the variable specification.
@@ -50,10 +54,6 @@ A string, the path to the TLS fullchain certificate for HTTPS.
 
 A string, the path to the TLS private key for HTTPS.
 
-### onlyoffice_webserver
-
-A string, `nginx` or `apache`, currently only Nginx configuration is supported by this role.
-
 ### onlyoffice_validate
 
 A boolean, `onlyoffice_validate` defaults to `true` set it to false to skip the role using the [ansible.builtin.validate_argument_spec module](https://docs.ansible.com/ansible/latest/collections/ansible/builtin/validate_argument_spec_module.html) to validate variables that start with `onlyoffice_`.
@@ -75,6 +75,9 @@ apt remove postgresql-11 postgresql-client-11
 ## References
 
 * [Installing ONLYOFFICE Docs Community Edition for Debian, Ubuntu, and derivatives](https://helpcenter.onlyoffice.com/installation/docs-community-install-ubuntu.aspx)
+* [Switching ONLYOFFICE Docs to HTTPS protocol](https://helpcenter.onlyoffice.com/installation/docs-community-https-linux.aspx)
+* [Ports which must be opened for ONLYOFFICE Docs](https://helpcenter.onlyoffice.com/installation/docs-community-open-ports.aspx)
+* [ONLYOFFICE Document Server example configurations for proxy](https://github.com/ONLYOFFICE/document-server-proxy)
 * [Nextcloud ONLYOFFICE integration app](https://api.onlyoffice.com/editors/nextcloud)
 * [ONLYOFFICE Api Documentation - Signature](https://api.onlyoffice.com/editors/signature/)
 

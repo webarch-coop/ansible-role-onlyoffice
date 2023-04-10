@@ -14,10 +14,52 @@ onlyofficehostvars: "{{ dict(onlyofficevarnames | list | zip(q('vars', *onlyoffi
 
 # Ansible JMESPath queries
 # https://docs.ansible.com/ansible/latest/collections/community/general/docsite/filter_guide_selecting_json_data.html
+onlyoffice_jpq_db_host: "[?question=='onlyoffice/db-host'].value|[0]"
 onlyoffice_jpq_db_name: "[?question=='onlyoffice/db-name'].value|[0]"
+onlyoffice_jpq_db_port: "[?question=='onlyoffice/db-port'].value|[0]"
+onlyoffice_jpq_db_type: "[?question=='onlyoffice/db-type'].value|[0]"
 onlyoffice_jpq_ds_port: "[?question=='onlyoffice/ds-port'].value|[0]"
+onlyoffice_jpq_ds_type: "[?question=='onlyoffice/ds-type'].value|[0]"
 onlyoffice_jpq_db_user: "[?question=='onlyoffice/db-user'].value|[0]"
+onlyoffice_jpq_jwt_header: "[?question=='onlyoffice/jwt-header'].value|[0]"
+onlyoffice_jpq_rabbitmq_host: "[?question=='onlyoffice/rabbitmq-host'].value|[0]"
+onlyoffice_jpq_rabbitmq_proto: "[?question=='onlyoffice/rabbitmq-proto'].value|[0]"
+onlyoffice_jpq_rabbitmq_pwd: "[?question=='onlyoffice/rabbitmq-pwd'].value|[0]"
 onlyoffice_jpq_rabbitmq_user: "[?question=='onlyoffice/rabbitmq-user'].value|[0]"
+
+# Configuration for /etc/onlyoffice/documentserver/local.json
+onlyoffice_local:
+  services:
+    CoAuthoring:
+      sql:
+        type: "{{ onlyoffice_debconf | community.general.json_query(onlyoffice_jpq_db_type) }}"
+        dbHost: "{{ onlyoffice_debconf | community.general.json_query(onlyoffice_jpq_db_host) }}"
+        dbPort: "{{ onlyoffice_debconf | community.general.json_query(onlyoffice_jpq_db_port) }}"
+        dbName: "{{ onlyoffice_debconf | community.general.json_query(onlyoffice_jpq_db_name) }}"
+        dbUser: "{{ onlyoffice_debconf | community.general.json_query(onlyoffice_jpq_db_user) }}"
+        dbPass: "{{ onlyoffice_db_pwd }}"
+      secret:
+        session:
+          string: "{{ onlyoffice_jwt_secret }}"
+        inbox:
+          string: "{{ onlyoffice_jwt_secret }}"
+        outbox:
+          string: "{{ onlyoffice_jwt_secret }}"
+      token:
+        enable:
+          browser: true
+          request:
+            itnbox: true
+            outbox: true
+        inbox:
+          header: "{{ onlyoffice_debconf | community.general.json_query(onlyoffice_jpq_jwt_header) }}"
+        outbox:
+          header: "{{ onlyoffice_debconf | community.general.json_query(onlyoffice_jpq_jwt_header) }}"
+  rabbitmq:
+    url: "{{ onlyoffice_debconf | community.general.json_query(onlyoffice_jpq_rabbitmq_proto) }}://{{ onlyoffice_debconf | community.general.json_query(onlyoffice_jpq_rabbitmq_user) }}:{{ onlyoffice_rabbitmq_pwd }}@{{ onlyoffice_debconf | community.general.json_query(onlyoffice_jpq_rabbitmq_host) }}"
+  storage:
+    fs:
+      secretString: "{{ onlyoffice_fs_secret }}"
 
 # These variables are reset when this role is run, they are defined here to avoid undefined variable erors
 onlyoffice_db_pwd: ""

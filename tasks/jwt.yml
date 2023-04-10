@@ -35,13 +35,13 @@
             var: onlyoffice_local_json
             verbosity: 3
 
-        - name: Set a fact for the ONLYOFFICE services.CoAuthoring.secret.browser.string
+        - name: Set a fact for the ONLYOFFICE services.CoAuthoring.secret.session.string
           ansible.builtin.set_fact:
-            onlyoffice_local_browser_string: "{{ onlyoffice_local_json.services.CoAuthoring.secret.browser.string }}"
+            onlyoffice_local_session_string: "{{ onlyoffice_local_json.services.CoAuthoring.secret.session.string }}"
           no_log: true
           when:
-            - onlyoffice_local_json.services.CoAuthoring.secret.browser.string is defined
-            - onlyoffice_local_json.services.CoAuthoring.secret.browser.string | length > 0
+            - onlyoffice_local_json.services.CoAuthoring.secret.session.string is defined
+            - onlyoffice_local_json.services.CoAuthoring.secret.session.string | length > 0
 
         - name: Set a fact for the ONLYOFFICE storage.fs.secretstring
           ansible.builtin.set_fact:

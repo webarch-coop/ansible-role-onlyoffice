@@ -11,19 +11,41 @@
 - name: Set variables needed for the install
   block:
 
-    - name: Include PostgreSQL role to load ONLYOFFICE database user account password
-      ansible.builtin.include_role:
-        name: postgresql
-        tasks_from: pgpass_read.yml
-      vars:
-        postgresql_db: "{{ onlyoffice_debconf | community.general.json_query(onlyoffice_jpq_db_name) }}"
-        postgresql_user: "{{ onlyoffice_debconf | community.general.json_query(onlyoffice_jpq_db_user) }}"
+    - name: PostgreSQL
+      block:
 
-    - name: Set a fact for the PostgreSQL password
-      ansible.builtin.set_fact:
-        onlyoffice_db_pwd: "{{ postgresql_password }}"
+        - name: Include PostgreSQL role
+          ansible.builtin.include_role:
+            name: postgresql
+            tasks_from: pgpass_read.yml
+          vars:
+            postgresql_db: "{{ onlyoffice_debconf | community.general.json_query(onlyoffice_jpq_db_name) }}"
+            postgresql_user: "{{ onlyoffice_debconf | community.general.json_query(onlyoffice_jpq_db_user) }}"
 
-    - name: Include RabbitMQ role to load ONLYOFFICE RabbitMQ user account password
+        - name: Set a fact for the PostgreSQL password
+          ansible.builtin.set_fact:
+            onlyoffice_db_pwd: "{{ postgresql_password }}"
+
+      when: onlyoffice_debconf | community.general.json_query(onlyoffice_jpq_rabbitmq_user) == "postgres"
+
+    - name: MariaDB
+      block:
+
+        - name: Include MariaDB role
+          ansible.builtin.include_role:
+            name: mariadb
+            tasks_from: mariadb_user.yml
+          vars:
+            mariadb_database: "{{ onlyoffice_debconf | community.general.json_query(onlyoffice_jpq_db_name) }}"
+            mariadb_username: "{{ onlyoffice_debconf | community.general.json_query(onlyoffice_jpq_db_user) }}"
+
+        - name: Set a fact for the MariaDB password
+          ansible.builtin.set_fact:
+            onlyoffice_db_pwd: "{{ mariadb_password }}"
+
+      when: onlyoffice_debconf | community.general.json_query(onlyoffice_jpq_rabbitmq_user) == "mariadb"
+
+    - name: Include RabbitMQ role
       ansible.builtin.include_role:
         name: rabbitmq
         tasks_from: password.yml
@@ -59,36 +81,68 @@
           register: onlyoffice_jwt_secret_b64encoded
           no_log: true
 
-        - name: Decode the base64 encoded version of the file and set a variable
+        - name: Decode the base64 encoded version of the JWT secret file and set a variable
           ansible.builtin.set_fact:
             onlyoffice_jwt_secret: "{{ onlyoffice_jwt_secret_b64encoded['content'] | b64decode | trim }}"
           no_log: true
 
       when: onlyoffice_jwt_secret_file_check.stat.exists | bool
 
-    - name: Include JSON Web Token tasks
-      ansible.builtin.include_tasks: jwt.yml
+    - name: Root FS secret present
+      ansible.builtin.shell: |-
+        set -e -o pipefail
+        pwgen -cns 20 1 > \
+        /root/.onlyoffice.fs.secret && \
+        chmod 0600 /root/.onlyoffice.fs.secret
+      args:
+        creates: /root/.onlyoffice.fs.secret
+        executable: "{{ ansible_local.bash.path }}"
+      no_log: true
 
-    - name: Run documentserver-update-securelink.sh to update /etc/onlyoffice/documentserver/local.json
+    - name: Check if the root FS secret file exists
+      ansible.builtin.stat:
+        path: /root/.onlyoffice.fs.secret
+      register: onlyoffice_fs_secret_file_check
+
+    - name: Slurp and register a fact for the root FS secret
       block:
 
-        - name: Check /usr/bin/documentserver-update-securelink.sh is present
-          ansible.builtin.stat:
-            path: /usr/bin/documentserver-update-securelink.sh
-          register: onlyoffice_documentserver_update_securelink
-          failed_when: not onlyoffice_documentserver_update_securelink.stat.exists
-
-        - name: Run /usr/bin/documentserver-update-securelink.sh
-          ansible.builtin.command: "/usr/bin/documentserver-update-securelink.sh {{ onlyoffice_jwt_secret }}"
+        - name: Slurp a base64 encoded version of the FS secret
+          ansible.builtin.slurp:
+            src: /root/.onlyoffice.fs.secret
+          register: onlyoffice_fs_secret_b64encoded
           no_log: true
-          changed_when: true
 
-      when: >-
-        ( onlyoffice_local_json.services.CoAuthoring.secret.browser.string is not defined ) or
-        ( onlyoffice_local_json.services.CoAuthoring.secret.browser.string | length == 0 ) or
-        ( onlyoffice_local_json.storage.fs.secretString is not defined ) or
-        ( onlyoffice_local_json.storage.fs.secretString | length == 0 ) or
-        ( onlyoffice_local_json.services.CoAuthoring.secret.browser.string != onlyoffice_jwt_secret )
+        - name: Decode the base64 encoded version of the FS secret file and set a variable
+          ansible.builtin.set_fact:
+            onlyoffice_fs_secret: "{{ onlyoffice_fs_secret_b64encoded['content'] | b64decode | trim }}"
+          no_log: true
+
+      when: onlyoffice_fs_secret_file_check.stat.exists | bool
+
+    # - name: Include JSON Web Token tasks
+    #   ansible.builtin.include_tasks: jwt.yml
+
+    # - name: Run documentserver-update-securelink.sh to update /etc/onlyoffice/documentserver/local.json
+    #   block:
+
+    #     - name: Check /usr/bin/documentserver-update-securelink.sh is present
+    #       ansible.builtin.stat:
+    #         path: /usr/bin/documentserver-update-securelink.sh
+    #       register: onlyoffice_documentserver_update_securelink
+    #       failed_when: not onlyoffice_documentserver_update_securelink.stat.exists
+
+    #     - name: Run /usr/bin/documentserver-update-securelink.sh
+    #       ansible.builtin.command: "/usr/bin/documentserver-update-securelink.sh {{ onlyoffice_jwt_secret }}"
+    #       no_log: true
+    #       changed_when: true
+
+    #   when: >-
+    #     ( onlyoffice_local_json.services.CoAuthoring.secret.session.string is not defined ) or
+    #     ( onlyoffice_local_json.services.CoAuthoring.secret.session.string | length == 0 ) or
+    #     ( onlyoffice_local_json.storage.fs.secretString is not defined ) or
+    #     ( onlyoffice_local_json.storage.fs.secretString | length == 0 ) or
+    #     ( onlyoffice_local_json.services.CoAuthoring.secret.session.string != onlyoffice_jwt_secret )
 
     - name: Get existing debconf values for onlyoffice-documentserver
       ansible.builtin.debconf:
