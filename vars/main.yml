@@ -29,6 +29,8 @@ onlyoffice_jpq_rabbitmq_user: "[?question=='onlyoffice/rabbitmq-user'].value|[0]
 
 # Configuration for /etc/onlyoffice/documentserver/local.json
 onlyoffice_local:
+  rabbitmq:
+    url: "{{ onlyoffice_debconf | community.general.json_query(onlyoffice_jpq_rabbitmq_proto) }}://{{ onlyoffice_debconf | community.general.json_query(onlyoffice_jpq_rabbitmq_user) }}:{{ onlyoffice_rabbitmq_pwd }}@{{ onlyoffice_debconf | community.general.json_query(onlyoffice_jpq_rabbitmq_host) }}"
   services:
     CoAuthoring:
       sql:
@@ -39,30 +41,29 @@ onlyoffice_local:
         dbUser: "{{ onlyoffice_debconf | community.general.json_query(onlyoffice_jpq_db_user) }}"
         dbPass: "{{ onlyoffice_db_pwd }}"
       secret:
-        session:
-          string: "{{ onlyoffice_jwt_secret }}"
         inbox:
           string: "{{ onlyoffice_jwt_secret }}"
         outbox:
+          string: "{{ onlyoffice_jwt_secret }}"
+        session:
           string: "{{ onlyoffice_jwt_secret }}"
       token:
         enable:
           browser: true
           request:
-            itnbox: true
+            inbox: true
             outbox: true
         inbox:
           header: "{{ onlyoffice_debconf | community.general.json_query(onlyoffice_jpq_jwt_header) }}"
         outbox:
           header: "{{ onlyoffice_debconf | community.general.json_query(onlyoffice_jpq_jwt_header) }}"
-  rabbitmq:
-    url: "{{ onlyoffice_debconf | community.general.json_query(onlyoffice_jpq_rabbitmq_proto) }}://{{ onlyoffice_debconf | community.general.json_query(onlyoffice_jpq_rabbitmq_user) }}:{{ onlyoffice_rabbitmq_pwd }}@{{ onlyoffice_debconf | community.general.json_query(onlyoffice_jpq_rabbitmq_host) }}"
   storage:
     fs:
       secretString: "{{ onlyoffice_fs_secret }}"
 
 # These variables are reset when this role is run, they are defined here to avoid undefined variable erors
 onlyoffice_db_pwd: ""
+onlyoffice_fs_secret: ""
 onlyoffice_jwt_secret: ""
 onlyoffice_rabbitmq_pwd: ""
 

@@ -64,6 +64,10 @@ argument_specs:
             type: str
             required: true
             description: Value for the debconf question.
+      onlyoffice_fs_secret:
+        type: str
+        required: false
+        description: Internal ONLYOFFICE filesystem secret.
       onlyoffice_gpg_checksum:
         type: str
         required: true
@@ -85,7 +89,23 @@ argument_specs:
         type: str
         required: true
         description: A internal URL for the ONLYOFFICE GPG key.
+      onlyoffice_jpq_db_host:
+        type: str
+        required: true
+        description: An internal JMESPath query.
       onlyoffice_jpq_db_name:
+        type: str
+        required: true
+        description: An internal JMESPath query.
+      onlyoffice_jpq_db_port:
+        type: str
+        required: true
+        description: An internal JMESPath query.
+      onlyoffice_jpq_db_type:
+        type: str
+        required: true
+        description: An internal JMESPath query.
+      onlyoffice_jpq_db_user:
         type: str
         required: true
         description: An internal JMESPath query.
@@ -93,7 +113,23 @@ argument_specs:
         type: str
         required: true
         description: An internal JMESPath query.
-      onlyoffice_jpq_db_user:
+      onlyoffice_jpq_ds_type:
+        type: str
+        required: true
+        description: An internal JMESPath query.
+      onlyoffice_jpq_jwt_header:
+        type: str
+        required: true
+        description: An internal JMESPath query.
+      onlyoffice_jpq_rabbitmq_host:
+        type: str
+        required: true
+        description: An internal JMESPath query.
+      onlyoffice_jpq_rabbitmq_proto:
+        type: str
+        required: true
+        description: An internal JMESPath query.
+      onlyoffice_jpq_rabbitmq_pwd:
         type: str
         required: true
         description: An internal JMESPath query.
@@ -105,6 +141,149 @@ argument_specs:
         type: str
         required: true
         description: Internal ONLYOFFICE JWT secret.
+      onlyoffice_local:
+        type: dict
+        required: true
+        description: The ONLYOFFICE local.json configuration.
+        options:
+          rabbitmq:
+            type: dict
+            required: true
+            description: The ONLYOFFICE local.json RabbitMQ configuration.
+            options:
+              url:
+                type: str
+                required: true
+                description: The ONLYOFFICE local.json RabbitMQ configuration URL.
+          services:
+            CoAuthoring:
+              type: dict
+              required: true
+              description: The ONLYOFFICE local.json CoAuthoring configuration.
+              options:
+                sql:
+                  type: dict
+                  required: true
+                  description: The ONLYOFFICE local.json database configuration.
+                  options:
+                    type:
+                      type: str
+                      required: true
+                      description: The ONLYOFFICE local.json database type.
+                      choices:
+                        - mariadb
+                        - postgres
+                    dbHost:
+                      type: str
+                      required: true
+                      description: The ONLYOFFICE local.json database host.
+                    dbPort:
+                      type: str
+                      required: true
+                      description: The ONLYOFFICE local.json database port.
+                    dbName:
+                      type: str
+                      required: true
+                      description: The ONLYOFFICE local.json database name.
+                    dbUser:
+                      type: str
+                      required: true
+                      description: The ONLYOFFICE local.json database user.
+                    dbPass:
+                      type: str
+                      required: true
+                      description: The ONLYOFFICE local.json database password.
+                secret:
+                  type: dict
+                  required: true
+                  description: The ONLYOFFICE local.json JWT secrets.
+                  options:
+                    inbox:
+                      type: dict
+                      required: true
+                      description: The ONLYOFFICE local.json inbox configuration.
+                      options:
+                        string:
+                          type: str
+                          required: true
+                          description: The ONLYOFFICE local.json inbox JWT secret.
+                    outbox:
+                      type: dict
+                      required: true
+                      description: The ONLYOFFICE local.json outbox configuration.
+                      options:
+                        string:
+                          type: str
+                          required: true
+                          description: The ONLYOFFICE local.json outbox JWT secret.
+                    session:
+                      type: dict
+                      required: true
+                      description: The ONLYOFFICE local.json session configuration.
+                      options:
+                        string:
+                          type: str
+                          required: true
+                          description: The ONLYOFFICE local.json session JWT secret.
+                token:
+                  type: dict
+                  required: true
+                  description: The ONLYOFFICE local.json token configuration.
+                  options:
+                    enable:
+                      type: dict
+                      required: true
+                      description: The ONLYOFFICE local.json tokens to enable.
+                      options:
+                        browser:
+                          type: bool
+                          required: true
+                          description: Enable the ONLYOFFICE local.json browser token.
+                        request:
+                          type: dict
+                          required: true
+                          description: The ONLYOFFICE local.json request tokens to enable.
+                          options:
+                            inbox:
+                              type: bool
+                              required: true
+                              description: Enable the ONLYOFFICE local.json inbox token.
+                            outbox:
+                              type: bool
+                              required: true
+                              description: Enable the ONLYOFFICE local.json outbox token.
+                    inbox:
+                      type: dict
+                      required: true
+                      description: The ONLYOFFICE local.json inbox header configuration.
+                      options:
+                        header:
+                          type: str
+                          required: true
+                          description: The ONLYOFFICE local.json inbox HTTP header.
+                    outbox:
+                      type: dict
+                      required: true
+                      description: The ONLYOFFICE local.json outbox header configuration.
+                      options:
+                        header:
+                          type: str
+                          required: true
+                          description: The ONLYOFFICE local.json outbox HTTP header.
+          storage:
+            type: dict
+            required: true
+            description: The ONLYOFFICE local.json storage configuration.
+            options:
+              fs:
+                type: dict
+                required: true
+                description: The ONLYOFFICE local.json filesystem storage configuration.
+                options:
+                  secretString:
+                    type: str
+                    required: true
+                    description: The ONLYOFFICE local.json filesystem storage configuration secret string.
       onlyoffice_pkg:
         type: list
         elements: str
