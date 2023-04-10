@@ -14,12 +14,12 @@
     - name: Debug onlyoffice_dcnf
       ansible.builtin.debug:
         var: onlyoffice_dcnf
-        verbosity: 2
+        verbosity: 3
 
     - name: Debug onlyoffice_dcnf_existing
       ansible.builtin.debug:
         var: onlyoffice_dcnf_existing
-        verbosity: 2
+        verbosity: 3
 
     - name: "Set a fact for an existing debconf value for the debconf question {{ onlyoffice_dcnf.question }}"
       ansible.builtin.set_fact:

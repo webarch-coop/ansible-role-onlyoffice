@@ -156,120 +156,124 @@ argument_specs:
                 required: true
                 description: The ONLYOFFICE local.json RabbitMQ configuration URL.
           services:
-            CoAuthoring:
-              type: dict
-              required: true
-              description: The ONLYOFFICE local.json CoAuthoring configuration.
-              options:
-                sql:
-                  type: dict
-                  required: true
-                  description: The ONLYOFFICE local.json database configuration.
-                  options:
-                    type:
-                      type: str
-                      required: true
-                      description: The ONLYOFFICE local.json database type.
-                      choices:
-                        - mariadb
-                        - postgres
-                    dbHost:
-                      type: str
-                      required: true
-                      description: The ONLYOFFICE local.json database host.
-                    dbPort:
-                      type: str
-                      required: true
-                      description: The ONLYOFFICE local.json database port.
-                    dbName:
-                      type: str
-                      required: true
-                      description: The ONLYOFFICE local.json database name.
-                    dbUser:
-                      type: str
-                      required: true
-                      description: The ONLYOFFICE local.json database user.
-                    dbPass:
-                      type: str
-                      required: true
-                      description: The ONLYOFFICE local.json database password.
-                secret:
-                  type: dict
-                  required: true
-                  description: The ONLYOFFICE local.json JWT secrets.
-                  options:
-                    inbox:
-                      type: dict
-                      required: true
-                      description: The ONLYOFFICE local.json inbox configuration.
-                      options:
-                        string:
-                          type: str
-                          required: true
-                          description: The ONLYOFFICE local.json inbox JWT secret.
-                    outbox:
-                      type: dict
-                      required: true
-                      description: The ONLYOFFICE local.json outbox configuration.
-                      options:
-                        string:
-                          type: str
-                          required: true
-                          description: The ONLYOFFICE local.json outbox JWT secret.
-                    session:
-                      type: dict
-                      required: true
-                      description: The ONLYOFFICE local.json session configuration.
-                      options:
-                        string:
-                          type: str
-                          required: true
-                          description: The ONLYOFFICE local.json session JWT secret.
-                token:
-                  type: dict
-                  required: true
-                  description: The ONLYOFFICE local.json token configuration.
-                  options:
-                    enable:
-                      type: dict
-                      required: true
-                      description: The ONLYOFFICE local.json tokens to enable.
-                      options:
-                        browser:
-                          type: bool
-                          required: true
-                          description: Enable the ONLYOFFICE local.json browser token.
-                        request:
-                          type: dict
-                          required: true
-                          description: The ONLYOFFICE local.json request tokens to enable.
-                          options:
-                            inbox:
-                              type: bool
-                              required: true
-                              description: Enable the ONLYOFFICE local.json inbox token.
-                            outbox:
-                              type: bool
-                              required: true
-                              description: Enable the ONLYOFFICE local.json outbox token.
-                    inbox:
-                      type: dict
-                      required: true
-                      description: The ONLYOFFICE local.json inbox header configuration.
-                      options:
-                        header:
-                          type: str
-                          required: true
-                          description: The ONLYOFFICE local.json inbox HTTP header.
-                    outbox:
-                      type: dict
-                      required: true
-                      description: The ONLYOFFICE local.json outbox header configuration.
-                      options:
-                        header:
-                          type: str
-                          required: true
-                          description: The ONLYOFFICE local.json outbox HTTP header.
+            type: dict
+            required: true
+            description: The ONLYOFFICE local.json services configuration.
+            options:
+              CoAuthoring:
+                type: dict
+                required: true
+                description: The ONLYOFFICE local.json CoAuthoring configuration.
+                options:
+                  sql:
+                    type: dict
+                    required: true
+                    description: The ONLYOFFICE local.json database configuration.
+                    options:
+                      type:
+                        type: str
+                        required: true
+                        description: The ONLYOFFICE local.json database type.
+                        choices:
+                          - mariadb
+                          - postgres
+                      dbHost:
+                        type: str
+                        required: true
+                        description: The ONLYOFFICE local.json database host.
+                      dbPort:
+                        type: str
+                        required: true
+                        description: The ONLYOFFICE local.json database port.
+                      dbName:
+                        type: str
+                        required: true
+                        description: The ONLYOFFICE local.json database name.
+                      dbUser:
+                        type: str
+                        required: true
+                        description: The ONLYOFFICE local.json database user.
+                      dbPass:
+                        type: str
+                        required: true
+                        description: The ONLYOFFICE local.json database password.
+                  secret:
+                    type: dict
+                    required: true
+                    description: The ONLYOFFICE local.json JWT secrets.
+                    options:
+                      inbox:
+                        type: dict
+                        required: true
+                        description: The ONLYOFFICE local.json inbox configuration.
+                        options:
+                          string:
+                            type: str
+                            required: true
+                            description: The ONLYOFFICE local.json inbox JWT secret.
+                      outbox:
+                        type: dict
+                        required: true
+                        description: The ONLYOFFICE local.json outbox configuration.
+                        options:
+                          string:
+                            type: str
+                            required: true
+                            description: The ONLYOFFICE local.json outbox JWT secret.
+                      session:
+                        type: dict
+                        required: true
+                        description: The ONLYOFFICE local.json session configuration.
+                        options:
+                          string:
+                            type: str
+                            required: true
+                            description: The ONLYOFFICE local.json session JWT secret.
+                  token:
+                    type: dict
+                    required: true
+                    description: The ONLYOFFICE local.json token configuration.
+                    options:
+                      enable:
+                        type: dict
+                        required: true
+                        description: The ONLYOFFICE local.json tokens to enable.
+                        options:
+                          browser:
+                            type: bool
+                            required: true
+                            description: Enable the ONLYOFFICE local.json browser token.
+                          request:
+                            type: dict
+                            required: true
+                            description: The ONLYOFFICE local.json request tokens to enable.
+                            options:
+                              inbox:
+                                type: bool
+                                required: true
+                                description: Enable the ONLYOFFICE local.json inbox token.
+                              outbox:
+                                type: bool
+                                required: true
+                                description: Enable the ONLYOFFICE local.json outbox token.
+                      inbox:
+                        type: dict
+                        required: true
+                        description: The ONLYOFFICE local.json inbox header configuration.
+                        options:
+                          header:
+                            type: str
+                            required: true
+                            description: The ONLYOFFICE local.json inbox HTTP header.
+                      outbox:
+                        type: dict
+                        required: true
+                        description: The ONLYOFFICE local.json outbox header configuration.
+                        options:
+                          header:
+                            type: str
+                            required: true
+                            description: The ONLYOFFICE local.json outbox HTTP header.
           storage:
             type: dict
             required: true
