@@ -14,17 +14,40 @@
     - name: PostgreSQL
       block:
 
-        - name: Include PostgreSQL role
+        - name: Include PostgreSQL role database tasks
           ansible.builtin.include_role:
             name: postgresql
-            tasks_from: pgpass_read.yml
+            tasks_from: db.yml
+          vars:
+            postgresql_db: "{{ onlyoffice_debconf | community.general.json_query(onlyoffice_jpq_db_name) }}"
+
+        - name: Include PostgreSQL role user tasks
+          ansible.builtin.include_role:
+            name: postgresql
+            tasks_from: user.yml
           vars:
             postgresql_db: "{{ onlyoffice_debconf | community.general.json_query(onlyoffice_jpq_db_name) }}"
             postgresql_user: "{{ onlyoffice_debconf | community.general.json_query(onlyoffice_jpq_db_user) }}"
 
+#        - name: Include PostgreSQL role
+#          ansible.builtin.include_role:
+#            name: postgresql
+#            tasks_from: pgpass_read.yml
+#          vars:
+#            postgresql_db: "{{ onlyoffice_debconf | community.general.json_query(onlyoffice_jpq_db_name) }}"
+#            postgresql_user: "{{ onlyoffice_debconf | community.general.json_query(onlyoffice_jpq_db_user) }}"
+
         - name: Set a fact for the PostgreSQL password
           ansible.builtin.set_fact:
             onlyoffice_db_pwd: "{{ postgresql_password }}"
+
+        - name: The PostgreSQL password is required
+          ansible.builtin.assert:
+            that:
+              - onlyoffice_db_pwd is defined
+              - onlyoffice_db_pwd | length > 0
+
+        - fail:
 
       when: onlyoffice_debconf | community.general.json_query(onlyoffice_jpq_db_type) == "postgres"
 
@@ -42,6 +65,12 @@
         - name: Set a fact for the MariaDB password
           ansible.builtin.set_fact:
             onlyoffice_db_pwd: "{{ mariadb_password }}"
+
+        - name: The MariaDB password is required
+          ansible.builtin.assert:
+            that:
+              - onlyoffice_db_pwd is defined
+              - onlyoffice_db_pwd | length > 0
 
       when: onlyoffice_debconf | community.general.json_query(onlyoffice_jpq_db_type) == "mariadb"
 
