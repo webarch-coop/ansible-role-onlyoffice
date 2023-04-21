@@ -47,8 +47,6 @@
               - onlyoffice_db_pwd is defined
               - onlyoffice_db_pwd | length > 0
 
-        - fail:
-
       when: onlyoffice_debconf | community.general.json_query(onlyoffice_jpq_db_type) == "postgres"
 
     - name: MariaDB
