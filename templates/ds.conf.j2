@@ -3,16 +3,8 @@
 include /etc/nginx/includes/http-common.conf;
 
 server {
-{% if ansible_default_ipv4.address is defined %}
-  listen {{ ansible_default_ipv4.address }}:{{ onlyoffice_debconf | community.general.json_query(onlyoffice_jpq_ds_port) }} {% if onlyoffice_ssl | bool %}ssl {% endif %}default_server;
-{% else %}
   listen 0.0.0.0:{{ onlyoffice_debconf | community.general.json_query(onlyoffice_jpq_ds_port) }} {% if onlyoffice_ssl | bool %}ssl {% endif %}default_server;
-{% endif %}
-{% if ansible_default_ipv6.address is defined %}
-  listen {{ ansible_default_ipv6.address }}:{{ onlyoffice_debconf | community.general.json_query(onlyoffice_jpq_ds_port) }} {% if onlyoffice_ssl | bool %}ssl {% endif %}default_server;
-{% else %}
   listen [::]:{{ onlyoffice_debconf | community.general.json_query(onlyoffice_jpq_ds_port) }} {% if onlyoffice_ssl | bool %}ssl {% endif %}default_server;
-{% endif %}
   server_tokens off;
   set $secure_link_secret "{{ onlyoffice_local_fs_secretstring }}";
   root /usr/share/nginx/html;
