@@ -14,7 +14,23 @@
     - name: PostgreSQL
       block:
 
-        - name: Include PostgreSQL role
+        - name: Include PostgreSQL role info tasks
+          ansible.builtin.include_role:
+            name: postgresql
+            tasks_from: info.yml
+
+        - name: The existance of the PostgreSQL user and database is required
+          ansible.builtin.assert:
+            that:
+              - postgresql_dbs_existing is defned
+              - postgresql_dbs_existing != []
+              - postgresql_users_existing is defined
+              - postgresql_users_existing != []
+              - onlyoffice_debconf | community.general.json_query(onlyoffice_jpq_db_name) in postgresql_dbs_existing
+              - onlyoffice_debconf | community.general.json_query(onlyoffice_jpq_db_user) in postgresql_users_existing
+            quiet: "{% if ansible_verbosity == 0 %}true{% else %}false{% endif %}"
+
+        - name: Include PostgreSQL role read password tasks
           ansible.builtin.include_role:
             name: postgresql
             tasks_from: pgpass_read.yml
