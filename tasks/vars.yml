@@ -14,28 +14,13 @@
     - name: PostgreSQL
       block:
 
-        - name: Include PostgreSQL role database tasks
+        - name: Include PostgreSQL role
           ansible.builtin.include_role:
             name: postgresql
-            tasks_from: db.yml
-          vars:
-            postgresql_db: "{{ onlyoffice_debconf | community.general.json_query(onlyoffice_jpq_db_name) }}"
-
-        - name: Include PostgreSQL role user tasks
-          ansible.builtin.include_role:
-            name: postgresql
-            tasks_from: user.yml
+            tasks_from: pgpass_read.yml
           vars:
             postgresql_db: "{{ onlyoffice_debconf | community.general.json_query(onlyoffice_jpq_db_name) }}"
             postgresql_user: "{{ onlyoffice_debconf | community.general.json_query(onlyoffice_jpq_db_user) }}"
-
-#        - name: Include PostgreSQL role
-#          ansible.builtin.include_role:
-#            name: postgresql
-#            tasks_from: pgpass_read.yml
-#          vars:
-#            postgresql_db: "{{ onlyoffice_debconf | community.general.json_query(onlyoffice_jpq_db_name) }}"
-#            postgresql_user: "{{ onlyoffice_debconf | community.general.json_query(onlyoffice_jpq_db_user) }}"
 
         - name: Set a fact for the PostgreSQL password
           ansible.builtin.set_fact:
