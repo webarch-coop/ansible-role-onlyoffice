@@ -56,7 +56,7 @@
         - name: Include MariaDB role
           ansible.builtin.include_role:
             name: mariadb
-            tasks_from: mariadb_user.yml
+            tasks_from: user.yml
           vars:
             mariadb_database: "{{ onlyoffice_debconf | community.general.json_query(onlyoffice_jpq_db_name) }}"
             mariadb_username: "{{ onlyoffice_debconf | community.general.json_query(onlyoffice_jpq_db_user) }}"
