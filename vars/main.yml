@@ -34,6 +34,8 @@ onlyoffice_local:
     url: "{{ onlyoffice_debconf | community.general.json_query(onlyoffice_jpq_rabbitmq_proto) }}://{{ onlyoffice_debconf | community.general.json_query(onlyoffice_jpq_rabbitmq_user) }}:{{ onlyoffice_rabbitmq_pwd }}@{{ onlyoffice_debconf | community.general.json_query(onlyoffice_jpq_rabbitmq_host) }}"
   services:
     CoAuthoring:
+      server:
+        port: "{{ onlyoffice_debconf | community.general.json_query(onlyoffice_jpq_docservice_port) }}"
       sql:
         type: "{{ onlyoffice_debconf | community.general.json_query(onlyoffice_jpq_db_type) }}"
         dbHost: "{{ onlyoffice_debconf | community.general.json_query(onlyoffice_jpq_db_host) }}"
