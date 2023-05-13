@@ -1,0 +1,50 @@
+# Copyright 2020-2023 Chris Croome
+#
+# This file is part of the Webarchitects ONLYOFFICE Ansible role.
+#
+# The Webarchitects ONLYOFFICE Ansible role is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+#
+# The Webarchitects ONLYOFFICE Ansible role is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License along with the Webarchitects ONLYOFFICE Ansible role. If not, see <https://www.gnu.org/licenses/>.
+---
+- name: PostgreSQL tasks
+  block:
+
+    - name: Include PostgreSQL role info tasks
+      ansible.builtin.include_role:
+        name: postgresql
+        tasks_from: info.yml
+
+    - name: The existance of the PostgreSQL user and database is required
+      ansible.builtin.assert:
+        that:
+          - postgresql_dbs_existing is defned
+          - postgresql_dbs_existing != []
+          - postgresql_users_existing is defined
+          - postgresql_users_existing != []
+          - onlyoffice_debconf | community.general.json_query(onlyoffice_jpq_db_name) in postgresql_dbs_existing
+          - onlyoffice_debconf | community.general.json_query(onlyoffice_jpq_db_user) in postgresql_users_existing
+        quiet: "{% if ansible_verbosity == 0 %}true{% else %}false{% endif %}"
+
+    - name: Include PostgreSQL role read password tasks
+      ansible.builtin.include_role:
+        name: postgresql
+        tasks_from: pgpass_read.yml
+      vars:
+        postgresql_db: "{{ onlyoffice_debconf | community.general.json_query(onlyoffice_jpq_db_name) }}"
+        postgresql_user: "{{ onlyoffice_debconf | community.general.json_query(onlyoffice_jpq_db_user) }}"
+
+    - name: Set a fact for the PostgreSQL password
+      ansible.builtin.set_fact:
+        onlyoffice_db_pwd: "{{ postgresql_password }}"
+
+    - name: The PostgreSQL password is required
+      ansible.builtin.assert:
+        that:
+          - onlyoffice_db_pwd is defined
+          - onlyoffice_db_pwd | length > 0
+
+  tags:
+    - onlyoffice
+...

@@ -11,86 +11,12 @@
 - name: Set variables needed for the install
   block:
 
-    - name: PostgreSQL
-      block:
-
-        - name: Include PostgreSQL role info tasks
-          ansible.builtin.include_role:
-            name: postgresql
-            tasks_from: info.yml
-
-        - name: The existance of the PostgreSQL user and database is required
-          ansible.builtin.assert:
-            that:
-              - postgresql_dbs_existing is defned
-              - postgresql_dbs_existing != []
-              - postgresql_users_existing is defined
-              - postgresql_users_existing != []
-              - onlyoffice_debconf | community.general.json_query(onlyoffice_jpq_db_name) in postgresql_dbs_existing
-              - onlyoffice_debconf | community.general.json_query(onlyoffice_jpq_db_user) in postgresql_users_existing
-            quiet: "{% if ansible_verbosity == 0 %}true{% else %}false{% endif %}"
-
-        - name: Include PostgreSQL role read password tasks
-          ansible.builtin.include_role:
-            name: postgresql
-            tasks_from: pgpass_read.yml
-          vars:
-            postgresql_db: "{{ onlyoffice_debconf | community.general.json_query(onlyoffice_jpq_db_name) }}"
-            postgresql_user: "{{ onlyoffice_debconf | community.general.json_query(onlyoffice_jpq_db_user) }}"
-
-        - name: Set a fact for the PostgreSQL password
-          ansible.builtin.set_fact:
-            onlyoffice_db_pwd: "{{ postgresql_password }}"
-
-        - name: The PostgreSQL password is required
-          ansible.builtin.assert:
-            that:
-              - onlyoffice_db_pwd is defined
-              - onlyoffice_db_pwd | length > 0
-
+    - name: Include PostgreSQL tasks
+      ansible.builtin.include_tasks: postgres.yml
       when: onlyoffice_debconf | community.general.json_query(onlyoffice_jpq_db_type) == "postgres"
 
-    - name: MariaDB
-      block:
-
-        - name: Include MariaDB role
-          ansible.builtin.include_role:
-            name: mariadb
-            tasks_from: user.yml
-          vars:
-            mariadb_database: "{{ onlyoffice_debconf | community.general.json_query(onlyoffice_jpq_db_name) }}"
-            mariadb_host: localhost
-            mariadb_priv: "{{ onlyoffice_mariadb_priv }}"
-            mariadb_username: "{{ onlyoffice_debconf | community.general.json_query(onlyoffice_jpq_db_user) }}"
-
-        - name: Set a fact for the MariaDB password
-          ansible.builtin.set_fact:
-            onlyoffice_db_pwd: "{{ mariadb_password }}"
-
-        - name: The MariaDB password is required
-          ansible.builtin.assert:
-            that:
-              - onlyoffice_db_pwd is defined
-              - onlyoffice_db_pwd | length > 0
-
-        - name: Ensure MariaDB user can login using localhost and 127.0.0.1
-          community.mysql.mysql_query:
-            query: >-
-              GRANT
-              {% for onlyoffice_mariadb_p in onlyoffice_mariadb_priv %}{{ onlyoffice_mariadb_p }}{% if not loop.last %},{% endif %}{% endfor %}
-              PRIVILEGES ON
-              {{ onlyoffice_debconf | community.general.json_query(onlyoffice_jpq_db_name) }}.* TO
-              '{{ onlyoffice_debconf | community.general.json_query(onlyoffice_jpq_db_user) }}'@'{{ onlyoffice_mariadb_host }}'
-              IDENTIFIED BY '{{ onlyoffice_db_pwd }}' WITH GRANT OPTION
-            login_db: mysql
-            login_user: root
-            login_unix_socket: /run/mysqld/mysqld.sock
-          loop:
-            - 127.0.0.1
-            - localhost
-          loop_control:
-            loop_var: onlyoffice_mariadb_host
-
+    - name: Include MariaDB tasks
+      ansible.builtin.include_tasks: mariadb.yml
       when: onlyoffice_debconf | community.general.json_query(onlyoffice_jpq_db_type) == "mariadb"
 
     - name: Include RabbitMQ role
