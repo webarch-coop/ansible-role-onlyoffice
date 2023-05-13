@@ -233,6 +233,10 @@ argument_specs:
                             type: str
                             required: true
                             description: The ONLYOFFICE local.json session JWT secret.
+                  server:
+                    type: dict
+                    required: true
+                    description: The ONLYOFFICE local.json server configuration.
                   token:
                     type: dict
                     required: true
