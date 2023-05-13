@@ -61,6 +61,26 @@ onlyoffice_local:
     fs:
       secretString: "{{ onlyoffice_fs_secret }}"
 
+# MariaDB
+onlyoffice_mariadb_priv:
+  - ALTER
+  - ALTER ROUTINE
+  - CREATE
+  - CREATE ROUTINE
+  - CREATE TEMPORARY TABLES
+  - CREATE VIEW
+  - DELETE
+  - DROP
+  - EXECUTE
+  - INDEX
+  - INSERT
+  - LOCK TABLES
+  - REFERENCES
+  - SELECT
+  - SHOW VIEW
+  - TRIGGER
+  - UPDATE
+
 # These variables are reset when this role is run, they are defined here to avoid undefined variable erors
 onlyoffice_db_pwd: ""
 onlyoffice_fs_secret: ""

@@ -53,58 +53,14 @@
     - name: MariaDB
       block:
 
-        - name: Include MariaDB role for host 127.0.0.1
+        - name: Include MariaDB role
           ansible.builtin.include_role:
             name: mariadb
             tasks_from: user.yml
           vars:
             mariadb_database: "{{ onlyoffice_debconf | community.general.json_query(onlyoffice_jpq_db_name) }}"
-            mariadb_host: "127.0.0.1"
-            mariadb_priv:
-              - ALTER
-              - ALTER ROUTINE
-              - CREATE
-              - CREATE ROUTINE
-              - CREATE TEMPORARY TABLES
-              - CREATE VIEW
-              - DELETE
-              - DROP
-              - EXECUTE
-              - INDEX
-              - INSERT
-              - LOCK TABLES
-              - REFERENCES
-              - SELECT
-              - SHOW VIEW
-              - TRIGGER
-              - UPDATE
-            mariadb_username: "{{ onlyoffice_debconf | community.general.json_query(onlyoffice_jpq_db_user) }}"
-
-        - name: Include MariaDB role for host localhost
-          ansible.builtin.include_role:
-            name: mariadb
-            tasks_from: user.yml
-          vars:
-            mariadb_database: "{{ onlyoffice_debconf | community.general.json_query(onlyoffice_jpq_db_name) }}"
-            mariadb_host: "127.0.0.1"
-            mariadb_priv:
-              - ALTER
-              - ALTER ROUTINE
-              - CREATE
-              - CREATE ROUTINE
-              - CREATE TEMPORARY TABLES
-              - CREATE VIEW
-              - DELETE
-              - DROP
-              - EXECUTE
-              - INDEX
-              - INSERT
-              - LOCK TABLES
-              - REFERENCES
-              - SELECT
-              - SHOW VIEW
-              - TRIGGER
-              - UPDATE
+            mariadb_host: localhost
+            mariadb_priv: "{{ onlyoffice_mariadb_priv }}"
             mariadb_username: "{{ onlyoffice_debconf | community.general.json_query(onlyoffice_jpq_db_user) }}"
 
         - name: Set a fact for the MariaDB password
@@ -116,6 +72,23 @@
             that:
               - onlyoffice_db_pwd is defined
               - onlyoffice_db_pwd | length > 0
+
+        - name: Ensure MariaDB user can login using localhost and 127.0.0.1
+          community.mysql.mysql_query:
+            query: >-
+              GRANT
+              {% for onlyoffice_mariadb_p in onlyoffice_mariadb_priv %}{{ onlyoffice_mariadb_p }}{% if not loop.last %},{% endif %}{% endfor %}
+              PRIVILEGES ON
+              {{ onlyoffice_debconf | community.general.json_query(onlyoffice_jpq_db_name) }}.* TO
+              '{{ onlyoffice_debconf | community.general.json_query(onlyoffice_jpq_db_user) }}'@'{{ onlyoffice_mariadb_host }}'
+              IDENTIFIED BY '{{ onlyoffice_db_pwd }}' WITH GRANT OPTION
+            login_user: root
+            login_unix_socket: /run/mysqld/mysqld.sock
+          loop:
+            - 127.0.0.1
+            - localhost
+          loop_control:
+            loop_var: onlyoffice_mariadb_host
 
       when: onlyoffice_debconf | community.general.json_query(onlyoffice_jpq_db_type) == "mariadb"
 
