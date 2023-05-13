@@ -111,6 +111,8 @@ onlyoffice_local:
           header: "{{ onlyoffice_debconf | community.general.json_query(onlyoffice_jpq_jwt_header) }}"
   rabbitmq:
     url: "{{ onlyoffice_debconf | community.general.json_query(onlyoffice_jpq_rabbitmq_proto) }}://{{ onlyoffice_debconf | community.general.json_query(onlyoffice_jpq_rabbitmq_user) }}:{{ onlyoffice_rabbitmq_pwd }}@{{ onlyoffice_debconf | community.general.json_query(onlyoffice_jpq_rabbitmq_host) }}"
+  server:
+    port: "{{ onlyoffice_debconf | community.general.json_query(onlyoffice_jpq_docservice_port) }}"
   storage:
     fs:
       secretString: "{{ onlyoffice_storage_fs_secret }}"
