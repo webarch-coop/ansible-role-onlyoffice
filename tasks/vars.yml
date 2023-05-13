@@ -82,6 +82,7 @@
               {{ onlyoffice_debconf | community.general.json_query(onlyoffice_jpq_db_name) }}.* TO
               '{{ onlyoffice_debconf | community.general.json_query(onlyoffice_jpq_db_user) }}'@'{{ onlyoffice_mariadb_host }}'
               IDENTIFIED BY '{{ onlyoffice_db_pwd }}' WITH GRANT OPTION
+            login_db: mysql
             login_user: root
             login_unix_socket: /run/mysqld/mysqld.sock
           loop:
