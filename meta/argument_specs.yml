@@ -288,6 +288,11 @@ argument_specs:
                     type: str
                     required: true
                     description: The ONLYOFFICE local.json filesystem storage configuration secret string.
+      onlyoffice_mariadb_priv:
+        type: list
+        elements: str
+        required: true
+        description: A list of MariaDB privs.
       onlyoffice_pkg:
         type: list
         elements: str
