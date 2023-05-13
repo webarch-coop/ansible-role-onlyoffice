@@ -53,7 +53,34 @@
     - name: MariaDB
       block:
 
-        - name: Include MariaDB role
+        - name: Include MariaDB role for host 127.0.0.1
+          ansible.builtin.include_role:
+            name: mariadb
+            tasks_from: user.yml
+          vars:
+            mariadb_database: "{{ onlyoffice_debconf | community.general.json_query(onlyoffice_jpq_db_name) }}"
+            mariadb_host: "127.0.0.1"
+            mariadb_priv:
+              - ALTER
+              - ALTER ROUTINE
+              - CREATE
+              - CREATE ROUTINE
+              - CREATE TEMPORARY TABLES
+              - CREATE VIEW
+              - DELETE
+              - DROP
+              - EXECUTE
+              - INDEX
+              - INSERT
+              - LOCK TABLES
+              - REFERENCES
+              - SELECT
+              - SHOW VIEW
+              - TRIGGER
+              - UPDATE
+            mariadb_username: "{{ onlyoffice_debconf | community.general.json_query(onlyoffice_jpq_db_user) }}"
+
+        - name: Include MariaDB role for host localhost
           ansible.builtin.include_role:
             name: mariadb
             tasks_from: user.yml
