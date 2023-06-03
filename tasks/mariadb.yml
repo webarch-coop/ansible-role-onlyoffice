@@ -59,7 +59,7 @@
       community.mysql.mysql_query:
         query:
           - CREATE USER '{{ onlyoffice_debconf | community.general.json_query(onlyoffice_jpq_db_user) }}'@'127.0.0.1' IDENTIFIED BY '{{ onlyoffice_db_pwd }}'
-          - GRANT {% for onlyoffice_mariadb_p in onlyoffice_mariadb_priv %}{{ onlyoffice_mariadb_p }}{% if not loop.last %},{% endif %}{% endfor %} PRIVILEGES ON {{ onlyoffice_debconf | community.general.json_query(onlyoffice_jpq_db_name) }}.* TO '{{ onlyoffice_debconf | community.general.json_query(onlyoffice_jpq_db_name) }}'@'127.0.0.1'
+          - GRANT {% for onlyoffice_mariadb_p in onlyoffice_mariadb_priv %}{{ onlyoffice_mariadb_p }}{% if not loop.last %},{% endif %}{% endfor %} ON {{ onlyoffice_debconf | community.general.json_query(onlyoffice_jpq_db_name) }}.* TO '{{ onlyoffice_debconf | community.general.json_query(onlyoffice_jpq_db_name) }}'@'127.0.0.1'
         login_db: mysql
         login_user: root
         login_unix_socket: /run/mysqld/mysqld.sock
@@ -69,7 +69,7 @@
       community.mysql.mysql_query:
         query:
           - CREATE USER '{{ onlyoffice_debconf | community.general.json_query(onlyoffice_jpq_db_user) }}'@'localhost' IDENTIFIED BY '{{ onlyoffice_db_pwd }}'
-          - GRANT {% for onlyoffice_mariadb_p in onlyoffice_mariadb_priv %}{{ onlyoffice_mariadb_p }}{% if not loop.last %},{% endif %}{% endfor %} PRIVILEGES ON {{ onlyoffice_debconf | community.general.json_query(onlyoffice_jpq_db_name) }}.* TO '{{ onlyoffice_debconf | community.general.json_query(onlyoffice_jpq_db_name) }}'@'localhost'
+          - GRANT {% for onlyoffice_mariadb_p in onlyoffice_mariadb_priv %}{{ onlyoffice_mariadb_p }}{% if not loop.last %},{% endif %}{% endfor %} ON {{ onlyoffice_debconf | community.general.json_query(onlyoffice_jpq_db_name) }}.* TO '{{ onlyoffice_debconf | community.general.json_query(onlyoffice_jpq_db_name) }}'@'localhost'
         login_db: mysql
         login_user: root
         login_unix_socket: /run/mysqld/mysqld.sock
