@@ -63,7 +63,7 @@
         - name: Check if a backup of the original /etc/onlyoffice/documentserver/nginx/includes/http-common.conf exists
           ansible.builtin.stat:
             path: /etc/onlyoffice/documentserver/nginx/includes/http-common.conf.ansible.backup
-          register: onlyoffice_nginx_http_common_backup
+          register: onlyoffice_nginx_http_common_conf_backup
 
         - name: Copy the original /etc/onlyoffice/documentserver/nginx/includes/http-common.conf
           ansible.builtin.copy:
