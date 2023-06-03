@@ -45,10 +45,15 @@
         var: onlyoffice_mariadb_info
         verbosity: "{% if ansible_check_mode | bool %}1{% else %}2{% endif %}"
 
-    - name: Set facts for MariaDB 127.0.0.1 and localhost
+    - name: Set facts for MariaDB 127.0.0.1
       ansible.builtin.set_fact:
         onlyoffice_mariadb_127_users: "{{ onlyoffice_mariadb_info.users['127.0.0.1'].keys() }}"
+      when: onlyoffice_mariadb_info.users['127.0.0.1'] is defined
+
+    - name: Set facts for MariaDB localhost
+      ansible.builtin.set_fact:
         onlyoffice_mariadb_lo_users: "{{ onlyoffice_mariadb_info.users.localhost.keys() }}"
+      when: onlyoffice_mariadb_info.users.localhost is defined
 
     - name: Ensure MariaDB user can login using 127.0.0.1
       community.mysql.mysql_query:
@@ -58,7 +63,7 @@
         login_db: mysql
         login_user: root
         login_unix_socket: /run/mysqld/mysqld.sock
-      when: onlyoffice_debconf | community.general.json_query(onlyoffice_jpq_db_user) not in onlyoffice_mariadb_127_users
+      when: ( onlyoffice_mariadb_info.users['127.0.0.1'] is not defined ) or ( onlyoffice_debconf | community.general.json_query(onlyoffice_jpq_db_user) not in onlyoffice_mariadb_127_users )
 
     - name: Ensure MariaDB user can login using localhost
       community.mysql.mysql_query:
@@ -68,7 +73,7 @@
         login_db: mysql
         login_user: root
         login_unix_socket: /run/mysqld/mysqld.sock
-      when: onlyoffice_debconf | community.general.json_query(onlyoffice_jpq_db_user) not in onlyoffice_mariadb_lo_users
+      when: ( onlyoffice_mariadb_info.users.localhost is not defined ) or ( onlyoffice_debconf | community.general.json_query(onlyoffice_jpq_db_user) not in onlyoffice_mariadb_lo_users )
 
   tags:
     - onlyoffice
