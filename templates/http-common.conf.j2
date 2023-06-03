@@ -1,7 +1,7 @@
 # {{ ansible_managed }}
 
 upstream docservice {
-  server localhost:{{ onlyoffice_jpq_docservice_port }} max_fails=0 fail_timeout=0s;
+  server localhost:{{ onlyoffice_debconf | community.general.json_query(onlyoffice_jpq_docservice_port) }} max_fails=0 fail_timeout=0s;
 }
 
 upstream example {
