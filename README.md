@@ -62,7 +62,7 @@ A boolean, `onlyoffice_validate` defaults to `true` set it to false to skip the 
 
 There is a [development repo available here](https://git.coop/webarch/nextcloud-server) that builds a ONLYOFFICE server using this role.
 
-## Upgrading from Debian Buster to Bullseye
+##  Upgrading from Debian Buster to Bullseye
 
 After upgrading the Debian PostgreSQL needs to be upgraded:
 
@@ -70,6 +70,30 @@ After upgrading the Debian PostgreSQL needs to be upgraded:
 pg_dropcluster --stop 13 main
 pg_upgradecluster 11 main
 apt remove postgresql-11 postgresql-client-11
+```
+
+### Check the debconf settings
+
+```
+ debconf-show onlyoffice-documentserver
+* onlyoffice/db-pwd: (password omitted)
+* onlyoffice/rabbitmq-pwd: (password omitted)
+* onlyoffice/jwt-secret: (password omitted)
+* onlyoffice/db-port: 3306
+* onlyoffice/jwt-enabled: true
+* onlyoffice/db-host: localhost
+* onlyoffice/rabbitmq-proto: amqp
+* onlyoffice/ds-port: 8080
+* onlyoffice/rabbitmq-user: onlyoffice
+* onlyoffice/rabbitmq-host: localhost
+* onlyoffice/jwt-header: AuthorizationJwt
+* onlyoffice/db-name: onlyoffice
+* onlyoffice/example-port: 3000
+* onlyoffice/db-type: mariadb
+* onlyoffice/db-user: onlyoffice
+* onlyoffice/cluster-mode: false
+* onlyoffice/remove-db: false
+* onlyoffice/docservice-port: 8000
 ```
 
 ## References
