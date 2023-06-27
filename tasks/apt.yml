@@ -82,6 +82,7 @@
           ansible.builtin.shell: |-
             set -e -o pipefail
             gpg --dearmor < /root/onlyoffice.asc > /etc/apt/keyrings/onlyoffice.gpg
+            chmod 644 /etc/apt/keyrings/onlyoffice.gpg
           args:
             executable: "{{ ansible_local.bash.path }}"
           changed_when: false
