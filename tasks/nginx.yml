@@ -42,6 +42,19 @@
         - onlyoffice_nginx_ds_conf_original.stat.exists | bool
         - not onlyoffice_nginx_ds_conf_backup.stat.exists | bool
 
+    - name: Read package facts
+      ansible.builtin.package_facts:
+        manager: apt
+
+    - name: Set a fact for the ONLYOFFICE apt package version
+      ansible.builtin.set_fact:
+        onlyoffice_docserver_apt_version: "{{ ansible_facts.packages['onlyoffice-documentserver'] | community.general.json_query('[0].version') }}"
+
+    - name: Debug onlyoffice_docserver_apt_version
+      ansible.builtin.debug:
+        var: onlyoffice_docserver_apt_version
+        verbosity: 1
+
     - name: Nginx /etc/onlyoffice/documentserver/nginx/includes/ds-docservice.conf configuration in place
       ansible.builtin.template:
         src: ds-docservice.conf.j2

@@ -4,7 +4,7 @@
 rewrite ^/$ $the_scheme://$the_host/welcome/ redirect;
 
 #script caching protection
-rewrite ^(?<cache>\/web-apps\/apps\/(?!api\/).*)$ $the_scheme://$the_host/7.4.1-36$cache redirect;
+rewrite ^(?<cache>\/web-apps\/apps\/(?!api\/).*)$ $the_scheme://$the_host/{{ onlyoffice_docserver_apt_version }}$cache redirect;
 
 #disable caching for api.js
 location ~ ^(\/[\d]+\.[\d]+\.[\d]+[\.|-][\d]+)?\/(web-apps\/apps\/api\/documents\/api\.js)$ {
