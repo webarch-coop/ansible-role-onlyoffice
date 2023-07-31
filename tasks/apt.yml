@@ -45,7 +45,7 @@
       ansible.builtin.file:
         path: /etc/apt/keyrings
         state: directory
-        mode: 0755
+        mode: "0755"
         owner: root
         group: root
 
@@ -62,7 +62,7 @@
             url: "{{ onlyoffice_gpg_url }}"
             dest: /root/onlyoffice.asc
             force: true
-            mode: 0644
+            mode: "0644"
             owner: root
             group: root
           changed_when: false
@@ -129,7 +129,7 @@
       ansible.builtin.template:
         src: onlyoffice.sources.j2
         dest: /etc/apt/sources.list.d/onlyoffice.sources
-        mode: 0644
+        mode: "0644"
         owner: root
         group: root
       register: onlyoffice_sources
@@ -138,7 +138,7 @@
       ansible.builtin.template:
         src: onlyoffice.pref.j2
         dest: /etc/apt/preferences.d/onlyoffice.pref
-        mode: 0644
+        mode: "0644"
         owner: root
         group: root
       register: onlyoffice_preferences
