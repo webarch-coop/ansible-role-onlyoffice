@@ -1,10 +1,10 @@
 # {{ ansible_managed }}
 
 #welcome page
-rewrite ^/$ $the_scheme://$the_host/welcome/ redirect;
+rewrite ^/$ $the_scheme://$the_host$the_prefix/welcome/ redirect;
 
 #script caching protection
-rewrite ^(?<cache>\/web-apps\/apps\/(?!api\/).*)$ $the_scheme://$the_host/{{ onlyoffice_docserver_apt_version }}$cache redirect;
+rewrite ^(?<cache>\/web-apps\/apps\/(?!api\/).*)$ $the_scheme://$the_host$the_prefix/{{ onlyoffice_docserver_apt_version }}$cache redirect;
 
 #disable caching for api.js
 location ~ ^(\/[\d]+\.[\d]+\.[\d]+[\.|-][\d]+)?\/(web-apps\/apps\/api\/documents\/api\.js)$ {
@@ -77,7 +77,7 @@ location ~ ^(\/[\d]+\.[\d]+\.[\d]+[\.|-][\d]+)?(\/doc\/.*) {
   proxy_http_version 1.1;
 }
 
-location /7.4.1-36/ {
+location /{{ onlyoffice_docserver_apt_version }}/ {
   proxy_pass http://docservice/;
 }
 

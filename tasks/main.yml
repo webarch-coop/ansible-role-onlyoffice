@@ -35,6 +35,8 @@
 
     - name: Include ONLYOFFICE apt repo config and install fonts and other package tasks
       ansible.builtin.include_tasks: apt.yml
+      tags:
+        - onlyoffice_apt
 
     - name: Include check tasks
       ansible.builtin.include_tasks: checks.yml
