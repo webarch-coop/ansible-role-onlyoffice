@@ -22,5 +22,5 @@
           - onlyoffice-documentserver
         install_recommends: true
         state: present
-
+      check_mode: true
 ...
