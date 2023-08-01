@@ -8,6 +8,8 @@ This Ansible role is based on the instructions for [Installing ONLYOFFICE Docs C
 
 This role can be used to configure a stand-alone ONLYOFFICE Document Server that uses Nginx and PostgreSQL or it can be used to install ONLYOFFICE Document Server on a LAMP server with Apache providing a reverse proxy service to Nginx and MariaDB / MySQL being used as the database.
 
+There is a [development repo available here](https://git.coop/webarch/nextcloud-server) that builds a Nextcloud server with ONLYOFFICE using this role.
+
 ## Role variables
 
 See the [defaults/main.yml](defaults/main.yml) file for the default variables, the [vars/main.yml](vars/main.yml) file for the preset variables and the [meta/argument_specs.yml](meta/argument_specs.yml) file for the variable specification.
@@ -24,7 +26,7 @@ A list of [debconf options for ONLYOFICE](https://helpcenter.onlyoffice.com/inst
 onlyoffice_debconf:
   - name: onlyoffice-documentserver
     question: onlyoffice/cluster-mode
-    value: "false"
+    value: false
     vtype: boolean
 ```
 
@@ -46,6 +48,10 @@ A string, the value to set for the debconf question.
 
 A string, the type of the value.
 
+### onlyoffice_local
+
+A YAML dictionary, which will be converted to JSON and written to `/etc/onlyoffice/documentserver/local.json`.
+
 ### onlyoffice_ssl_certificate
 
 A string, the path to the TLS fullchain certificate for HTTPS.
@@ -58,11 +64,7 @@ A string, the path to the TLS private key for HTTPS.
 
 A boolean, `onlyoffice_validate` defaults to `true` set it to false to skip the role using the [ansible.builtin.validate_argument_spec module](https://docs.ansible.com/ansible/latest/collections/ansible/builtin/validate_argument_spec_module.html) to validate variables that start with `onlyoffice_`.
 
-## Usage
-
-There is a [development repo available here](https://git.coop/webarch/nextcloud-server) that builds a ONLYOFFICE server using this role.
-
-##  Upgrading from Debian Buster to Bullseye
+## Upgrading from Debian Buster to Bullseye
 
 After upgrading the Debian PostgreSQL needs to be upgraded:
 
@@ -74,8 +76,8 @@ apt remove postgresql-11 postgresql-client-11
 
 ### Check the debconf settings
 
-```
- debconf-show onlyoffice-documentserver
+```bash
+debconf-show onlyoffice-documentserver
 * onlyoffice/db-pwd: (password omitted)
 * onlyoffice/rabbitmq-pwd: (password omitted)
 * onlyoffice/jwt-secret: (password omitted)
