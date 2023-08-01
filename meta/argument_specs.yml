@@ -64,7 +64,11 @@ argument_specs:
             type: str
             required: true
             description: Value for the debconf question.
-      onlyoffice_documentserver_version:
+      onlyoffice_docserver_apt_version:
+        type: str
+        required: false
+        description: Internal variable for the version of the onlyoffice-documentserver installed.
+      onlyoffice_docserver_version:
         type: str
         required: true
         description: The version of the onlyoffice-documentserver package to be pinned.

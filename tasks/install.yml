@@ -11,12 +11,31 @@
 - name: ONLYOFFICE installed
   block:
 
+    - name: Read package facts
+      ansible.builtin.package_facts:
+        manager: apt
+
+    - name: Set a fact for the ONLYOFFICE apt package version
+      ansible.builtin.set_fact:
+        onlyoffice_docserver_apt_version: "{{ ansible_facts.packages['onlyoffice-documentserver'] | community.general.json_query('[0].version') }}"
+
+    - name: Debug onlyoffice_docserver_version required
+      ansible.builtin.debug:
+        var: onlyoffice_docserver_version
+
+    - name: Debug onlyoffice_docserver_apt_version installed
+      ansible.builtin.debug:
+        var: onlyoffice_docserver_apt_version
+
     - name: ONLYOFFICE Document Server present
       ansible.builtin.apt:
         pkg:
-          - onlyoffice-documentserver
+          - "onlyoffice-documentserver={{ onlyoffice_docserver_version }}"
         install_recommends: true
         state: present
+      when: >-
+        ( onlyoffice_docserver_apt_version is not defined ) or
+        ( onlyoffice_docserver_version != onlyoffice_docserver_apt_version )
       notify:
         - Restart docservice
 
@@ -49,22 +68,6 @@
           ansible.builtin.debug:
             var: onlyoffice_local_json
             verbosity: 3
-
-        # - name: Update the storage secret string
-        #   ansible.builtin.command: "/usr/bin/documentserver-update-securelink.sh -s {{ onlyoffice_jwt_secret }}"
-        #   changed_when: true
-        #   when:
-        #     - onlyoffice_jwt_secret is defined
-        #     - onlyoffice_local_json.storage.fs.secretString != onlyoffice_jwt_secret
-        #   no_log: true
-
-        # - name: Set the RabbitMQ URL
-        #   ansible.builtin.command: >-
-        #     /var/www/onlyoffice/documentserver/npm/json -f /etc/onlyoffice/documentserver/local.json
-        #     -I -e 'this.rabbitmq.url = "{{ onlyoffice_rabbitmq_url }}"'
-        #   changed_when: true
-        #   when: onlyoffice_local_json.rabbitmq.url != onlyoffice_rabbitmq_url
-        #   no_log: true
 
       when: onlyoffice_local_json_file.stat.exists | bool
 

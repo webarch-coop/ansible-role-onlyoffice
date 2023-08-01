@@ -82,7 +82,7 @@ onlyoffice_debconf:
     question: onlyoffice/remove-db
     value: false
     vtype: boolean
-onlyoffice_documentserver_version: 7.4.1-36
+onlyoffice_docserver_version: 7.4.1-36
 onlyoffice_local:
   services:
     CoAuthoring:
