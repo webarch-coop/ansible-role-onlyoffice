@@ -37,8 +37,8 @@
     - name: Ensure that the ONLYOFFICE apt package version is defined
       ansible.builtin.assert:
         that:
-          - onlyoffice_docserver_apt_version is defines
-          - onlyoffice_docserver_apt_version is ansible.builtin.version('7.4.1-36', '>=')"
+          - onlyoffice_docserver_apt_version is defined
+          - onlyoffice_docserver_apt_version is ansible.builtin.version('7.4.1-36', '>=')
         quiet: "{% if ansible_verbosity == 0 %}true{% else %}false{% endif %}"
 
     - name: Check if the original /etc/onlyoffice/documentserver/nginx/ds.conf exists

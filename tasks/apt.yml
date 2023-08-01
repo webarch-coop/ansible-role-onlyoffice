@@ -77,6 +77,7 @@
           ansible.builtin.assert:
             that:
               - onlyoffice_asc_file.stat.checksum == onlyoffice_gpg_checksum_raw
+            quiet: "{% if ansible_verbosity == 0 %}true{% else %}false{% endif %}"
 
         - name: ONLYOFFICE gpg key dearmored
           ansible.builtin.shell: |-
@@ -114,6 +115,7 @@
           ansible.builtin.assert:
             that:
               - onlyoffice_gpg_fingerprints_found[0] == onlyoffice_gpg_fingerprints[0]
+            quiet: "{% if ansible_verbosity == 0 %}true{% else %}false{% endif %}"
           when: ansible_local.gpg.version is version('2.2.12', '<')
 
         - name: ONLYOFFICE gpg key check all fingerprints
@@ -121,6 +123,7 @@
             that:
               - onlyoffice_gpg_fingerprints_found | difference(onlyoffice_gpg_fingerprints) | length == 0
               - onlyoffice_gpg_fingerprints | difference(onlyoffice_gpg_fingerprints_found) | length == 0
+            quiet: "{% if ansible_verbosity == 0 %}true{% else %}false{% endif %}"
           when: ansible_local.gpg.version is version('2.2.12', '>=')
 
       when: (not ansible_check_mode | bool)

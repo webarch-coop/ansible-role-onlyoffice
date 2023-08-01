@@ -21,12 +21,10 @@
         - Restart docservice
 
     # https://helpcenter.onlyoffice.com/de/server/linux/document/install-fonts.aspx
+    # changed_when is set to false as there is no easy way to know if this command did anything or not
     - name: ONLYOFFICE Document Server fonts configured
       ansible.builtin.command: documentserver-generate-allfonts.sh true
-      changed_when: true
-      notify:
-        - Restart docservice
-        - Restart converter
+      changed_when: false
 
     - name: Check if the ONLYOFFICE Document Server local.json file exists
       ansible.builtin.stat:

@@ -12,7 +12,7 @@ onlyoffice: false
 onlyoffice_debconf:
   - name: onlyoffice-documentserver
     question: onlyoffice/cluster-mode
-    value: "false"
+    value: false
     vtype: boolean
   - name: onlyoffice-documentserver
     question: onlyoffice/db-host
@@ -52,7 +52,7 @@ onlyoffice_debconf:
     vtype: string
   - name: onlyoffice-documentserver
     question: onlyoffice/jwt-enabled
-    value: "true"
+    value: true
     vtype: boolean
   - name: onlyoffice-documentserver
     question: onlyoffice/jwt-header
@@ -80,7 +80,7 @@ onlyoffice_debconf:
     vtype: string
   - name: onlyoffice-documentserver
     question: onlyoffice/remove-db
-    value: "false"
+    value: false
     vtype: boolean
 onlyoffice_local:
   services:
