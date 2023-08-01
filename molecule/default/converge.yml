@@ -1,0 +1,40 @@
+# Copyright 2020-2023 Chris Croome
+#
+# This file is part of the Webarchitects ONLYOFFICE Ansible role.
+#
+# The Webarchitects ONLYOFFICE Ansible role is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+#
+# The Webarchitects ONLYOFFICE Ansible role is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License along with the Webarchitects ONLYOFFICE Ansible role. If not, see <https://www.gnu.org/licenses/>.
+---
+- name: Run as root
+  become: true
+  connection: local
+  gather_facts: true
+  hosts:
+    - localhost
+  tasks:
+
+    - name: Debug ansible_effective_user_id
+      ansible.builtin.debug:
+        var: ansible_effective_user_id
+
+    - name: Debug ansible_user_id
+      ansible.builtin.debug:
+        var: ansible_user_id
+
+    - name: Debug ansible_user_dir
+      ansible.builtin.debug:
+        var: ansible_user_dir
+
+    # Test the apt configuration, other test to be added in the future
+    - name: Include onlyoffice role as root
+      ansible.builtin.include_role:
+        name: onlyoffice
+        apply:
+          tags:
+            - onlyoffice_apt
+      vars:  # noqa var-naming[no-role-prefix]
+        onlyoffice: true
+...
