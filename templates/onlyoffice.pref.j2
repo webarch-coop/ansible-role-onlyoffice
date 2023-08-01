@@ -3,6 +3,9 @@
 {% for pkg in onlyoffice_pkg %}
 Package: {{ pkg }}
 Pin: origin download.onlyoffice.com
+{% if pkg == "onlyoffice-documentserver" %}
+Pin: version {{ onlyoffice_documentserver_version }}
+{% endif %}
 Pin-Priority: 100
 
 {% endfor %}

@@ -46,6 +46,10 @@ A string, the value to set for the debconf question.
 
 A string, the type of the value.
 
+### onlyoffice_documentserver_version
+
+The version of the `onlyoffice-documentserver` Debian package to be installed and pinned. This is set to prevent unuxpected updates breaking production servers as this role sometimes need updating for new versions.
+
 ### onlyoffice_local
 
 A YAML dictionary, which will be converted to JSON and written to `/etc/onlyoffice/documentserver/local.json`.
