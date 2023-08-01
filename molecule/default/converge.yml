@@ -29,14 +29,9 @@
         var: ansible_user_dir
 
     - name: Test the ONLYOFFICE  apt configuration
-      block:
-
-        - name: Include onlyoffice role as root
-          ansible.builtin.include_role:
-            name: onlyoffice
-          vars:  # noqa var-naming[no-role-prefix]
-            onlyoffice: true
-
-      tags:
-        - onlyoffice_apt
+      ansible.builtin.include_role:
+        name: onlyoffice
+        tasks_from: apt.yml
+      vars:  # noqa var-naming[no-role-prefix]
+        onlyoffice: true
 ...
