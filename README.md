@@ -50,7 +50,7 @@ A string, the type of the value.
 
 ### onlyoffice_documentserver_version
 
-The version of the `onlyoffice-documentserver` Debian package to be installed and pinned. This is set to prevent unuxpected updates breaking production servers as this role sometimes needs updating for new versions of ONLYOFFICE.
+The version of the `onlyoffice-documentserver` Debian package to be installed and pinned. This is set to prevent updates breaking production servers as this role sometimes needs updating for new versions of ONLYOFFICE.
 
 ### onlyoffice_local
 
