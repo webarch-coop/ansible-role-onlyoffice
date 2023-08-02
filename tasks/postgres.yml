@@ -19,7 +19,7 @@
     - name: The existance of the PostgreSQL user and database is required
       ansible.builtin.assert:
         that:
-          - postgresql_dbs_existing is defned
+          - postgresql_dbs_existing is defined
           - postgresql_dbs_existing != []
           - postgresql_users_existing is defined
           - postgresql_users_existing != []
