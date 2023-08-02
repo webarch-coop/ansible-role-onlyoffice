@@ -19,20 +19,19 @@
       ansible.builtin.set_fact:
         onlyoffice_docserver_apt_version: "{{ ansible_facts.packages['onlyoffice-documentserver'] | community.general.json_query('[0].version') }}"
 
-    - name: Debug onlyoffice_docserver_version required
-      ansible.builtin.debug:
-        var: onlyoffice_docserver_version
-
     - name: Debug onlyoffice_docserver_apt_version installed
       ansible.builtin.debug:
         var: onlyoffice_docserver_apt_version
+      when:
+        - onlyoffice_docserver_apt_version is defined
+        - onlyoffice_docserver_apt_version | length > 0
 
     - name: Install ONLYOFFICE Document Server
       block:
 
         - name: "ONLYOFFICE Document Server to be installed {{ onlyoffice_docserver_version }}"
           ansible.builtin.debug:
-            msg: "The next task will install onlyoffice-documentserver={{ onlyoffice_docserver_version }} and this may take some time."
+            msg: "The next task will apt install onlyoffice-documentserver={{ onlyoffice_docserver_version }} and this may take some time."
 
         - name: "ONLYOFFICE Document Server present version {{ onlyoffice_docserver_version }}"
           ansible.builtin.apt:
