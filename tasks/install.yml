@@ -27,7 +27,7 @@
       ansible.builtin.debug:
         var: onlyoffice_docserver_apt_version
 
-    - name: ONLYOFFICE Document Server present
+    - name: "ONLYOFFICE Document Server present version {{ onlyoffice_docserver_version }}"
       ansible.builtin.apt:
         pkg:
           - "onlyoffice-documentserver={{ onlyoffice_docserver_version }}"
