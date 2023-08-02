@@ -5,7 +5,9 @@ Package: {{ pkg }}
 Pin: origin download.onlyoffice.com
 {% if pkg == "onlyoffice-documentserver" %}
 Pin: version {{ onlyoffice_docserver_version }}
+Pin-Priority: 1000
+{% else %}
+Pin-Priority: 500
 {% endif %}
-Pin-Priority: 100
 
 {% endfor %}

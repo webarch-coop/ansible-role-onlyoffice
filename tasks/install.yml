@@ -27,19 +27,27 @@
       ansible.builtin.debug:
         var: onlyoffice_docserver_apt_version
 
-    - name: "ONLYOFFICE Document Server present version {{ onlyoffice_docserver_version }}"
-      ansible.builtin.apt:
-        pkg:
-          - "onlyoffice-documentserver={{ onlyoffice_docserver_version }}"
-        install_recommends: true
-        state: present
-        update_cache: true
-        cache_valid_time: 0
+    - name: Install ONLYOFFICE Document Server
+      block:
+
+        - name: "ONLYOFFICE Document Server to be installed {{ onlyoffice_docserver_version }}"
+          ansible.builtin.debug:
+            msg: "The next task will install onlyoffice-documentserver={{ onlyoffice_docserver_version }} and this may take some time."
+
+        - name: "ONLYOFFICE Document Server present version {{ onlyoffice_docserver_version }}"
+          ansible.builtin.apt:
+            pkg:
+              - "onlyoffice-documentserver={{ onlyoffice_docserver_version }}"
+            install_recommends: true
+            state: present
+            update_cache: true
+            cache_valid_time: 0
+          notify:
+            - Restart docservice
+
       when: >-
         ( onlyoffice_docserver_apt_version is not defined ) or
         ( onlyoffice_docserver_version != onlyoffice_docserver_apt_version )
-      notify:
-        - Restart docservice
 
     # https://helpcenter.onlyoffice.com/de/server/linux/document/install-fonts.aspx
     # changed_when is set to false as there is no easy way to know if this command did anything or not
