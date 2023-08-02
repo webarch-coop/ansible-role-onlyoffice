@@ -44,6 +44,7 @@
         that:
           - onlyoffice_db_pwd is defined
           - onlyoffice_db_pwd | length > 0
+        quiet: "{% if ansible_verbosity == 0 %}true{% else %}false{% endif %}"
 
   tags:
     - onlyoffice

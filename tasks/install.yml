@@ -33,6 +33,8 @@
           - "onlyoffice-documentserver={{ onlyoffice_docserver_version }}"
         install_recommends: true
         state: present
+        update_cache: true
+        cache_valid_time: 0
       when: >-
         ( onlyoffice_docserver_apt_version is not defined ) or
         ( onlyoffice_docserver_version != onlyoffice_docserver_apt_version )
