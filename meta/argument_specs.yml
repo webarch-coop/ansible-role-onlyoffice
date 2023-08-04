@@ -72,6 +72,11 @@ argument_specs:
         type: str
         required: true
         description: The version of the onlyoffice-documentserver package to be pinned.
+      onlyoffice_docserver_versions:
+        type: list
+        elements: str
+        required: false
+        description: Internal array of available onlyoffice-documentserver package versions.
       onlyoffice_fs_secret:
         type: str
         required: false

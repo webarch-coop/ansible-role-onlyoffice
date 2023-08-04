@@ -11,6 +11,15 @@
 - name: ONLYOFFICE checks
   block:
 
+    - name: Check that the version required is in the list of versions available
+      ansible.builtin.assert:
+        that:
+          - onlyoffice_docserver_version in onlyoffice_docserver_versions
+        quiet: "{% if ansible_verbosity == 0 %}true{% else %}false{% endif %}"
+
+    - name: Read facts
+      ansible.builtin.setup:
+
     - name: Check requirements are present
       ansible.builtin.assert:
         that:

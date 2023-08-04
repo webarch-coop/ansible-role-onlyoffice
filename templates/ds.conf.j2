@@ -2,6 +2,20 @@
 
 include /etc/nginx/includes/http-common.conf;
 
+{% if onlyoffice_ssl | bool %}
+server {
+  listen 0.0.0.0:80 default_server;
+  listen [::]:80 default_server;
+  root /var/www/html;
+  location /.well-known/acme-challenge/ {
+    allow all;
+  }
+  location / {
+    return 301 https://$host$request_uri;
+  }
+}
+{% endif %}
+
 server {
   listen 0.0.0.0:{{ onlyoffice_debconf | community.general.json_query(onlyoffice_jpq_ds_port) }} {% if onlyoffice_ssl | bool %}ssl {% endif %}default_server;
   listen [::]:{{ onlyoffice_debconf | community.general.json_query(onlyoffice_jpq_ds_port) }} {% if onlyoffice_ssl | bool %}ssl {% endif %}default_server;
