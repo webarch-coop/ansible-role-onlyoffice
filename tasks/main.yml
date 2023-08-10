@@ -14,13 +14,10 @@
   when: not onlyoffice | bool
   tags:
     - onlyoffice
+    - onlyoffice_apt
 
-- name: ONLYOFFICE Document Server
+- name: Configure ONLYOFFICE apt repo
   block:
-
-    - name: Validate ONLYOFFICE variables
-      ansible.builtin.include_tasks: validate.yml
-      when: onlyoffice_validate | bool
 
     - name: Include apt role local fact tasks if variables are not defined
       ansible.builtin.include_role:
@@ -30,13 +27,21 @@
         ( ansible_local.dpkg.arch is not defined ) or
         ( ansible_local.gpg.version is not defined ) or
         ( ansible_local.bash.path is not defined )
-      tags:
-        - onlyoffice_apt
 
     - name: Include ONLYOFFICE apt repo config and install fonts and other package tasks
       ansible.builtin.include_tasks: apt.yml
-      tags:
-        - onlyoffice_apt
+
+  when: onlyoffice | bool
+  tags:
+    - onlyoffice
+    - onlyoffice_apt
+
+- name: ONLYOFFICE Document Server
+  block:
+
+    - name: Validate ONLYOFFICE variables
+      ansible.builtin.include_tasks: validate.yml
+      when: onlyoffice_validate | bool
 
     - name: Include check tasks
       ansible.builtin.include_tasks: checks.yml
