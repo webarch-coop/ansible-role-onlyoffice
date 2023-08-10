@@ -109,7 +109,7 @@ argument_specs:
       onlyoffice_gpg_fingerprints_found:
         type: list
         elements: str
-        required: true
+        required: false
         description: A internal list of the fingerprints found.
       onlyoffice_gpg_fingerprints_query:
         type: str
