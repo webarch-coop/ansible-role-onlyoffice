@@ -18,6 +18,10 @@ argument_specs:
         type: bool
         required: true
         description: Run the tasks in this role.
+      onlyoffice_asc_file:
+        type: str
+        required: false
+        description: Internal variable for the GPG asc file path.
       onlyoffice_debconf:
         type: list
         elements: dict
@@ -81,6 +85,10 @@ argument_specs:
         type: str
         required: false
         description: Internal ONLYOFFICE filesystem secret.
+      onlyoffice_gpg:
+        type: dict
+        required: false
+        description: Internal variable for the results of the gpg key check command.
       onlyoffice_gpg_checksum:
         type: str
         required: true
@@ -89,11 +97,20 @@ argument_specs:
         type: str
         required: true
         description: Internal ONLYOFFICE GPG checksum including sha256 prefix.
+      onlyoffice_gpg_file:
+        type: dict
+        required: false
+        description: Internal variable for the results of stat.
       onlyoffice_gpg_fingerprints:
         type: list
         elements: str
         required: true
         description: A internal list of the fingerprints of the ONLYOFFICE GPG key.
+      onlyoffice_gpg_fingerprints_found:
+        type: list
+        elements: str
+        required: true
+        description: A internal list of the fingerprints found.
       onlyoffice_gpg_fingerprints_query:
         type: str
         required: true
@@ -314,15 +331,27 @@ argument_specs:
         elements: str
         required: true
         description: A list of MariaDB privs.
+      onlyoffice_old_apt_list_files:
+        type: dict
+        required: false
+        description: Internal vairable for the results of the find module.
       onlyoffice_pkg:
         type: list
         elements: str
         required: true
         description: A list of required .deb packages.
+      onlyoffice_preferences:
+        type: dict
+        required: false
+        description: Internal variable for the results of templating the preferences.
       onlyoffice_rabbitmq_pwd:
         type: str
         required: false
         description: RabbitMQ password for ONLYOFFICE, internally set using the RabbitMQ role.
+      onlyoffice_sources:
+        type: dict
+        required: false
+        description: Internal variable for the results of templating the apt sources.
       onlyoffice_ssl:
         type: bool
         required: true
