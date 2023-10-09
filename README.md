@@ -102,6 +102,22 @@ debconf-show onlyoffice-documentserver
 * onlyoffice/docservice-port: 8000
 ```
 
+## Ports
+
+The default settings for this role result in Nginx listening on port 443 reverse proxying to ONLYOFFICE on port 8000.
+
+If another web server is already listening on 443, for example Apache, then you can run Nginx on port 8080 and configure Apache as a reverse proxy to Nginx, for example:
+
+```apache
+  <IfModule proxy_module>
+    ProxyRequests Off
+    ProxyAddHeaders Off
+    ProxyPassMatch "(.*)(\/websocket)$" "ws://127.0.0.1:8080/$1$2"
+    ProxyPass "/" "http://127.0.0.1:8080/"
+    ProxyPassReverse "/" "http://127.0.0.1:8080/"
+  </IfModule>
+```
+
 ## References
 
 * [Installing ONLYOFFICE Docs Community Edition for Debian, Ubuntu, and derivatives](https://helpcenter.onlyoffice.com/installation/docs-community-install-ubuntu.aspx)
