@@ -129,6 +129,7 @@ onlyoffice_pkg:
 # Get the onlyoffice-documentserver versions using the following command
 # apt-get update && apt-cache madison onlyoffice-documentserver | awk '{ print $3 }' | sed 's/^/  - /'
 onlyoffice_docserver_versions:
+  - 7.5.0-125
   - 7.4.1-36
   - 7.4.0-163
   - 7.3.3-49~stretch
