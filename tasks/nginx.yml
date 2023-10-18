@@ -41,6 +41,7 @@
           - onlyoffice_docserver_apt_version is ansible.builtin.version('7.4.1-36', '>=')
           - onlyoffice_docserver_apt_version == onlyoffice_docserver_version
         quiet: "{% if ansible_verbosity == 0 %}true{% else %}false{% endif %}"
+      when: not ansible_check_mode | bool
 
     - name: Check if the original /etc/onlyoffice/documentserver/nginx/ds.conf exists
       ansible.builtin.stat:
