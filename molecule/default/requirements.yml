@@ -11,7 +11,7 @@
 
 - name: postgresql
   src: https://git.coop/webarch/postgresql.git
-  version: 2.3.0  # postgresql
+  version: 2.4.0  # postgresql
   scm: git
 
 - name: rabbitmq
