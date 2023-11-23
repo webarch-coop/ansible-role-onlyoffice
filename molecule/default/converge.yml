@@ -31,7 +31,7 @@
     - name: Test the ONLYOFFICE  apt configuration
       ansible.builtin.include_role:
         name: onlyoffice
-        tasks_from: apt.yml
+        # tasks_from: apt.yml
       vars:  # noqa var-naming[no-role-prefix]
         onlyoffice: true
 ...
