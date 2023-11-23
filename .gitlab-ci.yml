@@ -18,6 +18,8 @@ variables:
   MOLECULE_VERBOSITY: "3"
   PY_COLORS: "1"
 before_script:
+  - apt install -yqqq tree
+  - tree
   - whoami
   - pwd
   - which ansible
@@ -27,7 +29,8 @@ before_script:
   - which molecule
   - molecule --version
   - chmod 700 $(pwd)
-  - ansible-galaxy install -r molecule/default/requirements.yml --force
+  - mkdir -p molecule/default/roles
+  - ansible-galaxy install -r molecule/default/requirements.yml -P molecule/default/roles --force
 stages:
   - bookworm
   # - bullseye
