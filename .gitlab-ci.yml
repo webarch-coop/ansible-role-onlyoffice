@@ -19,7 +19,7 @@ variables:
   PY_COLORS: "1"
 before_script:
   - whoami
-  - pwd
+  - chmod 700 $(pwd)
   - which ansible
   - ansible --version
   - which yamllint
