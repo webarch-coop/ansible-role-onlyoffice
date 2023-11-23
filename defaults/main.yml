@@ -82,7 +82,8 @@ onlyoffice_debconf:
     question: onlyoffice/remove-db
     value: false
     vtype: boolean
-onlyoffice_docserver_version: 7.5.0-125
+# https://github.com/ONLYOFFICE/DocumentServer/blob/master/CHANGELOG.md
+onlyoffice_docserver_version: 7.5.1-23
 onlyoffice_local:
   services:
     CoAuthoring:
