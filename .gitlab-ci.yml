@@ -27,7 +27,7 @@ before_script:
   - which molecule
   - molecule --version
   - chmod 700 $(pwd)
-  - ansible-galaxy install -r molecule/defaults/requirements.yml --force
+  - ansible-galaxy install -r molecule/default/requirements.yml --force
 stages:
   - bookworm
   # - bullseye
