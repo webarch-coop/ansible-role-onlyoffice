@@ -28,7 +28,21 @@
       ansible.builtin.debug:
         var: ansible_user_dir
 
-    - name: Test the ONLYOFFICE  apt configuration
+    - name: Include the PostgreSQL role
+      ansible.builtin.include_role:
+        name: postgresql
+      vars:  # noqa var-naming[no-role-prefix]
+        postgresql: true
+        postgresql_db: onlyoffice
+        postgresql_user: onlyoffice
+
+    - name: Include the RabbitMQ role
+      ansible.builtin.include_role:
+        name: rabbitmq
+      vars:  # noqa var-naming[no-role-prefix]
+        rabbitmq: true
+
+    - name: Include the ONLYOFFICE Document Server role
       ansible.builtin.include_role:
         name: onlyoffice
         # tasks_from: apt.yml
