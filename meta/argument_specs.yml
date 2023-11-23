@@ -72,6 +72,14 @@ argument_specs:
         type: str
         required: false
         description: Internal variable for the version of the onlyoffice-documentserver installed.
+      onlyoffice_docserver_headers:
+        type: dict
+        required: false
+        description: Internal variable for the results of a HEAD request to check the latest version of ONLYOFFICE DocumentServer.
+      onlyoffice_docserver_latest:
+        type: str
+        required: false
+        description: Internal variable for the latest version of ONLYOFFICE DocumentServer.
       onlyoffice_docserver_version:
         type: str
         required: true
