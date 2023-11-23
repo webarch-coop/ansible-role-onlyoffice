@@ -23,13 +23,13 @@
 
     - name: Set a fact for the latest version of ONLYOFFICE DocumentServer
       ansible.builtin.set_fact:
-        onlyoffice_docserver_latest: "{{ docker_compose_headers.location | urlsplit('path') | basename }}"
+        onlyoffice_docserver_latest: "{{ onlyoffice_docserver_headers.location | ansible.builtin.urlsplit('path') | ansible.builtin.basename | ansible.builtin.regex_replace('^v') }}"
 
-    - name: Check that the ONLYOFFICE DocumentServer version latest and required versions are in this roles list of versions available
+    - name: Check that the ONLYOFFICE DocumentServer version and required versions are in this roles list of versions available
       ansible.builtin.assert:
         that:
           - onlyoffice_docserver_version in onlyoffice_docserver_versions
-          - onlyoffice_docserver_latest in onlyoffice_docserver_versions
+          - onlyoffice_docserver_latest in ( onlyoffice_docserver_versions | map('regex_replace', '[-].*$') )
         quiet: "{% if ansible_verbosity == 0 %}true{% else %}false{% endif %}"
 
     - name: Read facts

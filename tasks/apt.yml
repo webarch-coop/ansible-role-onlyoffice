@@ -154,17 +154,25 @@
     - name: Font and other packages present
       ansible.builtin.apt:
         pkg:
-          - fonts-dejavu
+          - debconf-utils
           - fonts-crosextra-carlito
-          - fonts-liberation2
+          - fonts-dejavu
           - fonts-freefont-ttf
-          - fonts-takao-gothic
+          - fonts-liberation2
           - fonts-opensymbol
+          - fonts-takao-gothic
           - pwgen
           - ttf-bitstream-vera
           - ttf-mscorefonts-installer
         update_cache: true
+        cache_valid_time: 60
         install_recommends: true
+      register: onlyoffice_apt_deps
+
+    - name: Re-read Ansible local facts  # noqa: no-handler
+      ansible.builtin.setup:
+        filter: ansible_local
+      when: onlyoffice_apt_deps.changed | bool
 
   tags:
     - onlyoffice

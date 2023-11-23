@@ -61,7 +61,7 @@
         question: "{{ onlyoffice_dcnf.question }}"
         value: "{{ onlyoffice_dcnf.value }}"
         vtype: "{{ onlyoffice_dcnf.vtype }}"
-      no_log: "{% if onlyoffice_dcnf.vtype == 'password' %}true{% else %}false{% endif %}"
+      no_log: "{% if onlyoffice_dcnf.vtype == 'password' and ansible_verbosity == 0 %}true{% else %}false{% endif %}"
       changed_when:
         - onlyoffice_dcnf_current_value != onlyoffice_dcnf.value
         - onlyoffice_dcnf.vtype != "password"

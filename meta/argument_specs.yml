@@ -18,6 +18,10 @@ argument_specs:
         type: bool
         required: true
         description: Run the tasks in this role.
+      onlyoffice_apt_deps:
+        type: dict
+        required: false
+        description: Internal variable for the results of installing required apt packages.
       onlyoffice_asc_file:
         type: str
         required: false

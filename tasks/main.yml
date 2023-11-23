@@ -49,18 +49,28 @@
     - name: Include read and set variable tasks
       ansible.builtin.include_tasks: vars.yml
 
-    - name: Include debconf ONLYOFFICE tasks
-      ansible.builtin.include_tasks: debconf.yml
-      loop: "{{ onlyoffice_debconf }}"
-      loop_control:
-        loop_var: onlyoffice_dcnf
-        label: "{{ onlyoffice_dcnf.question }}"
+    - name: Skipping debconf ONLYOFFICE tasks as debconf-utils is not present
+      ansible.builtin.debug:
+        msg: The debconf-utils packages is required for the configuration of the ONLYOFFICE DocumentServer prior to installing it.
+      when: ( "debconf-utils" not in ansible_local.dpkg.installed )
 
-    - name: Include install ONLYOFFICE tasks
-      ansible.builtin.include_tasks: install.yml
+    - name: ONLYOFFICE Document Server Install tasks
+      block:
 
-    - name: Include Nginx tasks
-      ansible.builtin.include_tasks: nginx.yml
+        - name: Include debconf ONLYOFFICE tasks
+          ansible.builtin.include_tasks: debconf.yml
+          loop: "{{ onlyoffice_debconf }}"
+          loop_control:
+            loop_var: onlyoffice_dcnf
+            label: "{{ onlyoffice_dcnf.question }}"
+
+        - name: Include install ONLYOFFICE tasks
+          ansible.builtin.include_tasks: install.yml
+
+        - name: Include Nginx tasks
+          ansible.builtin.include_tasks: nginx.yml
+
+      when: ( "debconf-utils" in ansible_local.dpkg.installed )
 
   when: onlyoffice | bool
   tags:
