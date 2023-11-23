@@ -19,13 +19,15 @@ variables:
   PY_COLORS: "1"
 before_script:
   - whoami
-  - chmod 700 $(pwd)
+  - pwd
   - which ansible
   - ansible --version
   - which yamllint
   - yamllint --version
   - which molecule
   - molecule --version
+  - chmod 700 $(pwd)
+  - ansible-galaxy install -r molecule/defaults/requirements.yml --force
 stages:
   - bookworm
   # - bullseye
