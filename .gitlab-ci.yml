@@ -30,7 +30,7 @@ before_script:
   - molecule --version
   - chmod 700 $(pwd)
   - mkdir -p molecule/default/roles
-  - ansible-galaxy install -r molecule/default/requirements.yml -P molecule/default/roles --force
+  - ansible-galaxy install -r molecule/default/requirements.yml -p molecule/default/roles --force
 stages:
   - bookworm
   # - bullseye
