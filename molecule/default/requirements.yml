@@ -16,6 +16,6 @@
 
 - name: rabbitmq
   src: https://git.coop/webarch/rabbitmq.git
-  version: 2.1.1  # rabbitmq
+  version: 2.2.0  # rabbitmq
   scm: git
 ...

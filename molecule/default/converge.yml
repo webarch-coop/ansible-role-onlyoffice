@@ -28,6 +28,54 @@
       ansible.builtin.debug:
         var: ansible_user_dir
 
+    - name: Gather facts
+      ansible.builtin.setup:
+
+    - name: Run hostname -f
+      ansible.builtin.command: hostname -f
+      check_mode: false
+      changed_when: false
+      register: molecule_hostname_f
+
+    - name: Set a fact for the hostname
+      ansible.builtin.set_fact:
+        molecule_hostname: "{{ molecule_hostname_f.stdout }}"
+
+    - name: Include /etc/hosts role as root
+      ansible.builtin.include_role:
+        name: etchosts
+      vars:  # noqa var-naming[no-role-prefix]
+        etchosts: true
+        etchosts_file:
+          - ip: 127.0.0.1
+            hostname:
+              - localhost
+          - ip: "{{ ansible_default_ipv4.address }}"
+            hostname:
+              - "{{ molecule_hostname }}"
+          - ip: ::1
+            hostname:
+              - ip6-localhost
+              - ip6-loopback
+          - ip: fe00::0
+            hostname:
+              - ip6-localnet
+          - ip: ff00::0
+            hostname:
+              - ip6-mcastprefix
+          - ip: ff02::1
+            hostname:
+              - ip6-allnodes
+
+          - ip: ff02::2
+            hostname:
+              - ip6-allrouters
+          - ip: ff02::3
+            hostname:
+              - ip6-allhosts
+        etchosts_hostname_strategy: systemd
+        etchosts_unsafe_writes: true
+
     - name: Include the PostgreSQL role
       ansible.builtin.include_role:
         name: postgresql
@@ -41,6 +89,18 @@
         name: rabbitmq
       vars:  # noqa var-naming[no-role-prefix]
         rabbitmq: true
+        rabbitmq_users:
+          - username: onlyoffice
+            state: present
+        rabbitmq_configuration:
+          listeners.tcp.local: "{{ ansible_default_ipv4.address }}:5672"
+        rabbitmq_systemd_units:
+          - name: epmd.service
+            files:
+              - path: /etc/systemd/system/epmd.service.d/override.conf
+                conf:
+                  Service:
+                    Environment: 'ERL_EPMD_ADDRESS="{{ ansible_default_ipv4.address }}"'
 
     - name: Include the ONLYOFFICE Document Server role
       ansible.builtin.include_role:
@@ -48,4 +108,77 @@
         # tasks_from: apt.yml
       vars:  # noqa var-naming[no-role-prefix]
         onlyoffice: true
+        onlyoffice_debconf:
+          - name: onlyoffice-documentserver
+            question: onlyoffice/cluster-mode
+            value: false
+            vtype: boolean
+          - name: onlyoffice-documentserver
+            question: onlyoffice/db-host
+            value: localhost
+            vtype: string
+          - name: onlyoffice-documentserver
+            question: onlyoffice/db-name
+            value: onlyoffice
+            vtype: string
+          - name: onlyoffice-documentserver
+            question: onlyoffice/db-port
+            value: "5432"
+            vtype: string
+          - name: onlyoffice-documentserver
+            question: onlyoffice/db-pwd
+            value: "{{ onlyoffice_db_pwd }}"
+            vtype: password
+          - name: onlyoffice-documentserver
+            question: onlyoffice/db-type
+            value: postgres
+            vtype: string
+          - name: onlyoffice-documentserver
+            question: onlyoffice/db-user
+            value: onlyoffice
+            vtype: string
+          - name: onlyoffice-documentserver
+            question: onlyoffice/docservice-port
+            value: "8000"
+            vtype: string
+          - name: onlyoffice-documentserver
+            question: onlyoffice/ds-port
+            value: "443"
+            vtype: string
+          - name: onlyoffice-documentserver
+            question: onlyoffice/example-port
+            value: "3000"
+            vtype: string
+          - name: onlyoffice-documentserver
+            question: onlyoffice/jwt-enabled
+            value: true
+            vtype: boolean
+          - name: onlyoffice-documentserver
+            question: onlyoffice/jwt-header
+            value: AuthorizationJwt
+            vtype: string
+          - name: onlyoffice-documentserver
+            question: onlyoffice/jwt-secret
+            value: "{{ onlyoffice_jwt_secret }}"
+            vtype: string
+          - name: onlyoffice-documentserver
+            question: onlyoffice/rabbitmq-host
+            value: "{{ ansible_default_ipv4.address }}"
+            vtype: string
+          - name: onlyoffice-documentserver
+            question: onlyoffice/rabbitmq-proto
+            value: amqp
+            vtype: string
+          - name: onlyoffice-documentserver
+            question: onlyoffice/rabbitmq-pwd
+            value: "{{ onlyoffice_rabbitmq_pwd }}"
+            vtype: password
+          - name: onlyoffice-documentserver
+            question: onlyoffice/rabbitmq-user
+            value: onlyoffice
+            vtype: string
+          - name: onlyoffice-documentserver
+            question: onlyoffice/remove-db
+            value: false
+            vtype: boolean
 ...
