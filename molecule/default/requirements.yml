@@ -4,6 +4,11 @@
   version: 3.0.2  # apt
   scm: git
 
+- name: etchosts
+  src: https://git.coop/webarch/etchosts.git
+  version: 1.4.0  # etchosts
+  scm: git
+
 - name: mariadb
   src: https://git.coop/webarch/mariadb.git
   version: 3.3.0  # mariadb
