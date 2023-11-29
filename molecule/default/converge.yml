@@ -76,6 +76,13 @@
         etchosts_hostname_strategy: systemd
         etchosts_unsafe_writes: true
 
+    - name: Include the Nginx role
+      ansible.builtin.include_role:
+        name: nginx
+      vars:  # noqa var-naming[no-role-prefix]
+        nginx: true
+        nginx_ssl: false
+
     - name: Include the PostgreSQL role
       ansible.builtin.include_role:
         name: postgresql
