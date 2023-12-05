@@ -25,7 +25,7 @@
 
 - name: nginx
   src: https://git.coop/webarch/nginx.git
-  version: 2.1.0  # nginx
+  version: 2.1.1  # nginx
   scm: git
 
 - name: postgresql
