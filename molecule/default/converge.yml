@@ -185,4 +185,5 @@
             question: onlyoffice/remove-db
             value: false
             vtype: boolean
+        onlyoffice_ssl: false
 ...
