@@ -2,7 +2,7 @@
 
 include /etc/nginx/includes/http-common.conf;
 
-{% if onlyoffice_ssl | bool and onlyoffice_debconf | community.general.json_query(onlyoffice_jpq_ds_port) != "80" %}
+{% if onlyoffice_ssl | bool %}
 server {
   listen 0.0.0.0:80 default_server;
   listen [::]:80 default_server;

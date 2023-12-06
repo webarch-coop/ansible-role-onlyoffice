@@ -348,6 +348,11 @@ argument_specs:
         elements: str
         required: false
         description: A list of Nginx sites to disable, which are symlinks to delete in /etc/nginx/sites-enabled.
+      onlyoffice_nginx_sites_enabled:
+        type: list
+        elements: str
+        required: false
+        description: A list of Nginx sites to enable, which are symlinks to add in /etc/nginx/sites-enabled.
       onlyoffice_old_apt_list_files:
         type: dict
         required: false

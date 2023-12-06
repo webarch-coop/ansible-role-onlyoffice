@@ -82,6 +82,8 @@
         nginx_sites_disabled:
           - default
           - default.conf
+        nginx_sites_enabled:
+          - localhost.conf
 
     - name: Include the PostgreSQL role
       ansible.builtin.include_role:
