@@ -49,4 +49,9 @@
     - name: Debug ONLYOFFICE healthcheck
       ansible.builtin.debug:
         var: molecule_onlyoffice_healthcheck.content
+
+    - name: Ensure that the ONLYOFFICE healthcheck is true
+      ansible.builtin.assert:
+        that:
+          - molecule_onlyoffice_healthcheck.content == "true"
 ...
