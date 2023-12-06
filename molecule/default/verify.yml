@@ -46,4 +46,7 @@
         return_content: true
       register: molecule_onlyoffice_healthcheck
 
+    - name: Debug ONLYOFFICE healthcheck
+      ansible.builtin.debug:
+        var: molecule_onlyoffice_healthcheck.content
 ...
