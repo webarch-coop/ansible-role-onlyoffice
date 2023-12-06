@@ -118,6 +118,9 @@ onlyoffice_local:
   storage:
     fs:
       secretString: "{{ onlyoffice_storage_fs_secret }}"
+onlyoffice_nginx_sites_disabled:
+  - default
+  - default.conf
 onlyoffice_ssl: true
 onlyoffice_ssl_certificate: "/etc/ssl/le/{{ inventory_hostname }}.fullchain.pem"
 onlyoffice_ssl_certificate_key: "/etc/ssl/le/{{ inventory_hostname }}.key.pem"

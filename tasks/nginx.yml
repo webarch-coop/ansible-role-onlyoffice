@@ -125,14 +125,14 @@
 
     - name: Nginx default and localhost sites disabled
       ansible.builtin.file:
-        path: "/etc/nginx/sites-enabled/{{ file }}"
+        path: "/etc/nginx/sites-enabled/{{ onlyoffice_nginx_symlink }}"
         state: absent
-      loop:
-        - default
-        - default.conf
-        - localhost.conf
+      loop: "{{ onlyoffice_nginx_sites_disabled }}"
       loop_control:
-        loop_var: file
+        loop_var: onlyoffice_nginx_symlink
+      when:
+        - onlyoffice_nginx_sites_disabled is defined
+        - onlyoffice_nginx_sites_disabled != []
       notify: Restart nginx
 
     - name: Nginx configtest  # noqa: command-instead-of-module

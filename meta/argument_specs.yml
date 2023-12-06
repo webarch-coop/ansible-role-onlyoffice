@@ -343,6 +343,11 @@ argument_specs:
         elements: str
         required: true
         description: A list of MariaDB privs.
+      onlyoffice_nginx_sites_disabled:
+        type: list
+        elements: str
+        required: false
+        description: A list of Nginx sites to disable, which are symlinks to delete in /etc/nginx/sites-enabled.
       onlyoffice_old_apt_list_files:
         type: dict
         required: false
