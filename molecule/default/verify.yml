@@ -23,4 +23,27 @@
         install_recommends: true
         state: present
       check_mode: true
+
+    - name: Gather service facts
+      ansible.builtin.service_facts:
+      register: molecule_service_facts
+
+    - name: Debug service facts
+      ansible.builtin.debug:
+        var: molecule_service_facts
+
+    - name: Gather facts on listening ports
+      community.general.listen_ports_facts:
+      register: molecule_port_facts
+
+    - name: Debug listening ports
+      ansible.builtin.debug:
+        var: molecule_port_facts
+
+    - name: ONLYOFFICE healthcheck
+      ansible.builtin.uri:
+        url: "http://{{ ansible_default_ipv4.address }}/healthcheck"
+        return_content: true
+      register: molecule_onlyoffice_healthcheck
+
 ...

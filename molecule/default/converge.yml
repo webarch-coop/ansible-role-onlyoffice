@@ -152,7 +152,7 @@
             vtype: string
           - name: onlyoffice-documentserver
             question: onlyoffice/ds-port
-            value: "443"
+            value: "80"
             vtype: string
           - name: onlyoffice-documentserver
             question: onlyoffice/example-port
