@@ -65,6 +65,17 @@
         - onlyoffice_nginx_ds_conf_original.stat.exists | bool
         - not onlyoffice_nginx_ds_conf_backup.stat.exists | bool
 
+    - name: Ensure that /etc/nginx/conf.d/ds.conf is a symlink to /etc/onlyoffice/documentserver/nginx/ds.conf
+      ansible.builtin.file:
+        src: "/etc/onlyoffice/documentserver/nginx/ds.conf"
+        dest: "/etc/nginx/conf.d/ds.conf"
+        follow: false
+        mode: "0777"
+        owner: root
+        group: root
+      when: onlyoffice_nginx_ds_conf_original.stat.exists | bool
+      notify: Restart nginx
+
     # https://helpcenter.onlyoffice.com/server/linux/document/switch-to-https.aspx
     - name: Nginx /etc/onlyoffice/documentserver/nginx/ds.conf configuration in place
       ansible.builtin.template:
