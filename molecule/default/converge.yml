@@ -89,8 +89,6 @@
         name: mariadb
       vars:  # noqa var-naming[no-role-prefix]
         mariadb: true
-        mariadb_database: onlyoffice
-        mariadb_username: onlyoffice
         mariadb_underscore_autoupdate: true
 
     - name: Include the RabbitMQ role
@@ -110,6 +108,23 @@
                 conf:
                   Service:
                     Environment: 'ERL_EPMD_ADDRESS="{{ ansible_default_ipv4.address }}"'
+
+    - name: Include the Users role
+      ansible.builtin.include_role:
+        name: users
+      vars:  # noqa var-naming[no-role-prefix]
+        users_mariadb: true
+        users:
+          onlyoffice:
+            users_state: present
+            users_name: ONLYOFFICE
+            users_notify_passwd: false
+            users_mariadb_notify_passwd: false
+            users_mariadb_databases:
+              - onlyoffice
+            users_home_owner: onlyoffice
+            users_home_group: onlyoffice
+            users_home_mode: "0750"
 
     - name: Include the ONLYOFFICE Document Server role
       ansible.builtin.include_role:
