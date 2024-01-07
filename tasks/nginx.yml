@@ -69,6 +69,7 @@
       ansible.builtin.file:
         src: "/etc/onlyoffice/documentserver/nginx/ds.conf"
         dest: "/etc/nginx/conf.d/ds.conf"
+        state: link
         follow: false
         mode: "0777"
         owner: root
