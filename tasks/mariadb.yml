@@ -39,9 +39,9 @@
     - name: Debug service facts
       ansible.builtin.debug:
         var: onlyoffice_service_facts
-        verbosity: "{% if ansible_check_mode | bool %}1{% else %}2{% endif %}"
+        # verbosity: "{% if ansible_check_mode | bool %}1{% else %}2{% endif %}"
 
-    - name: Debug MariaDB service facit state
+    - name: Debug MariaDB service fact state
       ansible.builtin.debug:
         msg: "{{ onlyoffice_service_facts | community.general.json_query(onlyoffice_jpq_mariadb_service) }}"
 
