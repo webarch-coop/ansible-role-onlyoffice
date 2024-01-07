@@ -35,9 +35,14 @@
     - name: Check MariaDB is running
       ansible.builtin.service_facts:
       register: onlyoffice_service_facts
-      until: (onlyoffice_service_facts | community.general.json_query(ansible_facts.services.["mariadb.service"]|[0])).state == "running"
-      retries: 10
-      delay: 2
+
+    - name: Debug service facts
+      ansible.builtin.debug:
+        var: onlyoffice_service_facts
+
+      # until: (onlyoffice_service_facts | community.general.json_query(ansible_facts.services.["mariadb.service"]|[0])).state == "running"
+      # retries: 10
+      # delay: 2
 
     - name: Stat the MariaDB socket path
       ansible.builtin.stat:
