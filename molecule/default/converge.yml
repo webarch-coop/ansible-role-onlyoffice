@@ -63,7 +63,6 @@
           - ip: ff02::1
             hostname:
               - ip6-allnodes
-
           - ip: ff02::2
             hostname:
               - ip6-allrouters
@@ -85,13 +84,14 @@
         nginx_sites_enabled:
           - localhost.conf
 
-    - name: Include the PostgreSQL role
+    - name: Include the MariaDB role
       ansible.builtin.include_role:
-        name: postgresql
+        name: mariadb
       vars:  # noqa var-naming[no-role-prefix]
-        postgresql: true
-        postgresql_db: onlyoffice
-        postgresql_user: onlyoffice
+        mariadb: true
+        mariadb_database: onlyoffice
+        mariadb_username: onlyoffice
+        mariadb_underscore_autoupdate: true
 
     - name: Include the RabbitMQ role
       ansible.builtin.include_role:
@@ -132,7 +132,7 @@
             vtype: string
           - name: onlyoffice-documentserver
             question: onlyoffice/db-port
-            value: "5432"
+            value: "3306"
             vtype: string
           - name: onlyoffice-documentserver
             question: onlyoffice/db-pwd
@@ -140,7 +140,7 @@
             vtype: password
           - name: onlyoffice-documentserver
             question: onlyoffice/db-type
-            value: postgres
+            value: mariadb
             vtype: string
           - name: onlyoffice-documentserver
             question: onlyoffice/db-user

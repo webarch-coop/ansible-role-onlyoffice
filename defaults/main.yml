@@ -24,7 +24,8 @@ onlyoffice_debconf:
     vtype: string
   - name: onlyoffice-documentserver
     question: onlyoffice/db-port
-    value: "5432"
+    value: "3306"  # MariaDB
+    # value: "5432"  # PostgreSQL
     vtype: string
   - name: onlyoffice-documentserver
     question: onlyoffice/db-pwd
@@ -32,7 +33,8 @@ onlyoffice_debconf:
     vtype: password
   - name: onlyoffice-documentserver
     question: onlyoffice/db-type
-    value: postgres
+    value: mariadb  # MariaDB
+    # value: postgres  # PostgreSQL
     vtype: string
   - name: onlyoffice-documentserver
     question: onlyoffice/db-user

@@ -10,7 +10,7 @@
 ---
 - name: apt
   src: https://git.coop/webarch/apt.git
-  version: 3.0.2  # apt
+  version: 3.1.0  # apt
   scm: git
 
 - name: etchosts
@@ -20,17 +20,12 @@
 
 - name: mariadb
   src: https://git.coop/webarch/mariadb.git
-  version: 3.3.0  # mariadb
+  version: 3.4.0  # mariadb
   scm: git
 
 - name: nginx
   src: https://git.coop/webarch/nginx.git
   version: 2.1.1  # nginx
-  scm: git
-
-- name: postgresql
-  src: https://git.coop/webarch/postgresql.git
-  version: 2.4.0  # postgresql
   scm: git
 
 - name: rabbitmq

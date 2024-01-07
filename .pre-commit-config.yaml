@@ -15,6 +15,20 @@ repos:
     hooks:
       - id: yamllint
         name: YAML Lint
+  # https://github.com/aristanetworks/j2lint/releases
+  - repo: https://github.com/aristanetworks/j2lint.git
+    rev: v1.1.0
+    hooks:
+      - id: j2lint
+        name: Jinja2-Linter
+        args:
+          - templates
+  # https://github.com/jackdewinter/pymarkdown/releases
+  - repo: https://github.com/jackdewinter/pymarkdown.git
+    rev: v0.9.15
+    hooks:
+      - id: pymarkdown
+        name: Markdown Lint
   # https://github.com/ansible/ansible-lint/releases
   - repo: https://github.com/ansible/ansible-lint.git
     rev: v6.22.1
@@ -27,10 +41,4 @@ repos:
           - jc==1.23.6
           # https://github.com/jmespath/jmespath.py/tags
           - jmespath==1.0.1
-  # https://github.com/jackdewinter/pymarkdown/releases
-  - repo: https://github.com/jackdewinter/pymarkdown.git
-    rev: v0.9.15
-    hooks:
-      - id: pymarkdown
-        name: Markdown Lint
 ...
