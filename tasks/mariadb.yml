@@ -39,17 +39,20 @@
     - name: Debug service facts
       ansible.builtin.debug:
         var: onlyoffice_service_facts
+        verbosity: "{% if ansible_check_mode | bool %}1{% else %}2{% endif %}"
 
-      # until: (onlyoffice_service_facts | community.general.json_query(ansible_facts.services.["mariadb.service"]|[0])).state == "running"
-      # retries: 10
-      # delay: 2
+    - name: Check that MariaDB is running
+      ansible.builtin.assert:
+        that:
+          - onlyoffice_service_facts | community.general.json_query(ansible_facts.services.['mariadb.service'].state == "running"
+        quiet: "{% if ansible_verbosity == 0 %}true{% else %}false{% endif %}"
 
     - name: Stat the MariaDB socket path
       ansible.builtin.stat:
         path: "{{ onlyoffice_mariadb_socket }}"
       register: onlyoffice_mariadb_socket_path
 
-    - name: Ensure that theMarioaDB socket exists
+    - name: Ensure that the MariaDB socket exists
       ansible.builtin.assert:
         that:
           - onlyoffice_mariadb_socket_path.stat.exists | bool
