@@ -343,6 +343,14 @@ argument_specs:
         elements: str
         required: true
         description: A list of MariaDB privs.
+      onlyoffice_mariadb_socket:
+        type: str
+        required: false
+        description: Path to the MariaDB socket.
+      onlyoffice_mariadb_socket_path:
+        type: dict
+        required: false
+        description: Internal dictionary resulting from running the stat modules on the MariaDB socket path.
       onlyoffice_nginx_sites_disabled:
         type: list
         elements: str

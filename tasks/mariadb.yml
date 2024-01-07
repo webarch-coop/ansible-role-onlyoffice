@@ -38,7 +38,7 @@
           - users
         return_empty_dbs: true
         login_user: root
-        login_unix_socket: "{{ mariadb_socket }}"
+        login_unix_socket: "{{ onlyoffice_mariadb_socket }}"
       register: onlyoffice_mariadb_info
 
     - name: Debug MariaDB user info
@@ -63,7 +63,7 @@
           - GRANT {% for onlyoffice_mariadb_p in onlyoffice_mariadb_priv %}{{ onlyoffice_mariadb_p }}{% if not loop.last %},{% endif %}{% endfor %} ON {{ onlyoffice_debconf | community.general.json_query(onlyoffice_jpq_db_name) }}.* TO '{{ onlyoffice_debconf | community.general.json_query(onlyoffice_jpq_db_name) }}'@'127.0.0.1'
         login_db: mysql
         login_user: root
-        login_unix_socket: /run/mysqld/mysqld.sock
+        login_unix_socket: "{{ onlyoffice_mariadb_socket }}"
       when: ( onlyoffice_mariadb_info.users['127.0.0.1'] is not defined ) or ( onlyoffice_debconf | community.general.json_query(onlyoffice_jpq_db_user) not in onlyoffice_mariadb_127_users )
 
     - name: Ensure MariaDB user can login using localhost
@@ -73,7 +73,7 @@
           - GRANT {% for onlyoffice_mariadb_p in onlyoffice_mariadb_priv %}{{ onlyoffice_mariadb_p }}{% if not loop.last %},{% endif %}{% endfor %} ON {{ onlyoffice_debconf | community.general.json_query(onlyoffice_jpq_db_name) }}.* TO '{{ onlyoffice_debconf | community.general.json_query(onlyoffice_jpq_db_name) }}'@'localhost'
         login_db: mysql
         login_user: root
-        login_unix_socket: /run/mysqld/mysqld.sock
+        login_unix_socket: "{{ onlyoffice_mariadb_socket }}"
       when: ( onlyoffice_mariadb_info.users.localhost is not defined ) or ( onlyoffice_debconf | community.general.json_query(onlyoffice_jpq_db_user) not in onlyoffice_mariadb_lo_users )
 
   tags:
