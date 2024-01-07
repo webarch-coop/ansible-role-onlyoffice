@@ -32,6 +32,25 @@
           - onlyoffice_db_pwd | length > 0
         quiet: "{% if ansible_verbosity == 0 %}true{% else %}false{% endif %}"
 
+    - name: Check MariaDB is running
+      ansible.builtin.service_facts:
+      register: onlyoffice_service_facts
+      until: (onlyoffice_service_facts | community.general.json_query(ansible_facts.services.["mariadb.service"]|[0])).state == "running"
+      retries: 10
+      delay: 2
+
+    - name: Stat the MariaDB socket path
+      ansible.builtin.stat:
+        path: "{{ onlyoffice_mariadb_socket }}"
+      register: onlyoffice_mariadb_socket_path
+
+    - name: Ensure that theMarioaDB socket exists
+      ansible.builtin.assert:
+        that:
+          - onlyoffice_mariadb_socket_path.stat.exists | bool
+          - onlyoffice_mariadb_socket_path.stat.issock | bool
+        quiet: "{% if ansible_verbosity == 0 %}true{% else %}false{% endif %}"
+
     - name: Query the MariaDB databases, users and version using a socket
       community.mysql.mysql_info:
         filter:

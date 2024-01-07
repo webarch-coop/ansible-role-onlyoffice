@@ -43,23 +43,6 @@
           - ( "nginx" or "nginx-extras" or "nginx-full" or "nginx-light" in ansible_local.dpkg.installed )
         quiet: "{% if ansible_verbosity == 0 %}true{% else %}false{% endif %}"
 
-    - name: MariaDB socket check
-      block:
-
-        - name: Stat the MariaDB socket path when using Mariadb
-          ansible.builtin.stat:
-            path: onlyoffice_mariadb_socket
-          register: onlyoffice_mariadb_socket_path
-
-        - name: Ensure that theMarioaDB socket exists
-          ansible.builtin.assert:
-            that:
-              - onlyoffice_mariadb_socket_path.stat.exists | bool
-              - onlyoffice_mariadb_socket_path.stat.issock | bool
-            quiet: "{% if ansible_verbosity == 0 %}true{% else %}false{% endif %}"
-
-      when: onlyoffice_debconf | community.general.json_query(onlyoffice_jpq_db_type) == "mariadb"
-
   tags:
     - onlyoffice
 ...

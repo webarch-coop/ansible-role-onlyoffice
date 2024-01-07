@@ -17,19 +17,19 @@ variables:
   DEFAULT_MANAGED_STR: "Ansible managed"
   MOLECULE_VERBOSITY: "0"
   PY_COLORS: "1"
+  PRE_COMMIT_COLOR: always
   PATH: "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
 before_script:
   - whoami
   - pwd
   - which ansible
   - ansible --version
+  - ansible-galaxy collection list
   - which yamllint
   - yamllint --version
   - which molecule
   - molecule --version
   - chmod 700 $(pwd)
-  # - mkdir -p molecule/default/roles
-  # - ansible-galaxy install -r molecule/default/requirements.yml -p molecule/default/roles --force
 stages:
   - lint
   - bookworm

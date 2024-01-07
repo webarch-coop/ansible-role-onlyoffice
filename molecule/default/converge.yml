@@ -92,7 +92,6 @@
         mariadb_database: onlyoffice
         mariadb_username: onlyoffice
         mariadb_underscore_autoupdate: true
-        # mariadb_verify: false  # this shouldn't be needed!
 
     - name: Include the RabbitMQ role
       ansible.builtin.include_role:
