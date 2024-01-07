@@ -45,6 +45,8 @@ bookworm:
   image: registry.git.coop/webarch/containers/images/bookworm:20240105
   stage: bookworm
   script:
+    - mkdir -p molecule/default/roles
+    - ansible-galaxy install -r molecule/default/requirements.yml -p molecule/default/roles --force
     - molecule test
 # The Bullseye test run OK but Molecule never completes
 # https://github.com/ansible/molecule/discussions/4020
@@ -57,5 +59,7 @@ jammy:
   image: registry.git.coop/webarch/containers/images/jammy:20240105
   stage: jammy
   script:
+    - mkdir -p molecule/default/roles
+    - ansible-galaxy install -r molecule/default/requirements.yml -p molecule/default/roles --force
     - molecule test
 ...
