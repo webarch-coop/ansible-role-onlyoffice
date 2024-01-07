@@ -23,7 +23,7 @@ onlyoffice_jpq_docservice_port: "[?question=='onlyoffice/docservice-port'].value
 onlyoffice_jpq_ds_port: "[?question=='onlyoffice/ds-port'].value|[0]"
 onlyoffice_jpq_ds_type: "[?question=='onlyoffice/ds-type'].value|[0]"
 onlyoffice_jpq_jwt_header: "[?question=='onlyoffice/jwt-header'].value|[0]"
-onlyoffice_jpq_mariadb_service: "ansible_facts.services.['mariadb.service'].state"
+onlyoffice_jpq_mariadb_service: 'ansible_facts.services.["mariadb.service"]|[0].state'
 onlyoffice_jpq_rabbitmq_host: "[?question=='onlyoffice/rabbitmq-host'].value|[0]"
 onlyoffice_jpq_rabbitmq_proto: "[?question=='onlyoffice/rabbitmq-proto'].value|[0]"
 onlyoffice_jpq_rabbitmq_pwd: "[?question=='onlyoffice/rabbitmq-pwd'].value|[0]"

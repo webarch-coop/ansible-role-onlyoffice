@@ -32,13 +32,12 @@
           - onlyoffice_db_pwd | length > 0
         quiet: "{% if ansible_verbosity == 0 %}true{% else %}false{% endif %}"
 
-    - name: Check MariaDB is running
+    - name: Check service facts
       ansible.builtin.service_facts:
-      register: onlyoffice_service_facts
 
     - name: Debug service facts
       ansible.builtin.debug:
-        var: onlyoffice_service_facts
+        var: ansible_facts.services
         # verbosity: "{% if ansible_check_mode | bool %}1{% else %}2{% endif %}"
 
     - name: Debug MariaDB service fact state
