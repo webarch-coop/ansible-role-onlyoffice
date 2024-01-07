@@ -42,12 +42,12 @@
 
     - name: Debug MariaDB service fact state
       ansible.builtin.debug:
-        msg: "{{ onlyoffice_service_facts | community.general.json_query(onlyoffice_jpq_mariadb_service) }}"
+        msg: "{{ ansible_facts | community.general.json_query(onlyoffice_jpq_mariadb_service) }}"
 
     - name: Check that MariaDB is running
       ansible.builtin.assert:
         that:
-          - onlyoffice_service_facts | community.general.json_query(onlyoffice_jpq_mariadb_service) == "running"
+          - ansible_facts | community.general.json_query(onlyoffice_jpq_mariadb_service) == "running"
         quiet: "{% if ansible_verbosity == 0 %}true{% else %}false{% endif %}"
 
     - name: Stat the MariaDB socket path
