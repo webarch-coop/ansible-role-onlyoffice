@@ -20,7 +20,7 @@
 
 - name: mariadb
   src: https://git.coop/webarch/mariadb.git
-  version: 3.4.0  # mariadb
+  version: 3.4.1  # mariadb
   scm: git
 
 - name: nginx
