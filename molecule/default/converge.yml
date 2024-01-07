@@ -89,6 +89,13 @@
         name: mariadb
       vars:  # noqa var-naming[no-role-prefix]
         mariadb: true
+        mariadb_config:
+          - name: MariaDB server configuration
+            path: /etc/mysql/mariadb.conf.d/50-server.cnf
+            state: edited
+            conf:
+              mysqld:
+                bind_address: "{{ ansible_default_ipv4.address }}"
         mariadb_underscore_autoupdate: true
 
     - name: Include the RabbitMQ role
