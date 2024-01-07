@@ -31,7 +31,7 @@ before_script:
   # - mkdir -p molecule/default/roles
   # - ansible-galaxy install -r molecule/default/requirements.yml -p molecule/default/roles --force
 stages:
-  # - lint
+  - lint
   - bookworm
   # - bullseye
   - jammy
