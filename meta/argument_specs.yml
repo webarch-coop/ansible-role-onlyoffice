@@ -167,6 +167,10 @@ argument_specs:
         type: str
         required: true
         description: An internal JMESPath query.
+      onlyoffice_jpq_mariadb_service:
+        type: str
+        required: true
+        description: An internal JMESPath query.
       onlyoffice_jpq_rabbitmq_host:
         type: str
         required: true
