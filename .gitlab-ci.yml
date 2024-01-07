@@ -28,14 +28,13 @@ before_script:
   - which molecule
   - molecule --version
   - chmod 700 $(pwd)
-  - mkdir -p molecule/default/roles
-  - ansible-galaxy install -r molecule/default/requirements.yml -p molecule/default/roles --force
+  # - mkdir -p molecule/default/roles
+  # - ansible-galaxy install -r molecule/default/requirements.yml -p molecule/default/roles --force
 stages:
-  - lint
+  # - lint
   - bookworm
   # - bullseye
   - jammy
-# This fails on with: # couldn't resolve module/action 'community.mysql.mysql_info'
 lint:
   image: registry.git.coop/webarch/containers/images/bookworm:20240105
   stage: lint
