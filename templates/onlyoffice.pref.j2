@@ -3,11 +3,11 @@
 {% for pkg in onlyoffice_pkg %}
 Package: {{ pkg }}
 Pin: origin download.onlyoffice.com
-{% if pkg == "onlyoffice-documentserver" %}
+{%     if pkg == "onlyoffice-documentserver" %}
 Pin: version {{ onlyoffice_docserver_version }}
 Pin-Priority: 1000
-{% else %}
+{%     else %}
 Pin-Priority: 500
-{% endif %}
+{%     endif %}
 
 {% endfor %}
