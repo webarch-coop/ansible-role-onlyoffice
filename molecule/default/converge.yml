@@ -146,7 +146,7 @@
             vtype: boolean
           - name: onlyoffice-documentserver
             question: onlyoffice/db-host
-            value: "127.0.0.1"
+            value: "{{ ansible_default_ipv4.address }}"
             vtype: string
           - name: onlyoffice-documentserver
             question: onlyoffice/db-name
