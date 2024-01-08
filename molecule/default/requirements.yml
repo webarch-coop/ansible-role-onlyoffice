@@ -40,6 +40,6 @@
 
 - name: users
   src: https://git.coop/webarch/users.git
-  version: 4.16.1  # users
+  version: 4.16.2  # users
   scm: git
 ...
