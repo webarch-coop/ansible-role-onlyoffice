@@ -8,21 +8,34 @@
 #
 # You should have received a copy of the GNU General Public License along with the Webarchitects ONLYOFFICE Ansible role. If not, see <https://www.gnu.org/licenses/>.
 ---
+- name: Reload systemd
+  ansible.builtin.systemd_service:
+    daemon_reload: true
+  listen: Reload systemd
+  tags:
+    - onlyoffice
+
 - name: Restart nginx
-  ansible.builtin.service:
+  ansible.builtin.systemd_service:
     name: nginx
     state: restarted
   listen: Restart nginx
+  tags:
+    - onlyoffice
 
 - name: Restart docservice
-  ansible.builtin.service:
+  ansible.builtin.systemd_service:
     name: ds-docservice
     state: restarted
   listen: Restart docservice
+  tags:
+    - onlyoffice
 
 - name: Restart converter
-  ansible.builtin.service:
+  ansible.builtin.systemd_service:
     name: ds-converter
     state: restarted
   listen: Restart converter
+  tags:
+    - onlyoffice
 ...

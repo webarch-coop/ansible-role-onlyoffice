@@ -42,6 +42,7 @@
             update_cache: true
             cache_valid_time: 0
           notify:
+            - Reload systemd
             - Restart docservice
 
       when: >-
@@ -106,6 +107,8 @@
         owner: ds
         group: ds
       when: onlyoffice_local != onlyoffice_local_json
+      notify:
+        - Restart docservice
 
   tags:
     - onlyoffice

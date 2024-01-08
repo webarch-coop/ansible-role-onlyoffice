@@ -40,6 +40,7 @@
           ansible.builtin.assert:
             that:
               - not onlyoffice_mariadb_systemd_conf.Service.PrivateNetwork | bool
+            quiet: "{% if ansible_verbosity == 0 %}true{% else %}false{% endif %}"
             fail_msg: >-
               Please set PrivateNetwork in /etc/systemd/system/mariadb.service.d/mariadb.conf to false as ONLYOFFICE
               DocumentServer uses 127.0.0.1 rather than localhost to access MariaDB.

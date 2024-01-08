@@ -89,13 +89,6 @@
         name: mariadb
       vars:  # noqa var-naming[no-role-prefix]
         mariadb: true
-        mariadb_config:
-          - name: MariaDB server configuration
-            path: /etc/mysql/mariadb.conf.d/50-server.cnf
-            state: edited
-            conf:
-              mysqld:
-                bind_address: "{{ ansible_default_ipv4.address }}"
         mariadb_systemd_units:
           - name: mariadb
             state: enabled
@@ -155,7 +148,7 @@
             vtype: boolean
           - name: onlyoffice-documentserver
             question: onlyoffice/db-host
-            value: "{{ ansible_default_ipv4.address }}"
+            value: "localhost"
             vtype: string
           - name: onlyoffice-documentserver
             question: onlyoffice/db-name

@@ -72,6 +72,14 @@
 
       when: ( "debconf-utils" in ansible_local.dpkg.installed )
 
+    - name: Ensure that the ONLYOFFICE ds-docservice is enabled and started
+      ansible.builtin.systemd_service:
+        service: ds-docservice
+        enabled: true
+        state: started
+      notify:
+        - Restart docservice
+
   when: onlyoffice | bool
   tags:
     - onlyoffice
