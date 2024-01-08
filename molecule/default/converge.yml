@@ -96,8 +96,17 @@
             conf:
               mysqld:
                 bind_address: "{{ ansible_default_ipv4.address }}"
-        mariadb_underscore_autoupdate: true
-
+        mariadb_systemd_units:
+          - name: mariadb
+            state: enabled
+            files:
+              - path: /etc/systemd/system/mariadb.service.d/mariadb.conf
+                conf:
+                  Service:
+                    NoNewPrivileges: "true"
+                    PrivateNetwork: "false"
+                    PrivateTmp: "true"
+                mariadb_underscore_autoupdate: true
     - name: Include the RabbitMQ role
       ansible.builtin.include_role:
         name: rabbitmq
