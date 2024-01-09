@@ -1,0 +1,17 @@
+# {{ ansible_managed }}
+
+{% if onlyoffice_ssl | bool %}
+server {
+  listen 0.0.0.0:80 default_server;
+  listen [::]:80 default_server;
+  root /var/www/html;
+  location /.well-known/acme-challenge/ {
+    allow all;
+  }
+  location / {
+    return 301 https://$host$request_uri;
+  }
+}
+{% endif %}
+
+# vim: syntax=nginx

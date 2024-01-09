@@ -88,6 +88,34 @@
         backup: true
       notify: Restart nginx
 
+    - name: Nginx HTTP to HTTPS redirect configuration in place
+      ansible.builtin.template:
+        src: onlyoffice_redirect.conf.j2
+        dest: /etc/nginx/sites-available/onlyoffice_redirect.conf
+        owner: root
+        group: root
+        mode: "0644"
+        backup: true
+
+    - name: Nginx HTTP to HTTPS redirect configuration enabled
+      ansible.builtin.file:
+        src: /etc/nginx/sites-available/onlyoffice_redirect.conf
+        dest: /etc/nginx/sites-enabled/onlyoffice_redirect.conf
+        state: link
+        follow: false
+        mode: "0777"
+        owner: root
+        group: root
+      when: onlyoffice_ssl | bool
+      notify: Restart nginx
+
+    - name: Nginx HTTP to HTTPS redirect configuration disabled
+      ansible.builtin.file:
+        path: /etc/nginx/sites-enabled/onlyoffice_redirect.conf
+        state: absent
+      when: not onlyoffice_ssl | bool
+      notify: Restart nginx
+
     - name: Template http-common.conf when the docserver port is not 8000
       block:
 
