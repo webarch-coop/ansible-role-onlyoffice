@@ -97,6 +97,11 @@
         mode: "0644"
         backup: true
 
+    - name: Check if the HTTP to HTTPS redirect configuration is present
+      ansible.builtin.stat:
+        path: /etc/nginx/sites-available/onlyoffice_redirect.conf
+      register: onlyoffice_nginx_https_redirect_config
+
     - name: Nginx HTTP to HTTPS redirect configuration enabled
       ansible.builtin.file:
         src: /etc/nginx/sites-available/onlyoffice_redirect.conf
@@ -106,7 +111,11 @@
         mode: "0777"
         owner: root
         group: root
-      when: onlyoffice_ssl | bool
+      when:
+        - onlyoffice_ssl is defined
+        - onlyoffice_ssl | bool
+        - onlyoffice_nginx_https_redirect_config.stat.exists is defined
+        - onlyoffice_nginx_https_redirect_config.stat.exists | bool
       notify: Restart nginx
 
     - name: Nginx HTTP to HTTPS redirect configuration disabled
