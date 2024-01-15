@@ -100,6 +100,7 @@
                     PrivateNetwork: "false"
                     PrivateTmp: "true"
         mariadb_underscore_autoupdate: true
+
     - name: Include the RabbitMQ role
       ansible.builtin.include_role:
         name: rabbitmq
