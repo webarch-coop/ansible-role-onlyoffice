@@ -127,7 +127,7 @@ onlyoffice_pkg:
   - onlyoffice-documentserver-ie
   - onlyoffice-xmppserver
 
-# Get the onlyoffice-documentserver versions using the following command
+# Get the onlyoffice-documentserver versions using the following command on a server with onlyoffice-documentserver installed
 # apt-get update && apt-cache madison onlyoffice-documentserver | awk '{ print $3 }' | sed 's/^/  - /'
 onlyoffice_docserver_versions:
   - 8.0.0-99
