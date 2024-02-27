@@ -113,8 +113,31 @@ onlyoffice_gpg_fingerprints:
 onlyoffice_gpg_fingerprints_query: "[?type=='fpr'].user_id"
 
 # Get the packages available using the following command
-# grep Package /var/lib/apt/lists/*onlyoffice*_Packages | grep onlyoffice | awk '{print $2}' | sort -u | sed 's/^/  - /'
+# grep Package /var/lib/apt/lists/*onlyoffice*_Packages | awk '{print $2}' | sort -u | sed 's/^/  - /'
+# or
+# cat /var/lib/apt/lists/*onlyoffice*_Packages | jc --pkg-index-deb | jp [].package | yq -o=yaml -P | sed 's/^/  /'
 onlyoffice_pkg:
+  - docspace
+  - docspace-api
+  - docspace-api-system
+  - docspace-backup
+  - docspace-backup-background
+  - docspace-clear-events
+  - docspace-common
+  - docspace-doceditor
+  - docspace-files
+  - docspace-files-services
+  - docspace-healthchecks
+  - docspace-login
+  - docspace-migration-runner
+  - docspace-notify
+  - docspace-people-server
+  - docspace-proxy
+  - docspace-radicale
+  - docspace-socket
+  - docspace-ssoauth
+  - docspace-studio
+  - docspace-studio-notify
   - onlyoffice-communityserver
   - onlyoffice-controlpanel
   - onlyoffice-desktopeditors
@@ -130,6 +153,7 @@ onlyoffice_pkg:
 # Get the onlyoffice-documentserver versions using the following command on a server with onlyoffice-documentserver installed
 # apt-get update && apt-cache madison onlyoffice-documentserver | awk '{ print $3 }' | sed 's/^/  - /'
 onlyoffice_docserver_versions:
+  - 8.0.1-31
   - 8.0.0-99
   - 7.5.1-23
   - 7.5.0-125

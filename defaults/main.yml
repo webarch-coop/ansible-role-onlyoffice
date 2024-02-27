@@ -86,7 +86,7 @@ onlyoffice_debconf:
     vtype: boolean
 # https://github.com/ONLYOFFICE/DocumentServer/blob/master/CHANGELOG.md
 # see vars/main.yml for the full versions strings that are required here:
-onlyoffice_docserver_version: 8.0.0-99
+onlyoffice_docserver_version: 8.0.1-31
 onlyoffice_local:
   services:
     CoAuthoring:
