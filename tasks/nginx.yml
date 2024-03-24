@@ -96,8 +96,9 @@
         group: root
         mode: "0644"
         backup: true
+      notify: Restart nginx
 
-    - name: Check if the HTTP to HTTPS redirect configuration is present
+    - name: Check if the Nginx HTTP to HTTPS redirect configuration is present
       ansible.builtin.stat:
         path: /etc/nginx/sites-available/onlyoffice_redirect.conf
       register: onlyoffice_nginx_https_redirect_config
@@ -124,6 +125,40 @@
         state: absent
       when: not onlyoffice_ssl | bool
       notify: Restart nginx
+
+    - name: Nginx localhost for ONLYOFFICE info
+      block:
+
+        - name: Nginx localhost info configuration in place
+          ansible.builtin.template:
+            src: onlyoffice_localhost.conf.j2
+            dest: /etc/nginx/sites-available/onlyoffice_localhost.conf
+            owner: root
+            group: root
+            mode: "0644"
+            backup: true
+          notify: Restart nginx
+
+        - name: Check if the Nginx localhost configuration is present
+          ansible.builtin.stat:
+            path: /etc/nginx/sites-available/onlyoffice_localhost.conf
+          register: onlyoffice_nginx_https_localhost_config
+
+        - name: Nginx HTTP to HTTPS localhost configuration enabled
+          ansible.builtin.file:
+            src: /etc/nginx/sites-available/onlyoffice_localhost.conf
+            dest: /etc/nginx/sites-enabled/onlyoffice_localhost.conf
+            state: link
+            follow: false
+            mode: "0777"
+            owner: root
+            group: root
+          when:
+            - onlyoffice_nginx_https_localhost_config.stat.exists is defined
+            - onlyoffice_nginx_https_localhost_config.stat.exists | bool
+          notify: Restart nginx
+
+      when: onlyoffice_nginx_localhost | bool
 
     - name: Template http-common.conf when the docserver port is not 8000
       block:

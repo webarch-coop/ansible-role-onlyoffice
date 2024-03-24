@@ -355,6 +355,14 @@ argument_specs:
         type: dict
         required: false
         description: Internal dictionary resulting from running the stat modules on the MariaDB socket path.
+      onlyoffice_nginx_localhost:
+        type: bool
+        required: true
+        description: Listen for local connections to the ONLYOFFICE info URL.
+      onlyoffice_nginx_localhost_port:
+        type: int
+        required: true
+        description: Port for local connections to the ONLYOFFICE info URL.
       onlyoffice_nginx_sites_disabled:
         type: list
         elements: str

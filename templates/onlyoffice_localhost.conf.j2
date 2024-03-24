@@ -1,0 +1,29 @@
+# {{ ansible_managed }}
+
+server {
+  listen 127.0.0.1:{{ onlyoffice_nginx_localhost_port }};
+  root /var/www/localhost;
+  location /nginx_status {
+    stub_status on;
+    access_log off;
+    allow 127.0.0.1;
+{% if ansible_host is defined %}
+    allow {{ ansible_host }};
+{% elif ansible_default_ipv4.address is defined %}
+    allow {{ ansible_default_ipv4.address }};
+{% endif %}
+    deny all;
+  }
+  location ~* ^(\/[\d]+\.[\d]+\.[\d]+[\.|-][\d]+)?\/(info)(\/.*)$ {
+    proxy_pass http://docservice/$2$3;
+    allow 127.0.0.1;
+{% if ansible_host is defined %}
+    allow {{ ansible_host }};
+{% elif ansible_default_ipv4.address is defined %}
+    allow {{ ansible_default_ipv4.address }};
+{% endif %}
+    deny all;
+  }
+}
+
+# vim: syntax=nginx
