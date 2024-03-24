@@ -40,6 +40,16 @@
       ansible.builtin.debug:
         var: molecule_port_facts
 
+    - name: ONLYOFFICE info
+      ansible.builtin.uri:
+        url: "http://{{ ansible_default_ipv4.address }}/info/info.json"
+        return_content: true
+      register: molecule_onlyoffice_info
+
+    - name: Debug ONLYOFFICE info
+      ansible.builtin.debug:
+        var: molecule_onlyoffice_healthcheck.content
+
     - name: ONLYOFFICE healthcheck
       ansible.builtin.uri:
         url: "http://{{ ansible_default_ipv4.address }}/healthcheck"
