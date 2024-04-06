@@ -43,6 +43,27 @@
           - ( "nginx" or "nginx-extras" or "nginx-full" or "nginx-light" in ansible_local.dpkg.installed )
         quiet: "{% if ansible_verbosity == 0 %}true{% else %}false{% endif %}"
 
+    - name: Check ONLYOFFICE info in a block to catch failures
+      block:
+
+        - name: Check ONLYOFFICE info
+          ansible.builtin.uri:
+            url: "http://{{ onlyoffice_nginx_localhost_domain }}:{{ onlyoffice_nginx_localhost_port }}/info/info.json"
+            return_content: true
+          register: onlyoffice_info
+
+        - name: Debug ONLYOFFICE info
+          ansible.builtin.debug:
+            var: onlyoffice_info
+
+      rescue:
+
+        - name: There was a failure getting the ONLYOFFICE info
+          ansible.builtin.debug:
+            var: onlyoffice_info
+
+      when: onlyoffice_nginx_localhost | bool
+
   tags:
     - onlyoffice
 ...

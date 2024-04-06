@@ -19,35 +19,46 @@
         owner: root
         group: root
 
-    - name: State /usr/local/share/munin/plugins
+    - name: Stat /usr/local/share/munin/plugins
       ansible.builtin.stat:
         path: /usr/local/share/munin/plugins
       register: onlyoffice_munin_usr_local_share_munin_plugins_path
 
-    - name: ONLYOFFICE Munin present
-      ansible.builtin.template:
-        src: onlyoffice.sh.j2
-        dest: /usr/local/share/munin/plugins/onlyoffice
-        mode: "0755"
-        owner: root
-        group: root
-      when: onlyoffice_munin_usr_local_share_munin_plugins_path.stat.exists | bool
-
-    - name: State /etc/munin/plugins
+    - name: Stat /usr/share/munin/plugins/plugin.sh
       ansible.builtin.stat:
-        path: /etc/munin/plugins
-      register: onlyoffice_munin_etc_plugins_path
+        path: /usr/share/munin/plugins/plugin.sh
+      register: onlyoffice_munin_usr_share_munin_plugins_plugin_path
 
-    - name: ONLYOFFICE Munin symlink in place
-      ansible.builtin.file:
-        src: /usr/local/share/munin/plugins/onlyoffice
-        dest: /etc/munin/plugins/onlyoffice
-        state: link
-        follow: false
-        mode: "0777"
-        owner: root
-        group: root
-      when: onlyoffice_munin_etc_plugins_path.stat.exists | bool
+    - name: ONLYOFFICE Munin plugin present when paths exist
+      block:
+
+        - name: ONLYOFFICE Munin plugin present
+          ansible.builtin.template:
+            src: onlyoffice.sh.j2
+            dest: /usr/local/share/munin/plugins/onlyoffice
+            mode: "0755"
+            owner: root
+            group: root
+
+        - name: State /etc/munin/plugins
+          ansible.builtin.stat:
+            path: /etc/munin/plugins
+          register: onlyoffice_munin_etc_plugins_path
+
+        - name: ONLYOFFICE Munin symlink symlink in place
+          ansible.builtin.file:
+            src: /usr/local/share/munin/plugins/onlyoffice
+            dest: /etc/munin/plugins/onlyoffice
+            state: link
+            follow: false
+            mode: "0777"
+            owner: root
+            group: root
+          when: onlyoffice_munin_etc_plugins_path.stat.exists | bool
+
+      when:
+        - onlyoffice_munin_usr_local_share_munin_plugins_path.stat.exists | bool
+        - onlyoffice_munin_usr_share_munin_plugins_plugin_path.stat.exists | bool
 
   tags:
     - onlyoffice
