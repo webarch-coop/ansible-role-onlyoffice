@@ -1,4 +1,4 @@
-# Copyright 2020-2023 Chris Croome
+# Copyright 2020-2024 Chris Croome
 #
 # This file is part of the Webarchitects ONLYOFFICE Ansible role.
 #
@@ -10,17 +10,17 @@
 ---
 - name: apt
   src: https://git.coop/webarch/apt.git
-  version: 4.1.1  # apt
+  version: 4.2.0  # apt
   scm: git
 
 - name: etchosts
   src: https://git.coop/webarch/etchosts.git
-  version: 1.4.0  # etchosts
+  version: 1.5.1  # etchosts
   scm: git
 
 - name: mariadb
   src: https://git.coop/webarch/mariadb.git
-  version: 3.4.1  # mariadb
+  version: 3.5.1  # mariadb
   scm: git
 
 - name: nginx
@@ -40,6 +40,6 @@
 
 - name: users
   src: https://git.coop/webarch/users.git
-  version: 4.16.2  # users
+  version: 4.26.1  # users
   scm: git
 ...

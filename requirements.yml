@@ -31,7 +31,7 @@
 
 - name: postgresql
   src: https://git.coop/webarch/postgresql.git
-  version: 1.2.0
+  version: master
   scm: git
 
 - name: nginx
