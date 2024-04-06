@@ -43,7 +43,7 @@
           - ( "nginx" or "nginx-extras" or "nginx-full" or "nginx-light" in ansible_local.dpkg.installed )
         quiet: "{% if ansible_verbosity == 0 %}true{% else %}false{% endif %}"
 
-    - name: Check ONLYOFFICE info in a block to catch failures
+    - name: Check ONLYOFFICE info
       block:
 
         - name: Check ONLYOFFICE info
@@ -54,17 +54,14 @@
           check_mode: false
           changed_when: false
           register: onlyoffice_info
+          failed_when:
+            - onlyoffice_info.status != "-1"
+            - onlyoffice_info.status != "200"
 
         - name: Debug ONLYOFFICE info
           ansible.builtin.debug:
             var: onlyoffice_info
             verbosity: "{% if ansible_check_mode | bool or ansible_diff_mode | bool %}1{% else %}2{% endif %}"
-
-      rescue:
-
-        - name: There was a failure getting the ONLYOFFICE info
-          ansible.builtin.debug:
-            var: onlyoffice_info
 
       when: onlyoffice_nginx_localhost | bool
 
