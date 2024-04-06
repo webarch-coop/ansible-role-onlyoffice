@@ -67,6 +67,9 @@
         - name: Include install ONLYOFFICE tasks
           ansible.builtin.include_tasks: install.yml
 
+        - name: Include Munin tasks
+          ansible.builtin.include_tasks: munin.yml
+
         - name: Include Nginx tasks
           ansible.builtin.include_tasks: nginx.yml
 

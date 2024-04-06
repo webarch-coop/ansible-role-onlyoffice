@@ -215,5 +215,6 @@
             question: onlyoffice/remove-db
             value: false
             vtype: boolean
+        onlyoffice_nginx_localhost_domain: "{{ ansible_default_ipv4.address }}"
         onlyoffice_ssl: false
 ...

@@ -58,6 +58,18 @@ The version of the `onlyoffice-documentserver` Debian package to be installed an
 
 A YAML dictionary, which will be converted to JSON and written to `/etc/onlyoffice/documentserver/local.json`.
 
+### onlyoffice_nginx_localhost
+
+Add Nginx configuration for the ONLYOFFICE info to be available, `onlyoffice_nginx_localhost` defaults to `true`.
+
+### onlyoffice_nginx_localhost_domain
+
+Domain name for the ONLYOFFICE info to be available on, `onlyoffice_nginx_localhost_domain` defaults to `localhost`.
+
+### onlyoffice_nginx_localhost_port
+
+Port for the ONLYOFFICE info to be available on, `onlyoffice_nginx_localhost_port` defaults to `82`.
+
 ### onlyoffice_ssl_certificate
 
 A string, the path to the TLS fullchain certificate for HTTPS.

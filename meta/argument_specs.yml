@@ -359,6 +359,10 @@ argument_specs:
         type: bool
         required: true
         description: Listen for local connections to the ONLYOFFICE info URL.
+      onlyoffice_nginx_localhost_domain:
+        type: int
+        required: true
+        description: Domain name / IP address for local connections to the ONLYOFFICE info URL.
       onlyoffice_nginx_localhost_port:
         type: int
         required: true

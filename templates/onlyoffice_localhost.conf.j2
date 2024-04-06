@@ -1,7 +1,7 @@
 # {{ ansible_managed }}
 
 server {
-  listen 127.0.0.1:{{ onlyoffice_nginx_localhost_port }};
+  listen {{ onlyoffice_nginx_localhost_domain }}:{{ onlyoffice_nginx_localhost_port }};
   root /var/www/localhost;
   location /nginx_status {
     stub_status on;

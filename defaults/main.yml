@@ -123,6 +123,7 @@ onlyoffice_local:
       secretString: "{{ onlyoffice_storage_fs_secret }}"
 onlyoffice_mariadb_socket: /run/mysqld/mysqld.sock
 onlyoffice_nginx_localhost: true
+onlyoffice_nginx_localhost_domain: localhost
 onlyoffice_nginx_localhost_port: 82
 onlyoffice_nginx_sites_disabled:
   - default
