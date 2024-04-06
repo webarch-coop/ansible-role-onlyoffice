@@ -1,0 +1,197 @@
+# Copyright 2020-2023 Chris Croome
+#
+# This file is part of the Webarchitects ONLYOFFICE Ansible role.
+#
+# The Webarchitects ONLYOFFICE Ansible role is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+#
+# The Webarchitects ONLYOFFICE Ansible role is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License along with the Webarchitects ONLYOFFICE Ansible role. If not, see <https://www.gnu.org/licenses/>.
+---
+argument_specs:
+  main:
+    author: Chris Croome
+    description: ONLYOFFICE Document Server Ansible role
+    short_description: The main entry point for the ONLYOFFICE role.
+    options:
+      onlyoffice_argument_spec:
+        type: dict
+        required: true
+        description: Argument spec dictionary.
+      onlyoffice_apt_deps:
+        type: dict
+        required: false
+        description: Internal variable for the results of installing required apt packages.
+      onlyoffice_asc_file:
+        type: str
+        required: false
+        description: Internal variable for the GPG asc file path.
+      onlyoffice_combined_argument_spec:
+        type: dict
+        required: true
+        description: Internal combined argument spec dictionary.
+      onlyoffice_db_pwd:
+        type: str
+        required: true
+        description: ONLYOFFICE database password.
+      onlyoffice_dcnf:
+        type: dict
+        required: false
+        description: Internal debconf loop variable.
+        options:
+          value:
+            type: str
+            required: true
+            description: Value for the debconf question.
+      onlyoffice_docserver_apt_version:
+        type: str
+        required: false
+        description: Internal variable for the version of the onlyoffice-documentserver installed.
+      onlyoffice_docserver_headers:
+        type: dict
+        required: false
+        description: Internal variable for the results of a HEAD request to check the latest version of ONLYOFFICE DocumentServer.
+      onlyoffice_docserver_latest:
+        type: str
+        required: false
+        description: Internal variable for the latest version of ONLYOFFICE DocumentServer.
+      onlyoffice_docserver_versions:
+        type: list
+        elements: str
+        required: false
+        description: Internal array of available onlyoffice-documentserver package versions.
+      onlyoffice_fs_secret:
+        type: str
+        required: false
+        description: Internal ONLYOFFICE filesystem secret.
+      onlyoffice_gpg:
+        type: dict
+        required: false
+        description: Internal variable for the results of the gpg key check command.
+      onlyoffice_gpg_checksum:
+        type: str
+        required: true
+        description: Internal ONLYOFFICE GPG checksum.
+      onlyoffice_gpg_checksum_raw:
+        type: str
+        required: true
+        description: Internal ONLYOFFICE GPG checksum including sha256 prefix.
+      onlyoffice_gpg_file:
+        type: dict
+        required: false
+        description: Internal variable for the results of stat.
+      onlyoffice_gpg_fingerprints:
+        type: list
+        elements: str
+        required: true
+        description: Internal list of the fingerprints of the ONLYOFFICE GPG key.
+      onlyoffice_gpg_fingerprints_found:
+        type: list
+        elements: str
+        required: false
+        description: Internal list of the fingerprints found.
+      onlyoffice_gpg_fingerprints_query:
+        type: str
+        required: true
+        description: Internal JMESPath query for the ONLYOFFICE GPG fingerprints.
+      onlyoffice_gpg_url:
+        type: str
+        required: true
+        description: Internal URL for the ONLYOFFICE GPG key.
+      onlyoffice_internal_argument_spec:
+        type: dict
+        required: true
+        description: Internal argument spec dictionary.
+      onlyoffice_jpq_db_host:
+        type: str
+        required: true
+        description: Internal JMESPath query.
+      onlyoffice_jpq_db_name:
+        type: str
+        required: true
+        description: Internal JMESPath query.
+      onlyoffice_jpq_db_port:
+        type: str
+        required: true
+        description: Internal JMESPath query.
+      onlyoffice_jpq_db_type:
+        type: str
+        required: true
+        description: Internal JMESPath query.
+      onlyoffice_jpq_db_user:
+        type: str
+        required: true
+        description: Internal JMESPath query.
+      onlyoffice_jpq_docservice_port:
+        type: str
+        required: true
+        description: Internal JMESPath query.
+      onlyoffice_jpq_ds_port:
+        type: str
+        required: true
+        description: Internal JMESPath query.
+      onlyoffice_jpq_ds_type:
+        type: str
+        required: true
+        description: Internal JMESPath query.
+      onlyoffice_jpq_jwt_header:
+        type: str
+        required: true
+        description: Internal JMESPath query.
+      onlyoffice_jpq_mariadb_service:
+        type: str
+        required: true
+        description: Internal JMESPath query.
+      onlyoffice_jpq_rabbitmq_host:
+        type: str
+        required: true
+        description: Internal JMESPath query.
+      onlyoffice_jpq_rabbitmq_proto:
+        type: str
+        required: true
+        description: Internal JMESPath query.
+      onlyoffice_jpq_rabbitmq_pwd:
+        type: str
+        required: true
+        description: Internal JMESPath query.
+      onlyoffice_jpq_rabbitmq_user:
+        type: str
+        required: true
+        description: Internal JMESPath query.
+      onlyoffice_jwt_secret:
+        type: str
+        required: true
+        description: Internal ONLYOFFICE JWT secret.
+      onlyoffice_old_apt_list_files:
+        type: dict
+        required: false
+        description: Internal vairable for the results of the find module.
+      onlyoffice_preferences:
+        type: dict
+        required: false
+        description: Internal variable for the results of templating the preferences.
+      onlyoffice_sources:
+        type: dict
+        required: false
+        description: Internal variable for the results of templating the apt sources.
+      onlyoffice_sources_check:
+        type: dict
+        required: false
+        description: Internal variable for the results of checking the ONLYOFFICE repository sources file.
+      onlyoffice_sources_contents:
+        type: dict
+        required: false
+        description: Internal variable for the contents of the ONLYOFFICE repository sources file.
+      onlyoffice_sources_contents_b64encoded:
+        type: dict
+        required: false
+        description: Internal variable for the results of slurping the ONLYOFFICE repository sources file.
+      onlyoffice_sources_contents_prior:
+        type: dict
+        required: false
+        description: Internal variable for the prior contents of the ONLYOFFICE repository sources file.
+      onlyoffice_sources_path:
+        type: dict
+        required: false
+        description: Internal variable for the results of stat'ing the ONLYOFFICE repository sources file path.
+...

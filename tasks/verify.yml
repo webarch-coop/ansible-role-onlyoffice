@@ -21,9 +21,18 @@
         var: onlyofficehostvars
         verbosity: "{% if ansible_check_mode | bool %}3{% else %}4{% endif %}"
 
-    - name: Check onlyoffice_ variables using meta/argument_specs.yml
+    - name: Set a fact for the argument spec and internal argument spec
+      ansible.builtin.set_fact:
+        onlyoffice_argument_spec: "{{ (lookup('ansible.builtin.file', 'meta/argument_specs.yml') | from_yaml) }}"
+        onlyoffice_internal_argument_spec: "{{ (lookup('ansible.builtin.file', 'meta/internal_argument_specs.yml') | from_yaml) }}"
+
+    - name: Set a fact for the combined argument spec and internal argument spec
+      ansible.builtin.set_fact:
+        onlyoffice_combined_argument_spec: "{{ onlyoffice_argument_spec | ansible.builtin.combine(onlyoffice_internal_argument_spec, recursive=true) }}"
+
+    - name: Check onlyoffice_ variables using the combined argument spec
       ansible.builtin.validate_argument_spec:
-        argument_spec: "{{ (lookup('ansible.builtin.file', 'meta/argument_specs.yml') | from_yaml)['argument_specs']['main']['options'] }}"
+        argument_spec: "{{ onlyoffice_combined_argument_spec['argument_specs']['main']['options'] }}"
         provided_arguments: "{{ onlyofficehostvars }}"
 
   tags:

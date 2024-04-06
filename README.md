@@ -78,9 +78,9 @@ A string, the path to the TLS fullchain certificate for HTTPS.
 
 A string, the path to the TLS private key for HTTPS.
 
-### onlyoffice_validate
+### onlyoffice_verify
 
-A boolean, `onlyoffice_validate` defaults to `true` set it to false to skip the role using the [ansible.builtin.validate_argument_spec module](https://docs.ansible.com/ansible/latest/collections/ansible/builtin/validate_argument_spec_module.html) to validate variables that start with `onlyoffice_`.
+A boolean, `onlyoffice_verify` defaults to `true` set it to false to skip the role using the [ansible.builtin.validate_argument_spec module](https://docs.ansible.com/ansible/latest/collections/ansible/builtin/validate_argument_spec_module.html) to verify variables that start with `onlyoffice_`.
 
 ## Upgrading from Debian Buster to Bullseye
 

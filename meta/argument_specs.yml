@@ -18,14 +18,6 @@ argument_specs:
         type: bool
         required: true
         description: Run the tasks in this role.
-      onlyoffice_apt_deps:
-        type: dict
-        required: false
-        description: Internal variable for the results of installing required apt packages.
-      onlyoffice_asc_file:
-        type: str
-        required: false
-        description: Internal variable for the GPG asc file path.
       onlyoffice_debconf:
         type: list
         elements: dict
@@ -72,125 +64,10 @@ argument_specs:
             type: str
             required: true
             description: Value for the debconf question.
-      onlyoffice_docserver_apt_version:
-        type: str
-        required: false
-        description: Internal variable for the version of the onlyoffice-documentserver installed.
-      onlyoffice_docserver_headers:
-        type: dict
-        required: false
-        description: Internal variable for the results of a HEAD request to check the latest version of ONLYOFFICE DocumentServer.
-      onlyoffice_docserver_latest:
-        type: str
-        required: false
-        description: Internal variable for the latest version of ONLYOFFICE DocumentServer.
       onlyoffice_docserver_version:
         type: str
         required: true
         description: The version of the onlyoffice-documentserver package to be pinned.
-      onlyoffice_docserver_versions:
-        type: list
-        elements: str
-        required: false
-        description: Internal array of available onlyoffice-documentserver package versions.
-      onlyoffice_fs_secret:
-        type: str
-        required: false
-        description: Internal ONLYOFFICE filesystem secret.
-      onlyoffice_gpg:
-        type: dict
-        required: false
-        description: Internal variable for the results of the gpg key check command.
-      onlyoffice_gpg_checksum:
-        type: str
-        required: true
-        description: Internal ONLYOFFICE GPG checksum.
-      onlyoffice_gpg_checksum_raw:
-        type: str
-        required: true
-        description: Internal ONLYOFFICE GPG checksum including sha256 prefix.
-      onlyoffice_gpg_file:
-        type: dict
-        required: false
-        description: Internal variable for the results of stat.
-      onlyoffice_gpg_fingerprints:
-        type: list
-        elements: str
-        required: true
-        description: A internal list of the fingerprints of the ONLYOFFICE GPG key.
-      onlyoffice_gpg_fingerprints_found:
-        type: list
-        elements: str
-        required: false
-        description: A internal list of the fingerprints found.
-      onlyoffice_gpg_fingerprints_query:
-        type: str
-        required: true
-        description: A internal JMESPath query for the ONLYOFFICE GPG fingerprints.
-      onlyoffice_gpg_url:
-        type: str
-        required: true
-        description: A internal URL for the ONLYOFFICE GPG key.
-      onlyoffice_jpq_db_host:
-        type: str
-        required: true
-        description: An internal JMESPath query.
-      onlyoffice_jpq_db_name:
-        type: str
-        required: true
-        description: An internal JMESPath query.
-      onlyoffice_jpq_db_port:
-        type: str
-        required: true
-        description: An internal JMESPath query.
-      onlyoffice_jpq_db_type:
-        type: str
-        required: true
-        description: An internal JMESPath query.
-      onlyoffice_jpq_db_user:
-        type: str
-        required: true
-        description: An internal JMESPath query.
-      onlyoffice_jpq_docservice_port:
-        type: str
-        required: true
-        description: An internal JMESPath query.
-      onlyoffice_jpq_ds_port:
-        type: str
-        required: true
-        description: An internal JMESPath query.
-      onlyoffice_jpq_ds_type:
-        type: str
-        required: true
-        description: An internal JMESPath query.
-      onlyoffice_jpq_jwt_header:
-        type: str
-        required: true
-        description: An internal JMESPath query.
-      onlyoffice_jpq_mariadb_service:
-        type: str
-        required: true
-        description: An internal JMESPath query.
-      onlyoffice_jpq_rabbitmq_host:
-        type: str
-        required: true
-        description: An internal JMESPath query.
-      onlyoffice_jpq_rabbitmq_proto:
-        type: str
-        required: true
-        description: An internal JMESPath query.
-      onlyoffice_jpq_rabbitmq_pwd:
-        type: str
-        required: true
-        description: An internal JMESPath query.
-      onlyoffice_jpq_rabbitmq_user:
-        type: str
-        required: true
-        description: An internal JMESPath query.
-      onlyoffice_jwt_secret:
-        type: str
-        required: true
-        description: Internal ONLYOFFICE JWT secret.
       onlyoffice_local:
         type: dict
         required: true
@@ -351,10 +228,6 @@ argument_specs:
         type: str
         required: false
         description: Path to the MariaDB socket.
-      onlyoffice_mariadb_socket_path:
-        type: dict
-        required: false
-        description: Internal dictionary resulting from running the stat modules on the MariaDB socket path.
       onlyoffice_nginx_localhost:
         type: bool
         required: true
@@ -377,27 +250,15 @@ argument_specs:
         elements: str
         required: false
         description: A list of Nginx sites to enable, which are symlinks to add in /etc/nginx/sites-enabled.
-      onlyoffice_old_apt_list_files:
-        type: dict
-        required: false
-        description: Internal vairable for the results of the find module.
       onlyoffice_pkg:
         type: list
         elements: str
         required: true
         description: A list of required .deb packages.
-      onlyoffice_preferences:
-        type: dict
-        required: false
-        description: Internal variable for the results of templating the preferences.
       onlyoffice_rabbitmq_pwd:
         type: str
         required: false
         description: RabbitMQ password for ONLYOFFICE, internally set using the RabbitMQ role.
-      onlyoffice_sources:
-        type: dict
-        required: false
-        description: Internal variable for the results of templating the apt sources.
       onlyoffice_ssl:
         type: bool
         required: true
@@ -410,12 +271,8 @@ argument_specs:
         type: str
         required: true
         description: Path to the TLS key.
-      onlyoffice_validate:
+      onlyoffice_verify:
         type: bool
         required: true
         description: Use ansible.builtin.validate_argument_spec module to validate role argument specs.
-  # jwt:
-  #   author: Chris Croome
-  #   description: ONLYOFFICE Document Server Ansible role
-  #   short_description: The JWT entry point for the ONLYOFFICE role.
 ...

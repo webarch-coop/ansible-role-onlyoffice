@@ -51,12 +51,25 @@
             url: "http://{{ onlyoffice_nginx_localhost_domain }}:{{ onlyoffice_nginx_localhost_port }}/info/info.json"
             return_content: true
           delegate_to: "{{ inventory_hostname }}"
+          check_mode: false
+          changed_when: false
           register: onlyoffice_info
 
         - name: Debug ONLYOFFICE info
           ansible.builtin.debug:
             var: onlyoffice_info
             verbosity: "{% if ansible_check_mode | bool or ansible_diff_mode | bool %}1{% else %}2{% endif %}"
+
+      rescue:
+
+        - name: There was a failure getting the ONLYOFFICE info
+          ansible.builtin.debug:
+            var: onlyoffice_info
+
+      when: onlyoffice_nginx_localhost | bool
+
+    - name: Set facts when ONLYOFFICE info status code is 200
+      block:
 
         - name: Set a fact for the ONLYOFFICE version returned by ONLYOFFICE info
           ansible.builtin.set_fact:
@@ -69,13 +82,7 @@
             var: onlyoffice_build_version
             verbosity: "{% if ansible_check_mode | bool or ansible_diff_mode | bool %}0{% else %}1{% endif %}"
 
-      rescue:
-
-        - name: There was a failure getting the ONLYOFFICE info
-          ansible.builtin.debug:
-            var: onlyoffice_info
-
-      when: onlyoffice_nginx_localhost | bool
+      when: onlyoffice_info.status == "200"
 
   tags:
     - onlyoffice

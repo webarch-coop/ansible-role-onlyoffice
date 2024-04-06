@@ -54,24 +54,25 @@
     # in addition the GPG public key comments change depending on the keyserver version, so those
     # lines need to be removed before the checksum is calculated
 
-    - name: Download and check the ONLYOFFICE gpg key when not in check mode
+    - name: ONLYOFFICE gpg asc key downloaded
+      ansible.builtin.get_url:
+        url: "{{ onlyoffice_gpg_url }}"
+        dest: /root/onlyoffice.asc
+        force: true
+        mode: "0644"
+        owner: root
+        group: root
+      check_mode: false
+      changed_when: false
+
+    - name: Stat ONLYOFFICE gpg ascii armored file
+      ansible.builtin.stat:
+        path: /root/onlyoffice.asc
+        checksum_algorithm: sha256
+      register: onlyoffice_asc_file
+
+    - name: Check gpg key when it exists
       block:
-
-        - name: ONLYOFFICE gpg asc key downloaded
-          ansible.builtin.get_url:
-            url: "{{ onlyoffice_gpg_url }}"
-            dest: /root/onlyoffice.asc
-            force: true
-            mode: "0644"
-            owner: root
-            group: root
-          changed_when: false
-
-        - name: Stat ONLYOFFICE gpg ascii armored file
-          ansible.builtin.stat:
-            path: /root/onlyoffice.asc
-            checksum_algorithm: sha256
-          register: onlyoffice_asc_file
 
         - name: Check the ONLYOFFICE gpg ascii armored file sha256sum
           ansible.builtin.assert:
@@ -86,6 +87,7 @@
             chmod 644 /etc/apt/keyrings/onlyoffice.gpg
           args:
             executable: "{{ ansible_local.bash.path }}"
+          check_mode: false
           changed_when: false
 
         - name: Stat ONLYOFFICE gpg dearmored file
@@ -126,16 +128,111 @@
             quiet: "{% if ansible_verbosity == 0 %}true{% else %}false{% endif %}"
           when: ansible_local.gpg.version is version('2.2.12', '>=')
 
-      when: (not ansible_check_mode | bool)
+        - name: Stat ONLYOFFICE apt sources file
+          ansible.builtin.stat:
+            path: /etc/apt/sources.list.d/onlyoffice.sources
+          register: onlyoffice_sources_path
 
-    - name: ONLYOFFICE repository sources file present
-      ansible.builtin.template:
-        src: onlyoffice.sources.j2
-        dest: /etc/apt/sources.list.d/onlyoffice.sources
-        mode: "0644"
-        owner: root
-        group: root
-      register: onlyoffice_sources
+        - name: Read and backup ONLYOFFICE repository sources file
+          block:
+
+            - name: Slurp /etc/apt/sources.list.d/onlyoffice.sources
+              ansible.builtin.slurp:
+                src: /etc/apt/sources.list.d/onlyoffice.sources
+              register: onlyoffice_sources_contents_b64encoded
+
+            - name: Decode the base64 encoded version of /etc/apt/sources.list.d/onlyoffice.sources
+              ansible.builtin.set_fact:
+                onlyoffice_sources_contents: "{{ onlyoffice_sources_contents_b64encoded['content'] | ansible.builtin.b64decode | string | community.general.jc('ini') }}"
+
+            - name: Print the contents of /etc/apt/sources.list.d/onlyoffice.sources
+              ansible.builtin.debug:
+                var: onlyoffice_sources_contents
+                verbosity: "{% if ansible_check_mode | bool or ansible_diff_mode | bool %}1{% else %}2{% endif %}"
+
+            - name: Set a fact for the prior ONLYOFFICE repository sources file contents
+              ansible.builtin.set_fact:
+                onlyoffice_sources_contents_prior: "{{ onlyoffice_sources_contents }}"
+              when: onlyoffice_sources_contents is defined
+
+            - name: Check ONLYOFFICE repository sources file present
+              ansible.builtin.deb822_repository:
+                allow_downgrade_to_insecure: false
+                allow_insecure: false
+                allow_weak: false
+                architectures: "{{ ansible_facts.ansible_local.dpkg.arch }}"
+                check_date: true
+                check_valid_until: true
+                components: main
+                enabled: true
+                name: onlyoffice
+                pdiffs: true
+                signed_by: /etc/apt/keyrings/onlyoffice.gpg
+                suites: squeeze
+                types: deb
+                uris: https://download.onlyoffice.com/repo/debian
+              check_mode: true
+              changed_when: false
+              register: onlyoffice_sources_check
+
+            - name: Debug proposed onlyoffice_sources_check.repo
+              ansible.builtin.debug:
+                var: onlyoffice_sources_check.repo
+                verbosity: "{% if ansible_check_mode | bool or ansible_diff_mode | bool %}1{% else %}2{% endif %}"
+
+            - name: Backup old onlyoffice.sources file
+              ansible.builtin.command:
+                cmd: >-
+                  mv
+                  /etc/apt/sources.list.d/onlyoffice.sources
+                  /etc/apt/sources.list.d/.onlyoffice.sources.{{ onlyoffice_date_timestamp }}.ansible.save
+              args:
+                creates: "/etc/apt/sources.list.d/.onlyoffice.sources.{{ onlyoffice_date_timestamp }}.ansible.save"
+                removes: /etc/apt/sources.list.d/onlyoffice.sources
+              vars:
+                onlyoffice_date_timestamp: "{{ ansible_date_time.iso8601_basic_short }}"
+              when: onlyoffice_sources_contents_prior != onlyoffice_sources_check.repo | string | community.general.jc('ini')
+
+          when: onlyoffice_sources_path.stat.exists | bool
+
+        - name: ONLYOFFICE apt sources file present
+          ansible.builtin.deb822_repository:
+            allow_downgrade_to_insecure: false
+            allow_insecure: false
+            allow_weak: false
+            architectures: "{{ ansible_facts.ansible_local.dpkg.arch }}"
+            check_date: true
+            check_valid_until: true
+            components: main
+            enabled: true
+            name: onlyoffice
+            pdiffs: true
+            signed_by: /etc/apt/keyrings/onlyoffice.gpg
+            suites: squeeze
+            types: deb
+            uris: https://download.onlyoffice.com/repo/debian
+          register: onlyoffice_sources
+
+        - name: Print the changes in the ONLYOFFICE repository sources file  # noqa: no-handler
+          block:
+
+            - name: Debug updated onlyoffice_sources.repo
+              ansible.builtin.debug:
+                var: onlyoffice_sources.repo
+                verbosity: "{% if ansible_check_mode | bool or ansible_diff_mode | bool %}1{% else %}2{% endif %}"
+
+            - name: Diff ONLYOFFICE repository sources file update
+              ansible.utils.fact_diff:
+                before: "{{ onlyoffice_sources_contents_prior | ansible.builtin.to_nice_yaml }}"
+                after: "{{ onlyoffice_sources.repo | string | community.general.jc('ini') | ansible.builtin.to_nice_yaml }}"
+              when:
+                - ( ansible_check_mode | bool ) or ( ansible_diff_mode | bool )
+                - onlyoffice_sources_contents_prior is defined
+                - onlyoffice_sources.repo is defined
+
+          when: onlyoffice_sources.changed | bool
+
+      when: onlyoffice_asc_file.stat.exists | bool
 
     - name: ONLYOFFICE apt preferences present
       ansible.builtin.template:

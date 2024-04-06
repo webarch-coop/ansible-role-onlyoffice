@@ -40,8 +40,8 @@
   block:
 
     - name: Validate ONLYOFFICE variables
-      ansible.builtin.include_tasks: validate.yml
-      when: onlyoffice_validate | bool
+      ansible.builtin.include_tasks: verify.yml
+      when: onlyoffice_verify | bool
 
     - name: Include check tasks
       ansible.builtin.include_tasks: checks.yml
