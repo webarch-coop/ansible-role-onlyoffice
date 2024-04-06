@@ -58,10 +58,11 @@
             - onlyoffice_info.status != "-1"
             - onlyoffice_info.status != "200"
 
+      rescue:
+
         - name: Debug ONLYOFFICE info
           ansible.builtin.debug:
             var: onlyoffice_info
-            verbosity: "{% if ansible_check_mode | bool or ansible_diff_mode | bool %}1{% else %}2{% endif %}"
 
       when: onlyoffice_nginx_localhost | bool
 
