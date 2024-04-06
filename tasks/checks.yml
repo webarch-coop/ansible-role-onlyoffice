@@ -50,11 +50,22 @@
           ansible.builtin.uri:
             url: "http://{{ onlyoffice_nginx_localhost_domain }}:{{ onlyoffice_nginx_localhost_port }}/info/info.json"
             return_content: true
+          delegate_to: "{{ inventory_hostname }}"
           register: onlyoffice_info
 
         - name: Debug ONLYOFFICE info
           ansible.builtin.debug:
             var: onlyoffice_info
+            verbosity: "{% if ansible_check_mode | bool or ansible_diff_mode | bool %}0{% else %}1{% endif %}"
+
+        - name: Set a fact for the ONLYOFFICE version returned by ONLYOFFICE info
+          ansible.builtin.set_fact:
+            onlyoffice_build_number: "{{ onlyoffice_info.json.serverInfo.buildNumber }}"
+            onlyoffice_build_version: "{{ onlyoffice_info.json.serverInfo.buildVersion }}"
+
+        - name: Debug the ONLYOFFICE version returned by ONLYOFFICE info
+          ansible.builtin.debug:
+            var: onlyoffice_build_version
 
       rescue:
 
