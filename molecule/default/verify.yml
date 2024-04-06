@@ -42,13 +42,13 @@
 
     - name: ONLYOFFICE info
       ansible.builtin.uri:
-        url: "http://{{ ansible_default_ipv4.address }}/info/info.json"
+        url: "http://{{ ansible_default_ipv4.address }}:82/info/info.json"
         return_content: true
       register: molecule_onlyoffice_info
 
     - name: Debug ONLYOFFICE info
       ansible.builtin.debug:
-        var: molecule_onlyoffice_healthcheck.content
+        var: molecule_onlyoffice_info.content
 
     - name: ONLYOFFICE healthcheck
       ansible.builtin.uri:
