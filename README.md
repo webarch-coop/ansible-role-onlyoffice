@@ -10,6 +10,8 @@ This role can be used to configure a stand-alone ONLYOFFICE Document Server that
 
 There is a [development repo available here](https://git.coop/webarch/nextcloud-server) that builds a Nextcloud server with ONLYOFFICE using this role.
 
+This role checks the [latest releases](https://github.com/ONLYOFFICE/DocumentServer/releases) available at GitHub and required the full version string for `apt` package for the `onlyoffice_docserver_version` variable, a list of these can be found in [vars/main.yml](vars/main.yml).
+
 ## Role variables
 
 See the [defaults/main.yml](defaults/main.yml) file for the default variables, the [vars/main.yml](vars/main.yml) file for the preset variables and the [meta/argument_specs.yml](meta/argument_specs.yml) file for the variable specification.
