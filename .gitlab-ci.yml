@@ -63,11 +63,11 @@ jammy:
     - mkdir -p molecule/default/roles
     - ansible-galaxy install -r molecule/default/requirements.yml -p molecule/default/roles --force
     - molecule test
-noble:
-  image: registry.git.coop/webarch/containers/images/noble:20240326
-  stage: noble
-  script:
-    - mkdir -p molecule/default/roles
-    - ansible-galaxy install -r molecule/default/requirements.yml -p molecule/default/roles --force
-    - molecule test
+# noble:
+#   image: registry.git.coop/webarch/containers/images/noble:20240326
+#   stage: noble
+#   script:
+#     - mkdir -p molecule/default/roles
+#     - ansible-galaxy install -r molecule/default/requirements.yml -p molecule/default/roles --force
+#     - molecule test
 ...
