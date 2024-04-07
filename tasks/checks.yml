@@ -54,9 +54,7 @@
           check_mode: false
           changed_when: false
           register: onlyoffice_info
-          failed_when:
-            - onlyoffice_info.status != "-1"
-            - onlyoffice_info.status != "200"
+          failed_when: onlyoffice_info.status is not ansible.builtin.regex('^(-1|200)$')
 
       rescue:
 
