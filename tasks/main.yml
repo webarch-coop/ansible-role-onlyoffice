@@ -57,15 +57,18 @@
     - name: ONLYOFFICE Document Server Install tasks
       block:
 
-        - name: Include debconf ONLYOFFICE tasks
+        - name: Include ONLYOFFICE debconf tasks
           ansible.builtin.include_tasks: debconf.yml
           loop: "{{ onlyoffice_debconf }}"
           loop_control:
             loop_var: onlyoffice_dcnf
             label: "{{ onlyoffice_dcnf.question }}"
 
-        - name: Include install ONLYOFFICE tasks
+        - name: Include ONLYOFFICE install tasks
           ansible.builtin.include_tasks: install.yml
+
+        - name: Include ONLYOFFICE config tasks
+          ansible.builtin.include_tasks: config.yml
 
         - name: Include Munin tasks
           ansible.builtin.include_tasks: munin.yml

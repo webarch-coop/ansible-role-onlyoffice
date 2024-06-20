@@ -1,0 +1,81 @@
+# Copyright 2020-2024 Chris Croome
+#
+# This file is part of the Webarchitects ONLYOFFICE Ansible role.
+#
+# The Webarchitects ONLYOFFICE Ansible role is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+#
+# The Webarchitects ONLYOFFICE Ansible role is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License along with the Webarchitects ONLYOFFICE Ansible role. If not, see <https://www.gnu.org/licenses/>.
+---
+- name: ONLYOFFICE configured
+  block:
+
+    - name: Check if the ONLYOFFICE Document Server local.json file exists
+      ansible.builtin.stat:
+        path: /etc/onlyoffice/documentserver/local.json
+      register: onlyoffice_local_json_file
+
+    - name: Read the ONLYOFFICE Document Server local.json file
+      block:
+
+        - name: Slurp the ONLYOFFICE Document Server local.json file
+          ansible.builtin.slurp:
+            src: /etc/onlyoffice/documentserver/local.json
+          register: onlyoffice_local_json_b64encoded
+          no_log: true
+
+        - name: Set a fact for the ONLYOFFICE Document Server local.json
+          ansible.builtin.set_fact:
+            onlyoffice_local_json: "{{ onlyoffice_local_json_b64encoded['content'] | b64decode | from_json }}"
+          no_log: true
+
+        - name: Debug ONLYOFFICE Document Server local.json
+          ansible.builtin.debug:
+            var: onlyoffice_local_json
+            verbosity: 3
+
+        - name: Fail if wopi is defined in the ONLYOFFICE Document Server local.json but not the proposed values
+          ansible.builtin.assert:
+            that:
+              - onlyoffice_local.wopi is defined
+            quiet: "{% if ansible_verbosity == 0 %}true{% else %}false{% endif %}"
+            fail_msg: >-
+              Please add the wopi config from /etc/onlyoffice/documentserver/local.json to the onlyoffice_local dictionary, best use Ansible Vault for the
+              private keys, you can get the existing local.json as YAML by running cat /etc/onlyoffice/documentserver/local.json | yq -o=yaml -P
+          when: onlyoffice_local_json.wopi is defined
+
+      when: onlyoffice_local_json_file.stat.exists | bool
+
+    - name: Check if a backup of the ONLYOFFICE Document Server local.json file exists
+      ansible.builtin.stat:
+        path: /etc/onlyoffice/documentserver/local.json.original
+      register: onlyoffice_local_json_backup_file
+
+    - name: Backup the original ONLYOFFICE Document Server local.json file
+      ansible.builtin.copy:
+        src: /etc/onlyoffice/documentserver/local.json
+        dest: /etc/onlyoffice/documentserver/local.json.original
+        remote_src: true
+        mode: "0644"
+        owner: root
+        group: root
+      when:
+        - onlyoffice_local_json_file.stat.exists | bool
+        - not onlyoffice_local_json_backup_file.stat.exists | bool
+
+    - name: Backup and generate the ONLYOFFICE Document Server local.json file when the existing contents don't match the proposed
+      ansible.builtin.template:
+        src: local.json.j2
+        dest: /etc/onlyoffice/documentserver/local.json
+        backup: true
+        mode: "0644"
+        owner: ds
+        group: ds
+      when: onlyoffice_local != onlyoffice_local_json
+      notify:
+        - Restart docservice
+
+  tags:
+    - onlyoffice
+...

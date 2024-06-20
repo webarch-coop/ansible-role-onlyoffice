@@ -121,6 +121,7 @@ onlyoffice_local:
   storage:
     fs:
       secretString: "{{ onlyoffice_storage_fs_secret }}"
+  # wopi: "{{ vault_onlyoffice_wopi }}"
 onlyoffice_mariadb_socket: /run/mysqld/mysqld.sock
 onlyoffice_nginx_localhost: true
 onlyoffice_nginx_localhost_domain: localhost
