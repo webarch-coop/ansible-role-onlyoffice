@@ -87,6 +87,7 @@ onlyoffice_debconf:
 # https://github.com/ONLYOFFICE/DocumentServer/blob/master/CHANGELOG.md
 # see vars/main.yml for the full versions strings that are required here:
 onlyoffice_docserver_version: 8.1.0-169
+onlyoffice_fs_secret: ""  # This is reset when the role is run
 onlyoffice_local:
   services:
     CoAuthoring:
@@ -120,7 +121,8 @@ onlyoffice_local:
     port: "{{ onlyoffice_debconf | community.general.json_query(onlyoffice_jpq_docservice_port) }}"
   storage:
     fs:
-      secretString: "{{ onlyoffice_storage_fs_secret }}"
+      # secretString: "{{ onlyoffice_storage_fs_secret }}"
+      secretString: "{{ onlyoffice_fs_secret }}"
   # wopi: "{{ vault_onlyoffice_wopi }}"
 onlyoffice_mariadb_socket: /run/mysqld/mysqld.sock
 onlyoffice_nginx_localhost: true

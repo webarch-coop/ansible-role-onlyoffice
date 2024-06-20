@@ -30,9 +30,14 @@
             onlyoffice_local_json: "{{ onlyoffice_local_json_b64encoded['content'] | b64decode | from_json }}"
           no_log: true
 
-        - name: Debug ONLYOFFICE Document Server local.json
+        - name: Debug ONLYOFFICE Document Server local.json onlyoffice_local_json variable
           ansible.builtin.debug:
             var: onlyoffice_local_json
+            verbosity: 3
+
+        - name: Debug proposed ONLYOFFICE Document Server onlyoffice_local variable
+          ansible.builtin.debug:
+            var: onlyoffice_local
             verbosity: 3
 
         - name: Fail if wopi is defined in the ONLYOFFICE Document Server local.json but not the proposed values

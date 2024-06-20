@@ -45,15 +45,15 @@
             - Reload systemd
             - Restart docservice
 
+        # https://helpcenter.onlyoffice.com/de/server/linux/document/install-fonts.aspx
+        # changed_when is set to false as there is no easy way to know if this command did anything or not
+        - name: ONLYOFFICE Document Server fonts configured
+          ansible.builtin.command: documentserver-generate-allfonts.sh true
+          changed_when: false
+
       when: >-
         ( onlyoffice_docserver_apt_version is not defined ) or
         ( onlyoffice_docserver_version != onlyoffice_docserver_apt_version )
-
-    # https://helpcenter.onlyoffice.com/de/server/linux/document/install-fonts.aspx
-    # changed_when is set to false as there is no easy way to know if this command did anything or not
-    - name: ONLYOFFICE Document Server fonts configured
-      ansible.builtin.command: documentserver-generate-allfonts.sh true
-      changed_when: false
 
   tags:
     - onlyoffice
