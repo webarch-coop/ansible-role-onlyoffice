@@ -78,13 +78,20 @@
 
       rescue:
 
-        - name: Debug previous ansible.builtin.debconf task
+        - name: Debug previous ansible.builtin.debconf task that failed
           ansible.builtin.fail:
             msg:
               - "name: {{ onlyoffice_dcnf.name }}"
               - "question: {{ onlyoffice_dcnf.question }}"
-              - "value: {{ onlyoffice_dcnf.value }}"
+              - "value: {{ onlyoffice_debconf_value }}"
               - "vtype: {{ onlyoffice_dcnf.vtype }}"
+          vars:
+            onlyoffice_debconf_value: >-
+              {%- if onlyoffice_dcnf.vtype == "boolean" -%}
+              {{- onlyoffice_dcnf.value | lower -}}
+              {%- else -%}
+              {{- onlyoffice_dcnf.value -}}
+              {%- endif -%}
 
       when: >-
         ( onlyoffice_dcnf_current_value is not defined ) or

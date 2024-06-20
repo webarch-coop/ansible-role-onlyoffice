@@ -30,6 +30,10 @@ argument_specs:
         type: dict
         required: true
         description: Internal combined argument spec dictionary.
+      onlyoffice_debconf_value:
+        type: str
+        required: false
+        description: Internal variable users for debugging ansible.builtin.debconf failures.
       onlyoffice_db_pwd:
         type: str
         required: true
