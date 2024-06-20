@@ -102,9 +102,9 @@ onlyoffice_local:
         session:
           string: "{{ onlyoffice_jwt_secret }}"
         inbox:
-          string: "{{ onlyoffice_jwt_secret }}"
+          header: "{{ onlyoffice_jwt_secret }}"
         outbox:
-          string: "{{ onlyoffice_jwt_secret }}"
+          header: "{{ onlyoffice_jwt_secret }}"
       token:
         enable:
           browser: true
