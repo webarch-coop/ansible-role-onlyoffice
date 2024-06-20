@@ -52,6 +52,9 @@
         that:
           - onlyoffice_dcnf.value | type_debug == "bool"
         quiet: "{% if ansible_verbosity == 0 %}true{% else %}false{% endif %}"
+        fail_msg: >-
+          The variable onlyoffice_dcnf.value has the value {{ onlyoffice_dcnf.value }} and type of {{ onlyoffice_dcnf.value | ansible.builtin.type_debug }}
+          when it should be a boolean because onlyoffice_dcnf.vtype has the value {{ onlyoffice_dcnf.vtype }}.
       when: onlyoffice_dcnf.vtype == "boolean"
 
     - name: "Set debconf value for {{ onlyoffice_dcnf.question }}"
