@@ -94,6 +94,10 @@ onlyoffice_debconf:
 onlyoffice_docserver_version: 8.1.0-169
 onlyoffice_fs_secret: ""  # This is reset when the role is run
 onlyoffice_local:
+  rabbitmq:
+    url: "{{ onlyoffice_debconf | community.general.json_query(onlyoffice_jpq_rabbitmq_proto) }}://{{ onlyoffice_debconf | community.general.json_query(onlyoffice_jpq_rabbitmq_user) }}:{{ onlyoffice_rabbitmq_pwd }}@{{ onlyoffice_debconf | community.general.json_query(onlyoffice_jpq_rabbitmq_host) }}"
+  server:
+    port: "{{ onlyoffice_docservice_port }}"
   services:
     CoAuthoring:
       secret:
@@ -122,10 +126,6 @@ onlyoffice_local:
           header: "{{ onlyoffice_debconf | community.general.json_query(onlyoffice_jpq_jwt_header) }}"
         outbox:
           header: "{{ onlyoffice_debconf | community.general.json_query(onlyoffice_jpq_jwt_header) }}"
-  rabbitmq:
-    url: "{{ onlyoffice_debconf | community.general.json_query(onlyoffice_jpq_rabbitmq_proto) }}://{{ onlyoffice_debconf | community.general.json_query(onlyoffice_jpq_rabbitmq_user) }}:{{ onlyoffice_rabbitmq_pwd }}@{{ onlyoffice_debconf | community.general.json_query(onlyoffice_jpq_rabbitmq_host) }}"
-  server:
-    port: "{{ onlyoffice_docservice_port }}"
   storage:
     fs:
       secretString: "{{ onlyoffice_fs_secret }}"
