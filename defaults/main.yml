@@ -107,8 +107,6 @@ onlyoffice_local:
           string: "{{ onlyoffice_jwt_secret }}"
         outbox:
           string: "{{ onlyoffice_jwt_secret }}"
-      server:
-        port: "{{ onlyoffice_docservice_port }}"
       sql:
         type: "{{ onlyoffice_db_type }}"
         dbHost: "{{ onlyoffice_debconf | community.general.json_query(onlyoffice_jpq_db_host) }}"
