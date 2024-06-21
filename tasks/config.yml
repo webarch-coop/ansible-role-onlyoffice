@@ -33,22 +33,34 @@
         - name: Debug ONLYOFFICE Document Server local.json onlyoffice_local_json variable
           ansible.builtin.debug:
             var: onlyoffice_local_json
-            verbosity: 3
+            verbosity: "{% if ansible_check_mode | bool or ansible_diff_mode | bool %}2{% else %}3{% endif %}"
 
         - name: Debug proposed ONLYOFFICE Document Server onlyoffice_local variable
           ansible.builtin.debug:
             var: onlyoffice_local
-            verbosity: 3
+            verbosity: "{% if ansible_check_mode | bool or ansible_diff_mode | bool %}2{% else %}3{% endif %}"
 
-        - name: Fail if wopi is defined in the ONLYOFFICE Document Server local.json but not the proposed values
+        - name: Fail if WOPI is defined in the existing ONLYOFFICE Document Server local.json config but not the proposed config
           ansible.builtin.assert:
             that:
               - onlyoffice_local.wopi is defined
             quiet: "{% if ansible_verbosity == 0 %}true{% else %}false{% endif %}"
             fail_msg: >-
-              Please add the wopi config from /etc/onlyoffice/documentserver/local.json to the onlyoffice_local dictionary, best use Ansible Vault for the
-              private keys, you can get the existing local.json as YAML by running cat /etc/onlyoffice/documentserver/local.json | yq -o=yaml -P
+              Please add the ONLYOFFICE WOPI config from /etc/onlyoffice/documentserver/local.json to the onlyoffice_local dictionary,
+              best use Ansible Vault for the private keys, you can get the existing local.json as YAML by running cat
+              /etc/onlyoffice/documentserver/local.json | yq -o=yaml -P
           when: onlyoffice_local_json.wopi is defined
+
+        - name: Fail if the existing ONLYOFFICE Document Server local.json keys don't match the proposed config
+          ansible.builtin.assert:
+            that:
+              - onlyoffice_local_json.keys() | sort == onlyoffice_local.keys() | sort
+            quiet: "{% if ansible_verbosity == 0 %}true{% else %}false{% endif %}"
+            fail_msg: >-
+              The existing ONLYOFFICE Document Server local.json config contains the following dictionary keys,
+              {{ onlyoffice_local_json.keys() | sort | join(', ') }} and the proposed config contains the following dictionary keys.
+              {{ onlyoffice_local.keys() | sort | join(', ') }}, please add the missing config, you can get the existing local.json
+              as YAML by running cat /etc/onlyoffice/documentserver/local.json | yq -o=yaml -P
 
       when: onlyoffice_local_json_file.stat.exists | bool
 

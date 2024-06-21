@@ -100,9 +100,9 @@ onlyoffice_local:
         session:
           string: "{{ onlyoffice_jwt_secret }}"
         inbox:
-          header: "{{ onlyoffice_jwt_secret }}"
+          string: "{{ onlyoffice_jwt_secret }}"
         outbox:
-          header: "{{ onlyoffice_jwt_secret }}"
+          string: "{{ onlyoffice_jwt_secret }}"
       server:
         port: "{{ onlyoffice_docservice_port }}"
       sql:
