@@ -18,6 +18,25 @@ argument_specs:
         type: bool
         required: true
         description: Run the tasks in this role.
+      onlyoffice_db_type:
+        type: str
+        required: true
+        description: The database server engine.
+        choices:
+          - mariadb
+          - postgres
+      onlyoffice_db_port:
+        type: str
+        required: true
+        description: The database port, quoted.
+      onlyoffice_docservice_port:
+        type: str
+        required: true
+        description: The ONLYOFFICE DocumentServer backend port, quoted.
+      onlyoffice_ds_port:
+        type: str
+        required: true
+        description: The ONLYOFFICE DocumentServer Nginx port, quoted.
       onlyoffice_debconf:
         type: list
         elements: dict
@@ -82,15 +101,6 @@ argument_specs:
                 type: str
                 required: true
                 description: The ONLYOFFICE local.json RabbitMQ configuration URL.
-          server:
-            type: dict
-            required: true
-            description: The ONLYOFFICE local.json server configuration.
-            options:
-              port:
-                type: str
-                required: true
-                description: The ONLYOFFICE server port number, quoted to ensure it is a string.
           services:
             type: dict
             required: true
@@ -101,38 +111,15 @@ argument_specs:
                 required: true
                 description: The ONLYOFFICE local.json CoAuthoring configuration.
                 options:
-                  sql:
+                  server:
                     type: dict
                     required: true
-                    description: The ONLYOFFICE local.json database configuration.
+                    description: The ONLYOFFICE local.json server configuration.
                     options:
-                      type:
+                      port:
                         type: str
                         required: true
-                        description: The ONLYOFFICE local.json database type.
-                        choices:
-                          - mariadb
-                          - postgres
-                      dbHost:
-                        type: str
-                        required: true
-                        description: The ONLYOFFICE local.json database host.
-                      dbPort:
-                        type: str
-                        required: true
-                        description: The ONLYOFFICE local.json database port.
-                      dbName:
-                        type: str
-                        required: true
-                        description: The ONLYOFFICE local.json database name.
-                      dbUser:
-                        type: str
-                        required: true
-                        description: The ONLYOFFICE local.json database user.
-                      dbPass:
-                        type: str
-                        required: true
-                        description: The ONLYOFFICE local.json database password.
+                        description: The ONLYOFFICE server port number, quoted to ensure it is a string.
                   secret:
                     type: dict
                     required: true
@@ -165,10 +152,38 @@ argument_specs:
                             type: str
                             required: true
                             description: The ONLYOFFICE local.json session JWT secret.
-                  server:
+                  sql:
                     type: dict
                     required: true
-                    description: The ONLYOFFICE local.json server configuration.
+                    description: The ONLYOFFICE local.json database configuration.
+                    options:
+                      type:
+                        type: str
+                        required: true
+                        description: The ONLYOFFICE local.json database type.
+                        choices:
+                          - mariadb
+                          - postgres
+                      dbHost:
+                        type: str
+                        required: true
+                        description: The ONLYOFFICE local.json database host.
+                      dbPort:
+                        type: str
+                        required: true
+                        description: The ONLYOFFICE local.json database port.
+                      dbName:
+                        type: str
+                        required: true
+                        description: The ONLYOFFICE local.json database name.
+                      dbUser:
+                        type: str
+                        required: true
+                        description: The ONLYOFFICE local.json database user.
+                      dbPass:
+                        type: str
+                        required: true
+                        description: The ONLYOFFICE local.json database password.
                   token:
                     type: dict
                     required: true
@@ -228,10 +243,48 @@ argument_specs:
                     type: str
                     required: true
                     description: The ONLYOFFICE local.json filesystem storage configuration secret string.
+          # https://api.onlyoffice.com/editors/wopi/
           wopi:
             type: dict
             required: false
-            description: Optional wopi configuration.
+            description: Optional ONLYOFFICE WOPI configuration.
+            options:
+              enable:
+                type: bool
+                required: true
+                description: Defines if ONLYOFFICE WOPI is enabled or not. The default value is false.
+              exponent:
+                type: int
+                required: false
+                description: ONLYOFFICE WOPI exponent.
+              exponentOld:
+                type: int
+                required: false
+                description: ONLYOFFICE WOPI exponentOld.
+              modulus:
+                type: str
+                required: false
+                description: ONLYOFFICE WOPI modulus.
+              modulusOld:
+                type: str
+                required: false
+                description: ONLYOFFICE WOPI modulusOld.
+              privateKey:
+                type: str
+                required: false
+                description: ONLYOFFICE WOPI privateKey.
+              privateKeyOld:
+                type: str
+                required: false
+                description: ONLYOFFICE WOPI privateKeyOld.
+              publicKey:
+                type: str
+                required: false
+                description: ONLYOFFICE WOPI publicKey.
+              publicKeyOld:
+                type: str
+                required: false
+                description: ONLYOFFICE WOPI publicKeyOld.
       onlyoffice_mariadb_priv:
         type: list
         elements: str

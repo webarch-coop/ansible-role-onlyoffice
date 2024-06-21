@@ -9,6 +9,12 @@
 # You should have received a copy of the GNU General Public License along with the Webarchitects ONLYOFFICE Ansible role. If not, see <https://www.gnu.org/licenses/>.
 ---
 onlyoffice: false
+onlyoffice_db_port: "3306"
+# onlyoffice_db_port: "5432"
+onlyoffice_db_type: mariadb
+# onlyoffice_db_type: postgres
+onlyoffice_docservice_port: "8000"
+onlyoffice_ds_port: "443"
 onlyoffice_debconf:
   - name: onlyoffice-documentserver
     question: onlyoffice/cluster-mode
@@ -24,8 +30,7 @@ onlyoffice_debconf:
     vtype: string
   - name: onlyoffice-documentserver
     question: onlyoffice/db-port
-    value: "3306"  # MariaDB
-    # value: "5432"  # PostgreSQL
+    value: "{{ onlyoffice_db_port }}"
     vtype: string
   - name: onlyoffice-documentserver
     question: onlyoffice/db-pwd
@@ -33,7 +38,7 @@ onlyoffice_debconf:
     vtype: password
   - name: onlyoffice-documentserver
     question: onlyoffice/db-type
-    value: mariadb  # MariaDB
+    value: "{{ onlyoffice_db_type }}"
     # value: postgres  # PostgreSQL
     vtype: string
   - name: onlyoffice-documentserver
@@ -42,11 +47,11 @@ onlyoffice_debconf:
     vtype: string
   - name: onlyoffice-documentserver
     question: onlyoffice/docservice-port
-    value: "8000"
+    value: "{{ onlyoffice_db_port }}"
     vtype: string
   - name: onlyoffice-documentserver
     question: onlyoffice/ds-port
-    value: "443"
+    value: "{{ onlyoffice_ds_port }}"
     vtype: string
   - name: onlyoffice-documentserver
     question: onlyoffice/example-port
@@ -91,13 +96,6 @@ onlyoffice_fs_secret: ""  # This is reset when the role is run
 onlyoffice_local:
   services:
     CoAuthoring:
-      sql:
-        type: "{{ onlyoffice_debconf | community.general.json_query(onlyoffice_jpq_db_type) }}"
-        dbHost: "{{ onlyoffice_debconf | community.general.json_query(onlyoffice_jpq_db_host) }}"
-        dbPort: "{{ onlyoffice_debconf | community.general.json_query(onlyoffice_jpq_db_port) }}"
-        dbName: "{{ onlyoffice_debconf | community.general.json_query(onlyoffice_jpq_db_name) }}"
-        dbUser: "{{ onlyoffice_debconf | community.general.json_query(onlyoffice_jpq_db_user) }}"
-        dbPass: "{{ onlyoffice_db_pwd }}"
       secret:
         session:
           string: "{{ onlyoffice_jwt_secret }}"
@@ -105,11 +103,20 @@ onlyoffice_local:
           header: "{{ onlyoffice_jwt_secret }}"
         outbox:
           header: "{{ onlyoffice_jwt_secret }}"
+      server:
+        port: "{{ onlyoffice_docservice_port }}"
+      sql:
+        type: "{{ onlyoffice_db_type }}"
+        dbHost: "{{ onlyoffice_debconf | community.general.json_query(onlyoffice_jpq_db_host) }}"
+        dbPort: "{{ onlyoffice_db_port }}"
+        dbName: "{{ onlyoffice_debconf | community.general.json_query(onlyoffice_jpq_db_name) }}"
+        dbUser: "{{ onlyoffice_debconf | community.general.json_query(onlyoffice_jpq_db_user) }}"
+        dbPass: "{{ onlyoffice_db_pwd }}"
       token:
         enable:
           browser: true
           request:
-            itnbox: true
+            inbox: true
             outbox: true
         inbox:
           header: "{{ onlyoffice_debconf | community.general.json_query(onlyoffice_jpq_jwt_header) }}"
@@ -118,10 +125,9 @@ onlyoffice_local:
   rabbitmq:
     url: "{{ onlyoffice_debconf | community.general.json_query(onlyoffice_jpq_rabbitmq_proto) }}://{{ onlyoffice_debconf | community.general.json_query(onlyoffice_jpq_rabbitmq_user) }}:{{ onlyoffice_rabbitmq_pwd }}@{{ onlyoffice_debconf | community.general.json_query(onlyoffice_jpq_rabbitmq_host) }}"
   server:
-    port: "{{ onlyoffice_debconf | community.general.json_query(onlyoffice_jpq_docservice_port) }}"
+    port: "{{ onlyoffice_docservice_port }}"
   storage:
     fs:
-      # secretString: "{{ onlyoffice_storage_fs_secret }}"
       secretString: "{{ onlyoffice_fs_secret }}"
   # wopi: "{{ vault_onlyoffice_wopi }}"
 onlyoffice_mariadb_socket: /run/mysqld/mysqld.sock
