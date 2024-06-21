@@ -101,6 +101,15 @@ argument_specs:
                 type: str
                 required: true
                 description: The ONLYOFFICE local.json RabbitMQ configuration URL.
+          server:
+            type: dict
+            required: true
+            description: The ONLYOFFICE local.json server configuration.
+            options:
+              port:
+                type: str
+                required: true
+                description: The ONLYOFFICE server port number, quoted to ensure it is a string.
           services:
             type: dict
             required: true
@@ -143,15 +152,6 @@ argument_specs:
                             type: str
                             required: true
                             description: The ONLYOFFICE local.json session JWT secret.
-                  server:
-                    type: dict
-                    required: true
-                    description: The ONLYOFFICE local.json server configuration.
-                    options:
-                      port:
-                        type: str
-                        required: true
-                        description: The ONLYOFFICE server port number, quoted to ensure it is a string.
                   sql:
                     type: dict
                     required: true
