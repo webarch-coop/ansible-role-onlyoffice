@@ -49,7 +49,16 @@
               Please add the ONLYOFFICE WOPI config from /etc/onlyoffice/documentserver/local.json to the onlyoffice_local dictionary,
               best use Ansible Vault for the private keys, you can get the existing local.json as YAML by running cat
               /etc/onlyoffice/documentserver/local.json | yq -o=yaml -P
-          when: onlyoffice_local_json.wopi is defined
+          when:
+            - onlyoffice_local_json.wopi is defined
+            - onlyoffice_wopi == "fail"
+
+        - name: Ignore the fact that the existing ONLYOFFICE Document Server local.json WOPI conf is missing from the proposed config
+          ansible.builtin.debug:
+            msg: The existing WOPI config from local.json is to be removed, but it can be recovered from the local.json backup file
+          when:
+            - onlyoffice_local_json.wopi is defined
+            - onlyoffice_wopi == "ignore"
 
         - name: Fail if the existing ONLYOFFICE Document Server local.json keys don't match the proposed config
           ansible.builtin.assert:
@@ -61,6 +70,7 @@
               {{ onlyoffice_local_json.keys() | sort | join(', ') }} and the proposed config contains the following dictionary keys.
               {{ onlyoffice_local.keys() | sort | join(', ') }}, please add the missing config, you can get the existing local.json
               as YAML by running cat /etc/onlyoffice/documentserver/local.json | yq -o=yaml -P
+          when: onlyoffice_wopi == "fail"
 
       when: onlyoffice_local_json_file.stat.exists | bool
 

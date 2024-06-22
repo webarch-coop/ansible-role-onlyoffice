@@ -321,6 +321,10 @@ argument_specs:
         elements: str
         required: true
         description: A list of required .deb packages.
+      onlyoffice_rabbitmq_host:
+        type: str
+        required: true
+        description: The RabbitMQ host.
       onlyoffice_rabbitmq_pwd:
         type: str
         required: false
@@ -341,4 +345,11 @@ argument_specs:
         type: bool
         required: true
         description: Use ansible.builtin.validate_argument_spec module to validate role argument specs.
+      onlyoffice_wopi:
+        type: str
+        required: true
+        description: Fail if local.json wopi config is not defined by this role or load and merge the config.
+        choices:
+          - fail
+          - merge
 ...

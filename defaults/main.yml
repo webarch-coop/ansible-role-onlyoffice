@@ -71,7 +71,7 @@ onlyoffice_debconf:
     vtype: string
   - name: onlyoffice-documentserver
     question: onlyoffice/rabbitmq-host
-    value: localhost
+    value: "{{ onlyoffice_rabbitmq_host }}"
     vtype: string
   - name: onlyoffice-documentserver
     question: onlyoffice/rabbitmq-proto
@@ -137,8 +137,10 @@ onlyoffice_nginx_sites_disabled:
   - default.conf
 onlyoffice_nginx_sites_enabled:
   - localhost.conf
+onlyoffice_rabbitmq_host: localhost
 onlyoffice_ssl: true
 onlyoffice_ssl_certificate: "/etc/ssl/le/{{ inventory_hostname }}.fullchain.pem"
 onlyoffice_ssl_certificate_key: "/etc/ssl/le/{{ inventory_hostname }}.key.pem"
 onlyoffice_verify: true
+onlyoffice_wopi: fail
 ...

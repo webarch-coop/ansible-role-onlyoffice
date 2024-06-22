@@ -142,79 +142,9 @@
         # tasks_from: apt.yml
       vars:  # noqa var-naming[no-role-prefix]
         onlyoffice: true
-        onlyoffice_debconf:
-          - name: onlyoffice-documentserver
-            question: onlyoffice/cluster-mode
-            value: false
-            vtype: boolean
-          - name: onlyoffice-documentserver
-            question: onlyoffice/db-host
-            value: "localhost"
-            vtype: string
-          - name: onlyoffice-documentserver
-            question: onlyoffice/db-name
-            value: onlyoffice
-            vtype: string
-          - name: onlyoffice-documentserver
-            question: onlyoffice/db-port
-            value: "3306"
-            vtype: string
-          - name: onlyoffice-documentserver
-            question: onlyoffice/db-pwd
-            value: "{{ onlyoffice_db_pwd }}"
-            vtype: password
-          - name: onlyoffice-documentserver
-            question: onlyoffice/db-type
-            value: mariadb
-            vtype: string
-          - name: onlyoffice-documentserver
-            question: onlyoffice/db-user
-            value: onlyoffice
-            vtype: string
-          - name: onlyoffice-documentserver
-            question: onlyoffice/docservice-port
-            value: "8000"
-            vtype: string
-          - name: onlyoffice-documentserver
-            question: onlyoffice/ds-port
-            value: "80"
-            vtype: string
-          - name: onlyoffice-documentserver
-            question: onlyoffice/example-port
-            value: "3000"
-            vtype: string
-          - name: onlyoffice-documentserver
-            question: onlyoffice/jwt-enabled
-            value: true
-            vtype: boolean
-          - name: onlyoffice-documentserver
-            question: onlyoffice/jwt-header
-            value: AuthorizationJwt
-            vtype: string
-          - name: onlyoffice-documentserver
-            question: onlyoffice/jwt-secret
-            value: "{{ onlyoffice_jwt_secret }}"
-            vtype: string
-          - name: onlyoffice-documentserver
-            question: onlyoffice/rabbitmq-host
-            value: "{{ ansible_default_ipv4.address }}"
-            vtype: string
-          - name: onlyoffice-documentserver
-            question: onlyoffice/rabbitmq-proto
-            value: amqp
-            vtype: string
-          - name: onlyoffice-documentserver
-            question: onlyoffice/rabbitmq-pwd
-            value: "{{ onlyoffice_rabbitmq_pwd }}"
-            vtype: password
-          - name: onlyoffice-documentserver
-            question: onlyoffice/rabbitmq-user
-            value: onlyoffice
-            vtype: string
-          - name: onlyoffice-documentserver
-            question: onlyoffice/remove-db
-            value: false
-            vtype: boolean
+        onlyoffice_docservice_port: 80
         onlyoffice_nginx_localhost_domain: "{{ ansible_default_ipv4.address }}"
+        onlyoffice_rabbitmq_host: "{{ ansible_default_ipv4.address }}"
         onlyoffice_ssl: false
+        onlyoffice_wopi: ignore
 ...
