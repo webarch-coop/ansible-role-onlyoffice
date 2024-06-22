@@ -20,6 +20,18 @@ See the [defaults/main.yml](defaults/main.yml) file for the default variables, t
 
 A boolean, set `onlyoffice` to `true` for the tasks in this role to be run, it defaults to `false`.
 
+### onlyoffice_db_port
+
+The port number of the database server, quoted so it is a string, defaults to the default MariaDB / MySQL port, `"3306"`, if PostgreSQL is used with the default port then `onlyoffice_db_port` should be set to `"5432"`.
+
+### onlyoffice_db_type
+
+The database type, a lowercase string, defaults to `mariadb`, set to `postgres` for PostgreSQL.
+
+### onlyoffice_ds_port
+
+The port number, quoted so it is s tring, that Nginx should make ONLYOFFICE available on, `onlyoffice_ds_port` defaults to `443`, set it to another port if a reverse proxy is to be used in front of Nginx.
+
 ### onlyoffice_debconf
 
 A list of [debconf options for ONLYOFICE](https://helpcenter.onlyoffice.com/installation/docs-community-install-ubuntu.aspx#moreOptions) to be applied using the [Ansible ansible.builtin.debconf module](https://docs.ansible.com/ansible/latest/collections/ansible/builtin/debconf_module.html), for example:
@@ -57,6 +69,8 @@ The version of the `onlyoffice-documentserver` Debian package to be installed an
 ### onlyoffice_local
 
 A YAML dictionary, which will be converted to JSON and written to `/etc/onlyoffice/documentserver/local.json`.
+
+ONLYOFFICE will merge the configuration in `local.json` with the configuration from `/etc/onlyoffice/documentserver/default.json` &mdash; this file contains the default configuration.
 
 ### onlyoffice_nginx_localhost
 
@@ -140,6 +154,7 @@ If another web server is already listening on 443, for example Apache, then you 
 * [ONLYOFFICE Document Server example configurations for proxy](https://github.com/ONLYOFFICE/document-server-proxy)
 * [Nextcloud ONLYOFFICE integration app](https://api.onlyoffice.com/editors/nextcloud)
 * [ONLYOFFICE Api Documentation - Signature](https://api.onlyoffice.com/editors/signature/)
+* [ONLYOFFICE Web Application Open Platform Interface Protocol (WOPI)](https://api.onlyoffice.com/editors/wopi/)
 
 ## Repository
 

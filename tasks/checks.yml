@@ -80,6 +80,28 @@
 
       when: onlyoffice_info.status == "200"
 
+    - name: Check the onlyoffice_db_port variable is a number
+      ansible.builtin.assert:
+        that:
+          - onlyoffice_db_port is ansible.builtin.regex('^[0-9]{2,6}$')
+        fail_msg: "Please set onlyoffice_db_port to a number, it is currently set to {{ onlyoffice_db_port }}"
+        quiet: "{% if ansible_verbosity == 0 %}true{% else %}false{% endif %}"
+
+    - name: Check the onlyoffice_ds_port variable is a number
+      ansible.builtin.assert:
+        that:
+          - onlyoffice_ds_port is ansible.builtin.regex('^[0-9]{2,6}$')
+        fail_msg: "Please set onlyoffice_ds_port to a number, it is currently set to {{ onlyoffice_ds_port }}"
+        quiet: "{% if ansible_verbosity == 0 %}true{% else %}false{% endif %}"
+
+    - name: Check the onlyoffice_nginx_localhost_port variable is a number
+      ansible.builtin.assert:
+        that:
+          - onlyoffice_nginx_localhost_port is ansible.builtin.regex('^[0-9]{2,6}$')
+        fail_msg: >-
+          "Please set onlyoffice_nginx_localhost_port to a number, it is currently set to {{ onlyoffice_nginx_localhost_port }}"
+        quiet: "{% if ansible_verbosity == 0 %}true{% else %}false{% endif %}"
+
   tags:
     - onlyoffice
 ...
