@@ -348,8 +348,8 @@ argument_specs:
       onlyoffice_wopi:
         type: str
         required: true
-        description: Fail if local.json wopi config is not defined by this role or load and merge the config.
+        description: Fail if local.json wopi config is not defined by this role or ignore it.
         choices:
           - fail
-          - merge
+          - ignore
 ...

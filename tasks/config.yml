@@ -47,8 +47,8 @@
             quiet: "{% if ansible_verbosity == 0 %}true{% else %}false{% endif %}"
             fail_msg: >-
               Please add the ONLYOFFICE WOPI config from /etc/onlyoffice/documentserver/local.json to the onlyoffice_local dictionary,
-              best use Ansible Vault for the private keys, you can get the existing local.json as YAML by running cat
-              /etc/onlyoffice/documentserver/local.json | yq -o=yaml -P
+              best use Ansible Vault for the private keys, you can get the existing local.json as YAML by running
+              'cat /etc/onlyoffice/documentserver/local.json | yq -o=yaml -P'
           when:
             - onlyoffice_local_json.wopi is defined
             - onlyoffice_wopi == "fail"
