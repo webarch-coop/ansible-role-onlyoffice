@@ -70,7 +70,11 @@
               {%- else -%}
               {{- onlyoffice_dcnf.value -}}
               {%- endif -%}
-            vtype: "{{ onlyoffice_dcnf.vtype }}"
+            vtype: >-
+              {%- if onlyoffice_dcnf.vtype is ansible.builtin.regex('^[0-9]$') -%}int
+              {%- else -%}
+              {{- onlyoffice_dcnf.vtype -}}
+              {%- endif -%}
           no_log: "{% if onlyoffice_dcnf.vtype == 'password' and ansible_verbosity == 0 %}true{% else %}false{% endif %}"
           changed_when:
             - onlyoffice_dcnf_current_value != onlyoffice_dcnf.value
