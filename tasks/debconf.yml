@@ -21,9 +21,11 @@
         var: onlyoffice_dcnf_existing
         verbosity: 3
 
-    - name: "Set a fact for an existing debconf value for the debconf question {{ onlyoffice_dcnf.question }}"
+    - name: "Set a fact for an proposed regex and the existing debconf value for the debconf question {{ onlyoffice_dcnf.question }}"
       ansible.builtin.set_fact:
         onlyoffice_dcnf_current_value: "{% if onlyoffice_dcnf_existing is defined and onlyoffice_dcnf.vtype != 'password' %}{{ onlyoffice_dcnf_existing | community.general.json_query(onlyoffice_jpq_dcnf_question) }}{% endif %}"
+        onlyoffice_dcnf_proposed_value: "{{ onlyoffice_dcnf.value }}"
+        onlyoffice_dcnf_proposed_value_regex: "^{{ onlyoffice_dcnf.value | ansible.builtin.regex_escape }}$"
       vars:
         onlyoffice_jpq_dcnf_question: "[?key=='{{ onlyoffice_dcnf.question }}'].value|[0]"
 
@@ -39,21 +41,21 @@
 
     - name: "Debug proposed value for the debconf question {{ onlyoffice_dcnf.question }}"
       ansible.builtin.debug:
-        var: onlyoffice_dcnf.value
+        var: onlyoffice_dcnf_proposed_value
         verbosity: 1
 
     - name: "Debug proposed value type for the debconf question {{ onlyoffice_dcnf.question }}"
       ansible.builtin.debug:
-        msg: "{{ onlyoffice_dcnf.value | type_debug }}"
+        msg: "{{ onlyoffice_dcnf_proposed_value | type_debug }}"
         verbosity: 1
 
     - name: Check that the proposed value is a bool when the vtype is boolean
       ansible.builtin.assert:
         that:
-          - onlyoffice_dcnf.value | type_debug == "bool"
+          - onlyoffice_dcnf_proposed_value | type_debug == "bool"
         quiet: "{% if ansible_verbosity == 0 %}true{% else %}false{% endif %}"
         fail_msg: >-
-          The variable onlyoffice_dcnf.value has the value {{ onlyoffice_dcnf.value }} and type of {{ onlyoffice_dcnf.value | ansible.builtin.type_debug }}
+          The variable onlyoffice_dcnf_proposed_value has the value {{ onlyoffice_dcnf_proposed_value }} and type of {{ onlyoffice_dcnf_proposed_value | ansible.builtin.type_debug }}
           when it should be a boolean because onlyoffice_dcnf.vtype has the value {{ onlyoffice_dcnf.vtype }}.
       when: onlyoffice_dcnf.vtype == "boolean"
 
@@ -66,9 +68,9 @@
             question: "{{ onlyoffice_dcnf.question }}"
             value: >-
               {%- if onlyoffice_dcnf.vtype == "boolean" -%}
-              {{- onlyoffice_dcnf.value | lower -}}
+              {{- onlyoffice_dcnf_proposed_value | lower -}}
               {%- else -%}
-              {{- onlyoffice_dcnf.value -}}
+              {{- onlyoffice_dcnf_proposed_value -}}
               {%- endif -%}
             vtype: >-
               {%- if onlyoffice_dcnf.vtype is ansible.builtin.regex('^[0-9]$') -%}string
@@ -77,7 +79,7 @@
               {%- endif -%}
           no_log: "{% if onlyoffice_dcnf.vtype == 'password' and ansible_verbosity == 0 %}true{% else %}false{% endif %}"
           changed_when:
-            - onlyoffice_dcnf_current_value != onlyoffice_dcnf.value
+            - onlyoffice_dcnf_current_value != onlyoffice_dcnf_proposed_value
             - onlyoffice_dcnf.vtype != "password"
 
       rescue:
@@ -92,14 +94,14 @@
           vars:
             onlyoffice_debconf_value: >-
               {%- if onlyoffice_dcnf.vtype == "boolean" -%}
-              {{- onlyoffice_dcnf.value | lower -}}
+              {{- onlyoffice_dcnf_proposed_value | lower -}}
               {%- else -%}
-              {{- onlyoffice_dcnf.value -}}
+              {{- onlyoffice_dcnf_proposed_value -}}
               {%- endif -%}
 
       when: >-
         ( onlyoffice_dcnf_current_value is not defined ) or
-        ( onlyoffice_dcnf_current_value != onlyoffice_dcnf.value )
+        ( onlyoffice_dcnf_current_value is not ansible.builtin.regex(onlyoffice_dcnf_proposed_value_regex)
 
   tags:
     - onlyoffice

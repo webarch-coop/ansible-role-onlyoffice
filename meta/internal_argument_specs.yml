@@ -47,6 +47,18 @@ argument_specs:
             type: str
             required: true
             description: Value for the debconf question.
+      onlyoffice_dcnf_current_value:
+        type: str
+        required: false
+        description: Internal variable for an existing debconf value.
+      onlyoffice_dcnf_proposed_value:
+        type: str
+        required: false
+        description: Internal variable for a proposed debconf value.
+      onlyoffice_dcnf_proposed_value_regex:
+        type: str
+        required: false
+        description: Internal variable for a proposed debconf value as a regular expression.
       onlyoffice_docserver_apt_version:
         type: str
         required: false
