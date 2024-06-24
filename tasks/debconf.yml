@@ -36,7 +36,7 @@
 
     - name: "Debug current value type for the debconf question {{ onlyoffice_dcnf.question }}"
       ansible.builtin.debug:
-        msg: "{{ onlyoffice_dcnf_current_value | type_debug }}"
+        msg: "{{ onlyoffice_dcnf_current_value | ansible.builtin.type_debug }}"
         verbosity: 1
 
     - name: "Debug proposed value for the debconf question {{ onlyoffice_dcnf.question }}"
@@ -46,7 +46,7 @@
 
     - name: "Debug proposed value type for the debconf question {{ onlyoffice_dcnf.question }}"
       ansible.builtin.debug:
-        msg: "{{ onlyoffice_dcnf_proposed_value | type_debug }}"
+        msg: "{{ onlyoffice_dcnf_proposed_value | ansible.builtin.type_debug }}"
         verbosity: 1
 
     - name: Check that the proposed value is a bool when the vtype is boolean
@@ -79,7 +79,7 @@
               {%- endif -%}
           no_log: "{% if onlyoffice_dcnf.vtype == 'password' and ansible_verbosity == 0 %}true{% else %}false{% endif %}"
           changed_when:
-            - onlyoffice_dcnf_current_value != onlyoffice_dcnf_proposed_value
+            - onlyoffice_dcnf_current_value is not ansible.builtin.regex(onlyoffice_dcnf_proposed_value_regex)
             - onlyoffice_dcnf.vtype != "password"
 
       rescue:
@@ -101,7 +101,7 @@
 
       when: >-
         ( onlyoffice_dcnf_current_value is not defined ) or
-        ( onlyoffice_dcnf_current_value is not ansible.builtin.regex(onlyoffice_dcnf_proposed_value_regex)
+        ( onlyoffice_dcnf_current_value is not ansible.builtin.regex(onlyoffice_dcnf_proposed_value_regex) )
 
   tags:
     - onlyoffice
