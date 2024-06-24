@@ -4,7 +4,7 @@ include /etc/nginx/includes/http-common.conf;
 
 server {
 {% if onlyoffice_ds_port == "443" and onlyoffice_ssl | bool %}
-  listen 0.0.0.0:{{ onlyoffice_ds_port }} }ssl default_server;
+  listen 0.0.0.0:{{ onlyoffice_ds_port }} ssl default_server;
   listen [::]:{{ onlyoffice_ds_port }} ssl default_server;
 {% else %}
   listen 0.0.0.0:{{ onlyoffice_ds_port }} default_server;
