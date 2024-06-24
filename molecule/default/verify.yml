@@ -40,28 +40,6 @@
       ansible.builtin.debug:
         var: molecule_port_facts
 
-    - name: Debug onlyoffice_ssl
-      ansible.builtin.debug:
-        var: onlyoffice_ssl
-
-    # - name: Check Nginx config when the service is listening on port 443
-    #   block:
-
-    - name: Slurp ds.conf is Nginx is listening on 443
-      ansible.builtin.slurp:
-        src: /etc/onlyoffice/documentserver/nginx/ds.conf
-      register: molecule_ds_b64encoded
-
-    - name: Decode the base64 encoded version of the file and set a variable
-      ansible.builtin.set_fact:
-        molecule_ds_contents: "{{ molecule_ds_b64encoded['content'] | ansible.builtin.b64decode | trim }}"
-
-    - name: Debug molecule_ds_contents
-      ansible.builtin.debug:
-        var: molecule_ds_contents
-
-      # when: molecule_port_facts | community.general.json_query('ansible_facts.tcp_listen[?port==`443`].name') | unique == "nginx"
-
     - name: ONLYOFFICE healthcheck
       ansible.builtin.uri:
         url: "http://{{ ansible_default_ipv4.address }}/healthcheck"
