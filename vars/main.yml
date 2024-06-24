@@ -29,43 +29,6 @@ onlyoffice_jpq_rabbitmq_proto: "[?question=='onlyoffice/rabbitmq-proto'].value|[
 onlyoffice_jpq_rabbitmq_pwd: "[?question=='onlyoffice/rabbitmq-pwd'].value|[0]"
 onlyoffice_jpq_rabbitmq_user: "[?question=='onlyoffice/rabbitmq-user'].value|[0]"
 
-# Configuration for /etc/onlyoffice/documentserver/local.json
-# NOTE onlyoffice_local is now defined in defaults/main.yml
-# onlyoffice_local:
-#   rabbitmq:
-#     url: "{{ onlyoffice_debconf | community.general.json_query(onlyoffice_jpq_rabbitmq_proto) }}://{{ onlyoffice_debconf | community.general.json_query(onlyoffice_jpq_rabbitmq_user) }}:{{ onlyoffice_rabbitmq_pwd }}@{{ onlyoffice_debconf | community.general.json_query(onlyoffice_jpq_rabbitmq_host) }}"
-#   services:
-#     CoAuthoring:
-#       server:
-#         port: "{{ onlyoffice_debconf | community.general.json_query(onlyoffice_jpq_docservice_port) }}"
-#       sql:
-#         type: "{{ onlyoffice_debconf | community.general.json_query(onlyoffice_jpq_db_type) }}"
-#         dbHost: "{{ onlyoffice_debconf | community.general.json_query(onlyoffice_jpq_db_host) }}"
-#         dbPort: "{{ onlyoffice_debconf | community.general.json_query(onlyoffice_jpq_db_port) }}"
-#         dbName: "{{ onlyoffice_debconf | community.general.json_query(onlyoffice_jpq_db_name) }}"
-#         dbUser: "{{ onlyoffice_debconf | community.general.json_query(onlyoffice_jpq_db_user) }}"
-#         dbPass: "{{ onlyoffice_db_pwd }}"
-#       secret:
-#         inbox:
-#           string: "{{ onlyoffice_jwt_secret }}"
-#         outbox:
-#           string: "{{ onlyoffice_jwt_secret }}"
-#         session:
-#           string: "{{ onlyoffice_jwt_secret }}"
-#       token:
-#         enable:
-#           browser: true
-#           request:
-#             inbox: true
-#             outbox: true
-#         inbox:
-#           header: "{{ onlyoffice_debconf | community.general.json_query(onlyoffice_jpq_jwt_header) }}"
-#         outbox:
-#           header: "{{ onlyoffice_debconf | community.general.json_query(onlyoffice_jpq_jwt_header) }}"
-#   storage:
-#     fs:
-#       secretString: "{{ onlyoffice_fs_secret }}"
-
 # MariaDB
 onlyoffice_mariadb_priv:
   - ALTER
