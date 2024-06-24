@@ -1,15 +1,20 @@
-# {# j2lint: disable=single-statement-per-line #}{{ ansible_managed }}
+# {{ ansible_managed }}
 
 include /etc/nginx/includes/http-common.conf;
 
 server {
-  listen 0.0.0.0:{{ onlyoffice_debconf | community.general.json_query(onlyoffice_jpq_ds_port) }} {% if onlyoffice_ssl | bool %}ssl {% endif %}default_server;
-  listen [::]:{{ onlyoffice_debconf | community.general.json_query(onlyoffice_jpq_ds_port) }} {% if onlyoffice_ssl | bool %}ssl {% endif %}default_server;
+{% if onlyoffice_ds_port == "443" and onlyoffice_ssl | bool %}
+  listen 0.0.0.0:{{ onlyoffice_ds_port }} }ssl default_server;
+  listen [::]:{{ onlyoffice_ds_port }} ssl default_server;
+{% else %}
+  listen 0.0.0.0:{{ onlyoffice_ds_port }} default_server;
+  listen [::]:{{ onlyoffice_ds_port }} default_server;
+{% endif %}
   server_tokens off;
   set $secure_link_secret "{{ onlyoffice_local_fs_secretstring }}";
   root /usr/share/nginx/html;
 
-{% if onlyoffice_ssl | bool %}
+{% if onlyoffice_ds_port == "443" and onlyoffice_ssl | bool %}
   ## Strong SSL Security
   ## https://raymii.org/s/tutorials/Strong_SSL_Security_On_nginx.html
   # the "ssl" directive is deprecated, use the "listen ... ssl" directive instead
@@ -63,4 +68,4 @@ server {
 
 }
 
-# vim: syntax=nginx
+# vim: syntax=nginx{# vim: syntax=jinja2 #}

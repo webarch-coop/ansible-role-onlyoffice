@@ -40,6 +40,10 @@
       ansible.builtin.debug:
         var: molecule_port_facts
 
+    - name: Debug onlyoffice_ssl
+      ansible.builtin.debug:
+        var: onlyoffice_ssl
+
     # - name: Check Nginx config when the service is listening on port 443
     #   block:
 
