@@ -47,7 +47,7 @@ onlyoffice_debconf:
     vtype: string
   - name: onlyoffice-documentserver
     question: onlyoffice/docservice-port
-    value: "{{ onlyoffice_db_port }}"
+    value: "{{ onlyoffice_docservice_port }}"
     vtype: string
   - name: onlyoffice-documentserver
     question: onlyoffice/ds-port

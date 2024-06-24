@@ -71,7 +71,7 @@
               {{- onlyoffice_dcnf.value -}}
               {%- endif -%}
             vtype: >-
-              {%- if onlyoffice_dcnf.vtype is ansible.builtin.regex('^[0-9]$') -%}int
+              {%- if onlyoffice_dcnf.vtype is ansible.builtin.regex('^[0-9]$') -%}string
               {%- else -%}
               {{- onlyoffice_dcnf.vtype -}}
               {%- endif -%}
