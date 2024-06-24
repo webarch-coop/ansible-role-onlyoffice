@@ -56,7 +56,7 @@
           ansible.builtin.debug:
             var: molecule_ds_contents
 
-      when: molecule_port_facts | community.general.json_query('molecule_port_facts.ansible_facts.tcp_listen[?port==`443`].name') | unique == "nginx"
+      when: molecule_port_facts | community.general.json_query('ansible_facts.tcp_listen[?port==`443`].name') | unique == "nginx"
 
     - name: ONLYOFFICE healthcheck
       ansible.builtin.uri:
