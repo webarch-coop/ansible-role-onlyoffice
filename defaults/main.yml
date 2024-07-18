@@ -91,7 +91,7 @@ onlyoffice_debconf:
     vtype: boolean
 # https://github.com/ONLYOFFICE/DocumentServer/blob/master/CHANGELOG.md
 # see vars/main.yml for the full versions strings that are required here:
-onlyoffice_docserver_version: 8.1.0-169
+onlyoffice_docserver_version: 8.1.1-26
 onlyoffice_fs_secret: ""  # This is reset when the role is run
 onlyoffice_local:
   rabbitmq:
