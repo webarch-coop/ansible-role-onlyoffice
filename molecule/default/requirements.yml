@@ -10,7 +10,7 @@
 ---
 - name: apt
   src: https://git.coop/webarch/apt.git
-  version: 4.3.1  # apt
+  version: 4.4.0  # apt
   scm: git
 
 - name: etchosts
@@ -40,6 +40,6 @@
 
 - name: users
   src: https://git.coop/webarch/users.git
-  version: 4.29.0  # users
+  version: 4.32.0  # users
   scm: git
 ...
