@@ -39,13 +39,13 @@ stages:
   - jammy
   # - noble
 lint:
-  image: registry.git.coop/webarch/containers/images/bookworm:20240721
+  image: registry.git.coop/webarch/containers/images/bookworm:20240814
   stage: lint
   script:
     - pre-commit install
     - pre-commit run --all-files
 bookworm:
-  image: registry.git.coop/webarch/containers/images/bookworm:20240721
+  image: registry.git.coop/webarch/containers/images/bookworm:20240814
   stage: bookworm
   script:
     - mkdir -p molecule/default/roles
@@ -54,19 +54,19 @@ bookworm:
 # The Bullseye test run OK but Molecule never completes
 # https://github.com/ansible/molecule/discussions/4020
 # bullseye:
-#   image: registry.git.coop/webarch/containers/images/bullseye:20240721
+#   image: registry.git.coop/webarch/containers/images/bullseye:20240814
 #   stage: bullseye
 #   script:
 #     - molecule test
 jammy:
-  image: registry.git.coop/webarch/containers/images/jammy:20240721
+  image: registry.git.coop/webarch/containers/images/jammy:20240814
   stage: jammy
   script:
     - mkdir -p molecule/default/roles
     - ansible-galaxy install -r molecule/default/requirements.yml -p molecule/default/roles --force
     - molecule test
 # noble:
-#   image: registry.git.coop/webarch/containers/images/noble:20240721
+#   image: registry.git.coop/webarch/containers/images/noble:20240814
 #   stage: noble
 #   script:
 #     - mkdir -p molecule/default/roles
