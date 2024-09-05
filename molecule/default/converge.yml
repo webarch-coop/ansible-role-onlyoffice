@@ -112,7 +112,7 @@
         rabbitmq_configuration:
           listeners.tcp.local: "{{ ansible_default_ipv4.address }}:5672"
         rabbitmq_systemd_units:
-          - name: epmd.service
+          - name: epmd
             files:
               - path: /etc/systemd/system/epmd.service.d/override.conf
                 conf:
