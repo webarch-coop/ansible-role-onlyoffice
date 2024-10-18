@@ -12,8 +12,8 @@ server {
 {% endif %}
 {% if ansible_host is defined and ansible_host != "127.0.0.1" %}
     allow {{ ansible_host }};
-{% elif ansible_full.default_ipv4.address is defined and ansible_full.default_ipv4.address != "127.0.0.1" %}
-    allow {{ ansible_full.default_ipv4.address }};
+{% elif ansible_facts.default_ipv4.address is defined and ansible_facts.default_ipv4.address != "127.0.0.1" %}
+    allow {{ ansible_facts.default_ipv4.address }};
 {% endif %}
     deny all;
   }

@@ -86,7 +86,7 @@
             gpg --dearmor < /root/onlyoffice.asc > /etc/apt/keyrings/onlyoffice.gpg
             chmod 644 /etc/apt/keyrings/onlyoffice.gpg
           args:
-            executable: "{{ ansible_full.ansible_local.bash.path }}"
+            executable: "{{ ansible_facts.ansible_local.bash.path }}"
           check_mode: false
           changed_when: false
 
@@ -98,7 +98,7 @@
         - name: ONLYOFFICE gpg key check command
           ansible.builtin.command: >
             gpg --with-colons
-            {% if ansible_full.ansible_local.gpg.version is version('2.2.12', '<') %}
+            {% if ansible_facts.ansible_local.gpg.version is version('2.2.12', '<') %}
             --with-fingerprint --with-subkey-fingerprint
             {% else %}
             --show-keys
