@@ -10,22 +10,22 @@
 ---
 - name: apt
   src: https://git.coop/webarch/apt.git
-  version: 4.5.0  # apt
+  version: 4.6.0  # apt
   scm: git
 
 - name: etchosts
   src: https://git.coop/webarch/etchosts.git
-  version: 1.5.1  # etchosts
+  version: 1.6.0  # etchosts
   scm: git
 
 - name: mariadb
   src: https://git.coop/webarch/mariadb.git
-  version: 3.6.0  # mariadb
+  version: 3.6.1  # mariadb
   scm: git
 
 - name: nginx
   src: https://git.coop/webarch/nginx.git
-  version: 2.1.1  # nginx
+  version: 2.2.0  # nginx
   scm: git
 
 - name: rabbitmq
@@ -35,11 +35,11 @@
 
 - name: systemd
   src: https://git.coop/webarch/systemd.git
-  version: 2.3.0  # systemd
+  version: 2.5.0  # systemd
   scm: git
 
 - name: users
   src: https://git.coop/webarch/users.git
-  version: 4.35.0  # users
+  version: 4.36.0  # users
   scm: git
 ...
