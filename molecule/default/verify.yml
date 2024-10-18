@@ -42,7 +42,7 @@
 
     - name: ONLYOFFICE healthcheck
       ansible.builtin.uri:
-        url: "http://{{ ansible_default_ipv4.address }}/healthcheck"
+        url: "http://{{ ansible_full.default_ipv4.address }}/healthcheck"
         return_content: true
       register: molecule_onlyoffice_healthcheck
 
@@ -57,7 +57,7 @@
 
     - name: ONLYOFFICE info
       ansible.builtin.uri:
-        url: "http://{{ ansible_default_ipv4.address }}:82/info/info.json"
+        url: "http://{{ ansible_full.default_ipv4.address }}:82/info/info.json"
         return_content: true
       register: molecule_onlyoffice_info
 

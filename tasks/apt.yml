@@ -86,7 +86,7 @@
             gpg --dearmor < /root/onlyoffice.asc > /etc/apt/keyrings/onlyoffice.gpg
             chmod 644 /etc/apt/keyrings/onlyoffice.gpg
           args:
-            executable: "{{ ansible_local.bash.path }}"
+            executable: "{{ ansible_full.ansible_local.bash.path }}"
           check_mode: false
           changed_when: false
 
@@ -98,7 +98,7 @@
         - name: ONLYOFFICE gpg key check command
           ansible.builtin.command: >
             gpg --with-colons
-            {% if ansible_local.gpg.version is version('2.2.12', '<') %}
+            {% if ansible_full.ansible_local.gpg.version is version('2.2.12', '<') %}
             --with-fingerprint --with-subkey-fingerprint
             {% else %}
             --show-keys
@@ -118,7 +118,7 @@
             that:
               - onlyoffice_gpg_fingerprints_found[0] == onlyoffice_gpg_fingerprints[0]
             quiet: "{% if ansible_verbosity == 0 %}true{% else %}false{% endif %}"
-          when: ansible_local.gpg.version is version('2.2.12', '<')
+          when: ansible_facts.ansible_local.gpg.version is version('2.2.12', '<')
 
         - name: ONLYOFFICE gpg key check all fingerprints
           ansible.builtin.assert:
@@ -126,7 +126,7 @@
               - onlyoffice_gpg_fingerprints_found | difference(onlyoffice_gpg_fingerprints) | length == 0
               - onlyoffice_gpg_fingerprints | difference(onlyoffice_gpg_fingerprints_found) | length == 0
             quiet: "{% if ansible_verbosity == 0 %}true{% else %}false{% endif %}"
-          when: ansible_local.gpg.version is version('2.2.12', '>=')
+          when: ansible_facts.ansible_local.gpg.version is version('2.2.12', '>=')
 
         - name: Stat ONLYOFFICE apt sources file
           ansible.builtin.stat:
@@ -190,7 +190,7 @@
                 creates: "/etc/apt/sources.list.d/.onlyoffice.sources.{{ onlyoffice_date_timestamp }}.ansible.save"
                 removes: /etc/apt/sources.list.d/onlyoffice.sources
               vars:
-                onlyoffice_date_timestamp: "{{ ansible_date_time.iso8601_basic_short }}"
+                onlyoffice_date_timestamp: "{{ ansible_facts.date_time.iso8601_basic_short }}"
               when: onlyoffice_sources_contents_prior != onlyoffice_sources_check.repo | string | community.general.jc('ini')
 
           when: onlyoffice_sources_path.stat.exists | bool

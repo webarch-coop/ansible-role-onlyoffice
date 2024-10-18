@@ -16,17 +16,17 @@
     - localhost
   tasks:
 
-    - name: Debug ansible_effective_user_id
+    - name: Debug ansible_full.effective_user_id
       ansible.builtin.debug:
-        var: ansible_effective_user_id
+        var: ansible_full.effective_user_id
 
-    - name: Debug ansible_user_id
+    - name: Debug ansible_full.user_id
       ansible.builtin.debug:
-        var: ansible_user_id
+        var: ansible_full.user_id
 
-    - name: Debug ansible_user_dir
+    - name: Debug ansible_full.user_dir
       ansible.builtin.debug:
-        var: ansible_user_dir
+        var: ansible_full.user_dir
 
     - name: Run hostname -f
       ansible.builtin.command: hostname -f
@@ -47,7 +47,7 @@
           - ip: 127.0.0.1
             hostname:
               - localhost
-          - ip: "{{ ansible_default_ipv4.address }}"
+          - ip: "{{ ansible_full.default_ipv4.address }}"
             hostname:
               - "{{ molecule_hostname }}"
           - ip: ::1
@@ -110,14 +110,14 @@
           - username: onlyoffice
             state: present
         rabbitmq_configuration:
-          listeners.tcp.local: "{{ ansible_default_ipv4.address }}:5672"
+          listeners.tcp.local: "{{ ansible_full.default_ipv4.address }}:5672"
         rabbitmq_systemd_units:
           - name: epmd
             files:
               - path: /etc/systemd/system/epmd.service.d/override.conf
                 conf:
                   Service:
-                    Environment: 'ERL_EPMD_ADDRESS="{{ ansible_default_ipv4.address }}"'
+                    Environment: 'ERL_EPMD_ADDRESS="{{ ansible_full.default_ipv4.address }}"'
 
     - name: Include the Users role
       ansible.builtin.include_role:
@@ -143,8 +143,8 @@
       vars:  # noqa var-naming[no-role-prefix]
         onlyoffice: true
         onlyoffice_ds_port: 80
-        onlyoffice_nginx_localhost_domain: "{{ ansible_default_ipv4.address }}"
-        onlyoffice_rabbitmq_host: "{{ ansible_default_ipv4.address }}"
+        onlyoffice_nginx_localhost_domain: "{{ ansible_full.default_ipv4.address }}"
+        onlyoffice_rabbitmq_host: "{{ ansible_full.default_ipv4.address }}"
         onlyoffice_ssl: false
         onlyoffice_wopi: ignore
 ...

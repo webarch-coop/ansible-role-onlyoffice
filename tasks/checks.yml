@@ -38,9 +38,9 @@
     - name: Check requirements are present
       ansible.builtin.assert:
         that:
-          - ( "mariadb-server" or "postgresql" in ansible_local.dpkg.installed )
-          - ( "rabbitmq-server" in ansible_local.dpkg.installed )
-          - ( "nginx" or "nginx-extras" or "nginx-full" or "nginx-light" in ansible_local.dpkg.installed )
+          - ( "mariadb-server" or "postgresql" in ansible_facts.ansible_local.dpkg.installed )
+          - ( "rabbitmq-server" in ansible_facts.ansible_local.dpkg.installed )
+          - ( "nginx" or "nginx-extras" or "nginx-full" or "nginx-light" in ansible_facts.ansible_local.dpkg.installed )
         quiet: "{% if ansible_verbosity == 0 %}true{% else %}false{% endif %}"
 
     - name: Check ONLYOFFICE info

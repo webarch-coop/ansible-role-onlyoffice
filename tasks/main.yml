@@ -24,9 +24,9 @@
         name: apt
         tasks_from: local_facts.yml
       when: >-
-        ( ansible_local.dpkg.arch is not defined ) or
-        ( ansible_local.gpg.version is not defined ) or
-        ( ansible_local.bash.path is not defined )
+        ( ansible_facts.ansible_local.dpkg.arch is not defined ) or
+        ( ansible_facts.ansible_local.gpg.version is not defined ) or
+        ( ansible_facts.ansible_local.bash.path is not defined )
 
     - name: Include ONLYOFFICE apt repo config and install fonts and other package tasks
       ansible.builtin.include_tasks: apt.yml
@@ -52,7 +52,7 @@
     - name: Skipping debconf ONLYOFFICE tasks as debconf-utils is not present
       ansible.builtin.debug:
         msg: The debconf-utils packages is required for the configuration of the ONLYOFFICE DocumentServer prior to installing it.
-      when: ( "debconf-utils" not in ansible_local.dpkg.installed )
+      when: ( "debconf-utils" not in ansible_facts.ansible_local.dpkg.installed )
 
     - name: ONLYOFFICE Document Server Install tasks
       block:
@@ -76,7 +76,7 @@
         - name: Include Nginx tasks
           ansible.builtin.include_tasks: nginx.yml
 
-      when: ( "debconf-utils" in ansible_local.dpkg.installed )
+      when: ( "debconf-utils" in ansible_facts.ansible_local.dpkg.installed )
 
     - name: Ensure that the ONLYOFFICE ds-docservice is enabled and started
       ansible.builtin.systemd_service:

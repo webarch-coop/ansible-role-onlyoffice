@@ -38,7 +38,7 @@
         chmod 0600 /root/.onlyoffice.jwt.secret
       args:
         creates: /root/.onlyoffice.jwt.secret
-        executable: "{{ ansible_local.bash.path }}"
+        executable: "{{ ansible_facts.ansible_local.bash.path }}"
       no_log: true
 
     - name: Check if the root JWT secret file exists
@@ -70,7 +70,7 @@
         chmod 0600 /root/.onlyoffice.fs.secret
       args:
         creates: /root/.onlyoffice.fs.secret
-        executable: "{{ ansible_local.bash.path }}"
+        executable: "{{ ansible_facts.ansible_local.bash.path }}"
       no_log: true
 
     - name: Check if the root FS secret file exists
