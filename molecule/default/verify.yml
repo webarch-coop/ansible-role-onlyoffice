@@ -60,9 +60,9 @@
           ansible.builtin.debug:
             var: molecule_onlyoffice_healthcheck.content
 
-        - name: Find files in /etc/ngins/sites-enabled
+        - name: Find files in /etc/nginx/sites-enabled
           ansible.builtin.find:
-            paths: /etc/ngins/sites-enabled
+            paths: /etc/nginx/sites-enabled
           register: molecule_nginx_sites_enabled
 
         - name: Debug molecule_nginx_sites_enabled.files
