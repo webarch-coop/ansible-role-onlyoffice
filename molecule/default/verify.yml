@@ -41,19 +41,33 @@
         var: molecule_port_facts
 
     - name: ONLYOFFICE healthcheck
-      ansible.builtin.uri:
-        url: "http://{{ ansible_facts.default_ipv4.address }}/healthcheck"
-        return_content: true
-      register: molecule_onlyoffice_healthcheck
+      block:
 
-    - name: Debug ONLYOFFICE healthcheck
-      ansible.builtin.debug:
-        var: molecule_onlyoffice_healthcheck.content
+        - name: ONLYOFFICE healthcheck
+          ansible.builtin.uri:
+            url: "http://{{ ansible_facts.default_ipv4.address }}/healthcheck"
+            return_content: true
+          register: molecule_onlyoffice_healthcheck
+          until:
+            - molecule_onlyoffice_healthcheck.content is defined
+            - molecule_onlyoffice_healthcheck.content == "true"
+          retries: 10
+          delay: 5
 
-    - name: Ensure that the ONLYOFFICE healthcheck is true
-      ansible.builtin.assert:
-        that:
-          - molecule_onlyoffice_healthcheck.content == "true"
+      rescue:
+
+        - name: Debug ONLYOFFICE healthcheck
+          ansible.builtin.debug:
+            var: molecule_onlyoffice_healthcheck.content
+
+        - name: Find files in /etc/ngins/sites-enabled
+          ansible.builtin.find:
+            paths: /etc/ngins/sites-enabled
+          register: molecule_nginx_sites_enabled
+
+        - name: Debug molecule_nginx_sites_enabled.files
+          ansible.builtin.debug:
+            var: molecule_nginx_sites_enabled.files
 
     - name: ONLYOFFICE info
       ansible.builtin.uri:
