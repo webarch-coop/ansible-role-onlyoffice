@@ -30,7 +30,7 @@ The database type, a lowercase string, defaults to `mariadb`, set to `postgres` 
 
 ### onlyoffice_ds_port
 
-The port number, quoted so it is s tring, that Nginx should make ONLYOFFICE available on, `onlyoffice_ds_port` defaults to `443`, set it to another port if a reverse proxy is to be used in front of Nginx.
+The port number, quoted so it is string, that Nginx should make ONLYOFFICE available on, `onlyoffice_ds_port` defaults to `443`, set it to another port if a reverse proxy is to be used in front of Nginx.
 
 ### onlyoffice_debconf
 
