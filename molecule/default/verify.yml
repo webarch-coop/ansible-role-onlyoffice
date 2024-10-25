@@ -69,15 +69,30 @@
           ansible.builtin.debug:
             var: molecule_nginx_sites_enabled.files
 
-        - name: Find .conf files in /etc/onlyoffice/documentserver/nginx/
-          ansible.builtin.find:
-            path: /etc/onlyoffice/documentserver/nginx/
-            pattern: "*.conf"
-          register: molecule_onlyoffice_documentserver_nginx
+        - name: Slurp /etc/onlyoffice/documentserver/nginx/ds.conf
+          ansible.builtin.slurp:
+            src: /etc/onlyoffice/documentserver/nginx/ds.conf
+          register: molecule_onlyoffice_documentserver_nginx_ds_b64encoded
 
-        - name: Debug molecule_onlyoffice_documentserver_nginx.files
+        - name: Decode the base64 encoded version of /etc/onlyoffice/documentserver/nginx/ds.conf and set a fact
+          ansible.builtin.set_fact:
+            molecule_onlyoffice_documentserver_nginx_ds: >-
+             {{ molecule_onlyoffice_documentserver_nginx_ds_b64encoded['content'] |
+             ansible.builtin.b64decode | trim }}
+
+        - name: Debug the contents of /etc/onlyoffice/documentserver/nginx/ds.conf
           ansible.builtin.debug:
-            var: molecule_onlyoffice_documentserver_nginx.files
+            var: molecule_onlyoffice_documentserver_nginx_ds
+
+        - name: Find .conf files in /etc/onlyoffice/documentserver/nginx/includes
+          ansible.builtin.find:
+            path: /etc/onlyoffice/documentserver/nginx/includes/
+            pattern: "*.conf"
+          register: molecule_onlyoffice_documentserver_nginx_includes
+
+        - name: Debug molecule_onlyoffice_documentserver_nginx_includes.files
+          ansible.builtin.debug:
+            var: molecule_onlyoffice_documentserver_nginx_includes.files
 
     - name: ONLYOFFICE info
       ansible.builtin.uri:
