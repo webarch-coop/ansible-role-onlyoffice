@@ -62,12 +62,22 @@
 
         - name: Find files in /etc/nginx/sites-enabled
           ansible.builtin.find:
-            paths: /etc/nginx/sites-enabled
+            path: /etc/nginx/sites-enabled
           register: molecule_nginx_sites_enabled
 
         - name: Debug molecule_nginx_sites_enabled.files
           ansible.builtin.debug:
             var: molecule_nginx_sites_enabled.files
+
+        - name: Find .conf files in /etc/onlyoffice/documentserver/nginx/
+          ansible.builtin.find:
+            path: /etc/onlyoffice/documentserver/nginx/
+            pattern: "*.conf"
+          register: molecule_onlyoffice_documentserver_nginx
+
+        - name: Debug molecule_onlyoffice_documentserver_nginx.files
+          ansible.builtin.debug:
+            var: molecule_onlyoffice_documentserver_nginx.files
 
     - name: ONLYOFFICE info
       ansible.builtin.uri:
