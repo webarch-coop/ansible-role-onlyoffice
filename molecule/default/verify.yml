@@ -99,6 +99,19 @@
           ansible.builtin.debug:
             var: molecule_onlyoffice_documentserver_nginx_http_common
 
+        - name: Check the response from http://localhost:8000/healthcheck
+          ansible.builtin.uri:
+            url: http://localhost:8000/healthcheck
+            method: GET
+          check_mode: false
+          changed_when: false
+          failed_when: false
+          register: molecule_onlyoffice_localhost_8000_healthcheck
+
+        - name: Debug molecule_onlyoffice_localhost_8000_healthcheck
+          ansible.builtin.debug:
+            var: molecule_onlyoffice_localhost_8000_healthcheck
+
         # - name: Find .conf files in /etc/onlyoffice/documentserver/nginx/includes
         #   ansible.builtin.find:
         #     path: /etc/onlyoffice/documentserver/nginx/includes/
