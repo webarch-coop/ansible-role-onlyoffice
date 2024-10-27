@@ -29,14 +29,18 @@ argument_specs:
         type: str
         required: true
         description: The database port, quoted.
+      onlyoffice_docservice_host:
+        type: str
+        required: true
+        description: The ONLYOFFICE DocumentServer docservice host.
       onlyoffice_docservice_port:
         type: str
         required: true
-        description: The ONLYOFFICE DocumentServer backend port, quoted.
+        description: The ONLYOFFICE DocumentServer docservice port, quoted.
       onlyoffice_ds_host:
         type: str
         required: true
-        description: The ONLYOFFICE DocumentServer host.
+        description: The ONLYOFFICE DocumentServer Nginx host.
       onlyoffice_ds_port:
         type: str
         required: true

@@ -2,7 +2,7 @@
 # https://github.com/ONLYOFFICE/document-server-package/blob/master/common/documentserver/nginx/includes/http-common.conf.m4
 
 upstream docservice {
-  server {{ onlyoffice_ds_host }}:{{ onlyoffice_docservice_port }} max_fails=0 fail_timeout=0s;
+  server {{ onlyoffice_docservice_host }}:{{ onlyoffice_docservice_port }} max_fails=0 fail_timeout=0s;
 }
 
 upstream example {
