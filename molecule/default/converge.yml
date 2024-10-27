@@ -143,8 +143,10 @@
         # tasks_from: apt.yml
       vars:  # noqa var-naming[no-role-prefix]
         onlyoffice: true
-        onlyoffice_ds_port: 80
+        onlyoffice_ds_host: "{{ ansible_facts.default_ipv4.address }}"
+        onlyoffice_ds_port: "80"
         onlyoffice_nginx_localhost_domain: "{{ ansible_facts.default_ipv4.address }}"
+        onlyoffice_nginx_localhost_port: 82
         onlyoffice_rabbitmq_host: "{{ ansible_facts.default_ipv4.address }}"
         onlyoffice_ssl: false
         onlyoffice_wopi: ignore
