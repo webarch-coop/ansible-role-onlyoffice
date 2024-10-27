@@ -16,44 +16,44 @@
     - localhost
   tasks:
 
-    - name: ONLYOFFICE Document Server present
-      ansible.builtin.apt:
-        pkg:
-          - onlyoffice-documentserver
-        install_recommends: true
-        state: present
-      check_mode: true
-
-    - name: Gather service facts
-      ansible.builtin.service_facts:
-
-    - name: Set a fact for the ds-docservice
-      ansible.builtin.set_fact:
-        molecule_ds_docservice: "{{ ansible_facts.services | community.general.json_query(molecule_ds_docservice_jpq) }}"
-      vars:
-        molecule_ds_docservice_jpq: '["ds-docservice.service"]|[0]'
-
-    - name: Debug molecule_ds_docservice
-      ansible.builtin.debug:
-        var: molecule_ds_docservice
-
-    - name: The ONLYOFFICE Document Server should be enabled and running
-      ansible.builtin.assert:
-        that:
-          - molecule_ds_docservice.state == "running"
-          - molecule_ds_docservice.status == "enabled"
-        quiet: true
-
-    - name: Gather facts on listening ports
-      community.general.listen_ports_facts:
-      register: molecule_port_facts
-
-    - name: Debug listening ports
-      ansible.builtin.debug:
-        var: molecule_port_facts
-
-    - name: ONLYOFFICE healthcheck
+    - name: Verify in a block to allow a rescue
       block:
+
+        - name: ONLYOFFICE Document Server present
+          ansible.builtin.apt:
+            pkg:
+              - onlyoffice-documentserver
+            install_recommends: true
+            state: present
+          check_mode: true
+
+        - name: Gather service facts
+          ansible.builtin.service_facts:
+
+        - name: Set a fact for the ds-docservice
+          ansible.builtin.set_fact:
+            molecule_ds_docservice: "{{ ansible_facts.services | community.general.json_query(molecule_ds_docservice_jpq) }}"
+          vars:
+            molecule_ds_docservice_jpq: '["ds-docservice.service"]|[0]'
+
+        - name: Debug molecule_ds_docservice
+          ansible.builtin.debug:
+            var: molecule_ds_docservice
+
+        - name: The ONLYOFFICE Document Server should be enabled and running
+          ansible.builtin.assert:
+            that:
+              - molecule_ds_docservice.state == "running"
+              - molecule_ds_docservice.status == "enabled"
+            quiet: true
+
+        - name: Gather facts on listening ports
+          community.general.listen_ports_facts:
+          register: molecule_port_facts
+
+        - name: Debug listening ports
+          ansible.builtin.debug:
+            var: molecule_port_facts
 
         - name: ONLYOFFICE healthcheck
           ansible.builtin.uri:
@@ -66,11 +66,44 @@
           retries: 10
           delay: 5
 
+        - name: ONLYOFFICE info
+          ansible.builtin.uri:
+            url: "http://{{ ansible_facts.default_ipv4.address }}:82/info/info.json"
+            return_content: true
+          register: molecule_onlyoffice_info
+
+        - name: Debug ONLYOFFICE info
+          ansible.builtin.debug:
+            var: molecule_onlyoffice_info.content
+
       rescue:
 
         - name: Debug ONLYOFFICE healthcheck
           ansible.builtin.debug:
             var: molecule_onlyoffice_healthcheck.content
+          when: molecule_onlyoffice_healthcheck.content is defined
+
+        - name: Get debconf values for onlyoffice-documentserver
+          ansible.builtin.debconf:
+            name: onlyoffice-documentserver
+          register: molecule_onlyoffice_dcnf
+
+        - name: Debug molecule_onlyoffice_dcnf
+          ansible.builtin.debug:
+            var: molecule_onlyoffice_dcnf
+            verbosity: 2
+
+        - name: Create a list of the existing debconf values
+          ansible.builtin.set_fact:
+            molecule_onlyoffice_dcnf: "{{ molecule_onlyoffice_dcnf.current | ansible.buultin.dict2items }}"
+          when:
+            - molecule_onlyoffice_dcnf.current is defined
+            - molecule_onlyoffice_dcnf.current != {}
+
+        - name: Debug molecule_onlyoffice_dcnf
+          ansible.builtin.debug:
+            var: molecule_onlyoffice_dcnf
+          when: molecule_onlyoffice_dcnf is defined
 
         - name: Find files in /etc/nginx/sites-enabled
           ansible.builtin.find:
@@ -133,14 +166,4 @@
         # - name: Debug molecule_onlyoffice_documentserver_nginx_includes.files
         #   ansible.builtin.debug:
         #     var: molecule_onlyoffice_documentserver_nginx_includes.files
-
-    - name: ONLYOFFICE info
-      ansible.builtin.uri:
-        url: "http://{{ ansible_facts.default_ipv4.address }}:82/info/info.json"
-        return_content: true
-      register: molecule_onlyoffice_info
-
-    - name: Debug ONLYOFFICE info
-      ansible.builtin.debug:
-        var: molecule_onlyoffice_info.content
 ...
