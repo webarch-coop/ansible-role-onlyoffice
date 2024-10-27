@@ -95,7 +95,7 @@
 
         - name: Create a list of the existing debconf values
           ansible.builtin.set_fact:
-            molecule_onlyoffice_dcnf: "{{ molecule_onlyoffice_dcnf.current | ansible.buultin.dict2items }}"
+            molecule_onlyoffice_dcnf: "{{ molecule_onlyoffice_dcnf.current | ansible.builtin.dict2items }}"
           when:
             - molecule_onlyoffice_dcnf.current is defined
             - molecule_onlyoffice_dcnf.current != {}
