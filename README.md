@@ -28,10 +28,6 @@ The port number of the database server, quoted so it is a string, defaults to th
 
 The database type, a lowercase string, defaults to `mariadb`, set to `postgres` for PostgreSQL.
 
-### onlyoffice_ds_port
-
-The port number, quoted so it is string, that Nginx should make ONLYOFFICE available on, `onlyoffice_ds_port` defaults to `443`, set it to another port if a reverse proxy is to be used in front of Nginx.
-
 ### onlyoffice_debconf
 
 A list of [debconf options for ONLYOFICE](https://helpcenter.onlyoffice.com/installation/docs-community-install-ubuntu.aspx#moreOptions) to be applied using the [Ansible ansible.builtin.debconf module](https://docs.ansible.com/ansible/latest/collections/ansible/builtin/debconf_module.html), for example:
@@ -66,11 +62,31 @@ A string, the type of the value.
 
 The version of the `onlyoffice-documentserver` Debian package to be installed and pinned. This is set to prevent updates breaking production servers as this role sometimes needs updating for new versions of ONLYOFFICE.
 
+### onlyoffice_docservice_host
+
+The hostname used by Nginx to reverse proxy to.
+
+### onlyoffice_docservice_port
+
+The port used by Nginx to reverse proxy to.
+
+### onlyoffice_ds_host
+
+The Nginx hostname.
+
+### onlyoffice_ds_port
+
+The port number, quoted so it is string, that Nginx should make ONLYOFFICE available on, `onlyoffice_ds_port` defaults to `443`, set it to another port if a reverse proxy is to be used in front of Nginx.
+
 ### onlyoffice_local
 
 A YAML dictionary, which will be converted to JSON and written to `/etc/onlyoffice/documentserver/local.json`.
 
 ONLYOFFICE will merge the configuration in `local.json` with the configuration from `/etc/onlyoffice/documentserver/default.json` &mdash; this file contains the default configuration.
+
+### onlyoffice_mariadb_socket
+
+The path to the MariaDB socket, defaults to `/run/mysqld/mysqld.sock`.
 
 ### onlyoffice_nginx_localhost
 
@@ -84,6 +100,18 @@ Domain name for the ONLYOFFICE info to be available on, `onlyoffice_nginx_localh
 
 Port for the ONLYOFFICE info to be available on, `onlyoffice_nginx_localhost_port` defaults to `82`.
 
+### onlyoffice_nginx_sites_disabled
+
+A list of disabled Nginx sites.
+
+### onlyoffice_nginx_sites_enabled
+
+A list of enabled Nginx sites.
+
+### onlyoffice_rabbitmq_host
+
+The RabbitMQ host, defaults to `localhost`.
+
 ### onlyoffice_ssl_certificate
 
 A string, the path to the TLS fullchain certificate for HTTPS.
@@ -95,6 +123,10 @@ A string, the path to the TLS private key for HTTPS.
 ### onlyoffice_verify
 
 A boolean, `onlyoffice_verify` defaults to `true` set it to false to skip the role using the [ansible.builtin.validate_argument_spec module](https://docs.ansible.com/ansible/latest/collections/ansible/builtin/validate_argument_spec_module.html) to verify variables that start with `onlyoffice_`.
+
+### onlyoffice_wopi
+
+Action to take if the WOPI is defined in the existing ONLYOFFICE Document Server `local.json` config but not the proposed config, defaults to `fail`, the Molecule tests use `ignore`.
 
 ## Upgrading from Debian Buster to Bullseye
 

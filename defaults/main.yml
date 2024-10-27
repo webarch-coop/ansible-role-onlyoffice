@@ -13,9 +13,6 @@ onlyoffice_db_port: "3306"
 # onlyoffice_db_port: "5432"
 onlyoffice_db_type: mariadb
 # onlyoffice_db_type: postgres
-onlyoffice_docservice_port: "8000"
-onlyoffice_ds_host: localhost
-onlyoffice_ds_port: "443"
 onlyoffice_debconf:
   - name: onlyoffice-documentserver
     question: onlyoffice/cluster-mode
@@ -93,7 +90,10 @@ onlyoffice_debconf:
 # https://github.com/ONLYOFFICE/DocumentServer/blob/master/CHANGELOG.md
 # see vars/main.yml for the full versions strings that are required here:
 onlyoffice_docserver_version: 8.2.0-143
-onlyoffice_fs_secret: ""  # This is reset when the role is run
+onlyoffice_docservice_host: locahost
+onlyoffice_docservice_port: "8000"
+onlyoffice_ds_host: localhost
+onlyoffice_ds_port: "443"
 onlyoffice_local:
   rabbitmq:
     url: "{{ onlyoffice_debconf | community.general.json_query(onlyoffice_jpq_rabbitmq_proto) }}://{{ onlyoffice_debconf | community.general.json_query(onlyoffice_jpq_rabbitmq_user) }}:{{ onlyoffice_rabbitmq_pwd }}@{{ onlyoffice_debconf | community.general.json_query(onlyoffice_jpq_rabbitmq_host) }}"
