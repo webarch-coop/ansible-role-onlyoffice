@@ -88,9 +88,9 @@
             var: molecule_onlyoffice_healthcheck.content
           when: molecule_onlyoffice_healthcheck.content is defined
 
-        - name: Debug listening ports
-          ansible.builtin.debug:
-            var: ansible_facts.tcp_listen
+        # - name: Debug listening ports
+        #   ansible.builtin.debug:
+        #     var: ansible_facts.tcp_listen
 
         - name: Get debconf values for onlyoffice-documentserver
           ansible.builtin.debconf:

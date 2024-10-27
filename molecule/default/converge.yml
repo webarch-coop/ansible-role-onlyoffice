@@ -78,12 +78,12 @@
       vars:  # noqa var-naming[no-role-prefix]
         nginx: true
         nginx_default_server_port: 81
-        nginx_ssl: false
         nginx_sites_disabled:
           - default
           - default.conf
         nginx_sites_enabled:
           - localhost.conf
+        nginx_ssl: false
 
     - name: Include the MariaDB role
       ansible.builtin.include_role:
