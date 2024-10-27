@@ -49,11 +49,16 @@
 
         - name: Gather facts on listening ports
           community.general.listen_ports_facts:
-          register: molecule_port_facts
 
-        - name: Debug listening ports
+        - name: Set a fact for the ports that the ds user is listening on
+          ansible.builtin.set_fact:
+            molecule_ds_ports: "{{ ansible_facts.tcp_listen | community.general.json_query(molecule_ds_ports_jpq) }}"
+          vars:
+            molecule_ds_ports_jpq: '[user=="ds"]'
+
+        - name: Debug ports that the ds user is listening on
           ansible.builtin.debug:
-            var: molecule_port_facts
+            var: molecule_ds_ports
 
         - name: ONLYOFFICE healthcheck
           ansible.builtin.uri:
@@ -72,9 +77,9 @@
             return_content: true
           register: molecule_onlyoffice_info
 
-        - name: Debug ONLYOFFICE info
+        - name: Debug ONLYOFFICE serverInfo
           ansible.builtin.debug:
-            var: molecule_onlyoffice_info.content
+            var: molecule_onlyoffice_info.content.serverInfo
 
       rescue:
 
@@ -82,6 +87,10 @@
           ansible.builtin.debug:
             var: molecule_onlyoffice_healthcheck.content
           when: molecule_onlyoffice_healthcheck.content is defined
+
+        - name: Debug listening ports
+          ansible.builtin.debug:
+            var: ansible_facts.tcp_listen
 
         - name: Get debconf values for onlyoffice-documentserver
           ansible.builtin.debconf:
