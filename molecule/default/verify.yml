@@ -26,11 +26,23 @@
 
     - name: Gather service facts
       ansible.builtin.service_facts:
-      register: molecule_service_facts
 
-    - name: Debug service facts
+    - name: Set a fact for the ds-docservice
+      ansible.builtin.set_fact:
+        molecule_ds_docservice: "{{ ansible_facts.services | community.general.json_query(molecule_ds_docservice_jpq) }}"
+      vars:
+        molecule_ds_docservice_jpq: '["ds-docservice.service"]|[0]'
+
+    - name: Debug molecule_ds_docservice
       ansible.builtin.debug:
-        var: molecule_service_facts
+        var: molecule_ds_docservice
+
+    - name: The ONLYOFFICE Document Server should be enabled and running
+      ansible.builtin.assert:
+        that:
+          - molecule_ds_docservice.state == "running"
+          - molecule_ds_docservice.status == "enabled"
+        quiet: true
 
     - name: Gather facts on listening ports
       community.general.listen_ports_facts:
