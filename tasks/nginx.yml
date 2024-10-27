@@ -197,7 +197,7 @@
 
       when: >-
         ( ( onlyoffice_ds_port is defined ) and ( onlyoffice_ds_port != "8000" ) ) or
-        ( ( onlyoffice_ds_host is defined ) and ( onlyoffice_ds_host "= "localhost" ) )
+        ( ( onlyoffice_ds_host is defined ) and ( onlyoffice_ds_host != "localhost" ) )
 
     - name: Robots.txt in place
       ansible.builtin.template:
