@@ -160,7 +160,7 @@
 
       when: onlyoffice_nginx_localhost | bool
 
-    - name: Template http-common.conf when the docserver port is not 8000
+    - name: Template http-common.conf when the docserver port is not 8000 or the docserver host is not localhost
       block:
 
         - name: Check if the original /etc/onlyoffice/documentserver/nginx/includes/http-common.conf exists
@@ -195,9 +195,9 @@
             backup: true
           notify: Restart nginx
 
-      when:
-        - onlyoffice_jpq_docservice_port is defined
-        - onlyoffice_jpq_docservice_port != "8000"
+      when: >-
+        ( ( onlyoffice_ds_port is defined ) and ( onlyoffice_ds_port != "8000" ) ) or
+        ( ( onlyoffice_ds_host is defined ) and ( onlyoffice_ds_host "= "localhost" ) )
 
     - name: Robots.txt in place
       ansible.builtin.template:

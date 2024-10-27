@@ -33,6 +33,10 @@ argument_specs:
         type: str
         required: true
         description: The ONLYOFFICE DocumentServer backend port, quoted.
+      onlyoffice_ds_host:
+        type: str
+        required: true
+        description: The ONLYOFFICE DocumentServer host.
       onlyoffice_ds_port:
         type: str
         required: true
