@@ -54,7 +54,7 @@
           ansible.builtin.set_fact:
             molecule_ds_ports: "{{ ansible_facts.tcp_listen | community.general.json_query(molecule_ds_ports_jpq) }}"
           vars:
-            molecule_ds_ports_jpq: '[?user=="ds"]'
+            molecule_ds_ports_jpq: "[?user=='ds']"
 
         - name: Debug ports that the ds user is listening on
           ansible.builtin.debug:
