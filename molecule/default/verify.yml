@@ -172,6 +172,7 @@
           ansible.builtin.find:
             path: /var/log/onlyoffice/documentserver/
             pattern: "*.log"
+            recurse: true
           register: molecule_onlyoffice_documentserver_logs
 
         - name: Debug molecule_onlyoffice_documentserver_logs.files
