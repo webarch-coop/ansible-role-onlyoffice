@@ -168,15 +168,15 @@
           ansible.builtin.debug:
             var: molecule_onlyoffice_healthcheck
 
-        # - name: Find .conf files in /etc/onlyoffice/documentserver/nginx/includes
-        #   ansible.builtin.find:
-        #     path: /etc/onlyoffice/documentserver/nginx/includes/
-        #     pattern: "*.conf"
-        #   register: molecule_onlyoffice_documentserver_nginx_includes
+        - name: Find .log files in /var/log/onlyoffice/documentserver
+          ansible.builtin.find:
+            path: /var/log/onlyoffice/documentserver/
+            pattern: "*.log"
+          register: molecule_onlyoffice_documentserver_logs
 
-        # - name: Debug molecule_onlyoffice_documentserver_nginx_includes.files
-        #   ansible.builtin.debug:
-        #     var: molecule_onlyoffice_documentserver_nginx_includes.files
+        - name: Debug molecule_onlyoffice_documentserver_logs.files
+          ansible.builtin.debug:
+            var: molecule_onlyoffice_documentserver_logs.files
 
         - name: Fail
           ansible.builtin.fail:
