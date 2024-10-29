@@ -179,15 +179,19 @@
             url: "http://{{ ansible_facts.default_ipv4.address }}:82/info/info.json"
             return_content: true
           register: molecule_onlyoffice_info
-          until:
-            - molecule_onlyoffice_info.json is defined
-            - molecule_onlyoffice_info.content | ansible.builtin.type_debug == "dict"
-          retries: 10
-          delay: 5
+          # until:
+          #   - molecule_onlyoffice_info.json is defined
+          #   - molecule_onlyoffice_info.content | ansible.builtin.type_debug == "dict"
+          # retries: 10
+          # delay: 5
 
-        - name: Debug ONLYOFFICE info content ServerInfo content serverInfo
+        # - name: Debug ONLYOFFICE info content ServerInfo content serverInfo
+        #   ansible.builtin.debug:
+        #     var: molecule_onlyoffice_info.json.serverInfo
+
+        - name: Debug ONLYOFFICE info
           ansible.builtin.debug:
-            var: molecule_onlyoffice_info.json.serverInfo
+            var: molecule_onlyoffice_info
 
       rescue:
 
