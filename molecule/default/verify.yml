@@ -30,7 +30,41 @@
         - name: Gather service facts
           ansible.builtin.service_facts:
 
-        - name: Set a fact for the ds-docservice
+        - name: Set a fact for the mariadb systemd service
+          ansible.builtin.set_fact:
+            molecule_mariadb: "{{ ansible_facts.services | community.general.json_query(molecule_mariadb_jpq) }}"
+          vars:
+            molecule_mariadb_jpq: '["mariadb.service"]|[0]'
+
+        - name: Debug molecule_mariadb
+          ansible.builtin.debug:
+            var: molecule_mariadb
+
+        - name: MariaDB should be enabled and running
+          ansible.builtin.assert:
+            that:
+              - molecule_mariadb.state == "running"
+              - molecule_mariadb.status == "enabled"
+            quiet: true
+
+        - name: Set a fact for the rabbitmq-server systemd service
+          ansible.builtin.set_fact:
+            molecule_rabbitmq: "{{ ansible_facts.services | community.general.json_query(molecule_rabbitmq_jpq) }}"
+          vars:
+            molecule_rabbitmq_jpq: '["rabbitmq-server.service"]|[0]'
+
+        - name: Debug molecule_rabbitmq
+          ansible.builtin.debug:
+            var: molecule_rabbitmq
+
+        - name: MariaDB should be enabled and running
+          ansible.builtin.assert:
+            that:
+              - molecule_rabbitmq.state == "running"
+              - molecule_rabbitmq.status == "enabled"
+            quiet: true
+
+        - name: Set a fact for the ds-docservice systemd service
           ansible.builtin.set_fact:
             molecule_ds_docservice: "{{ ansible_facts.services | community.general.json_query(molecule_ds_docservice_jpq) }}"
           vars:
