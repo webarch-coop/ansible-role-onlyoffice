@@ -27,6 +27,45 @@
             state: present
           check_mode: true
 
+        - name: Restart MariaDB
+          ansible.builtin.systemd_service:
+            name: mariadb
+            state: restarted
+          register: molecule_mariadb_restart
+          until:
+            - molecule_mariadb_restart.status.SubState is defined
+            - molecule_mariadb_restart.status.SubState == "running"
+            - molecule_mariadb_restart.status.Result is defined
+            - molecule_mariadb_restart.status.Result == "success"
+          retries: 10
+          delay: 3
+
+        - name: Restart RabbitMQ
+          ansible.builtin.systemd_service:
+            name: rabbitmq-server
+            state: restarted
+          register: molecule_rabbitmq_restart
+          until:
+            - molecule_rabbitmq_restart.status.SubState is defined
+            - molecule_rabbitmq_restart.status.SubState == "running"
+            - molecule_rabbitmq_restart.status.Result is defined
+            - molecule_rabbitmq_restart.status.Result == "success"
+          retries: 10
+          delay: 3
+
+        - name: Restart ONLYOFFICE ds-docservice
+          ansible.builtin.systemd_service:
+            name: ds-docservice
+            state: restarted
+          register: molecule_ds_docservice_restart
+          until:
+            - molecule_ds_docservice_restart.status.SubState is defined
+            - molecule_ds_docservice_restart.status.SubState == "running"
+            - molecule_ds_docservice_restart.status.Result is defined
+            - molecule_ds_docservice_restart.status.Result == "success"
+          retries: 10
+          delay: 3
+
         - name: Gather service facts
           ansible.builtin.service_facts:
 
