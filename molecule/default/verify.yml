@@ -180,15 +180,13 @@
             return_content: true
           register: molecule_onlyoffice_info
 
-        - name: Debug ONLYOFFICE serverInfo
+        - name: Set a fact for the ONLYOFFICE info content
           ansible.builtin.debug:
-            var: molecule_onlyoffice_info.content.serverInfo
-          when: molecule_onlyoffice_info.content.serverInfo is defined
+            molecule_onlyoffice_info_content: "{{ molecule_onlyoffice_info.content }}"
 
-        - name: Debug ONLYOFFICE info
+        - name: Debug ONLYOFFICE info content ServerInfo
           ansible.builtin.debug:
-            var: molecule_onlyoffice_info.content
-          when: molecule_onlyoffice_info.content.serverInfo is not defined
+            var: molecule_onlyoffice_info_content.serverInfo
 
       rescue:
 
