@@ -181,28 +181,29 @@
             recurse: true
           register: molecule_onlyoffice_documentserver_logs
 
-        - name: Debug molecule_onlyoffice_documentserver_logs.files
-          ansible.builtin.debug:
-            var: molecule_onlyoffice_documentserver_logs.files
+        - name: Slurp and print the ONLYOFFICE log files
+          block:
 
-        - name: Slurp the log files
-          ansible.builtin.slurp:
-            src: "{{ molecule_onlyoffice_documentserver_log_path }}"
-          loop: "{{ molecule_onlyoffice_documentserver_logs.files | community.general.json_query('[].path') }}"
-          loop_control:
-            loop_var: molecule_onlyoffice_documentserver_log_path
-          register: molecule_onlyoffice_documentserver_log_files_b64encoded
+            - name: Slurp the log files
+              ansible.builtin.slurp:
+                src: "{{ molecule_onlyoffice_documentserver_log_path }}"
+              loop: "{{ molecule_onlyoffice_documentserver_logs.files | community.general.json_query('[].path') }}"
+              loop_control:
+                loop_var: molecule_onlyoffice_documentserver_log_path
+              register: molecule_onlyoffice_documentserver_log_files_b64encoded
 
-        - name: Decode the base64 encoded log files
-          ansible.builtin.set_fact:
-            molecule_onlyoffice_documentserver_log_files_content: >-
-              {{ molecule_onlyoffice_documentserver_log_files_b64encoded |
-              community.general.json_query('results[].content') |
-              map('ansible.builtin.b64decode') }}
+            - name: Decode the base64 encoded log files
+              ansible.builtin.set_fact:
+                molecule_onlyoffice_documentserver_log_files_content: >-
+                  {{ molecule_onlyoffice_documentserver_log_files_b64encoded |
+                  community.general.json_query('results[].content') |
+                  map('ansible.builtin.b64decode') }}
 
-        - name: Debug the slurped log file contents
-          ansible.builtin.debug:
-            var: molecule_onlyoffice_documentserver_log_files_content
+            - name: Debug the slurped log file contents
+              ansible.builtin.debug:
+                var: molecule_onlyoffice_documentserver_log_files_content
+
+          when: molecule_onlyoffice_documentserver_logs.files | community.general.json_query('[].path') != []
 
         - name: Fail
           ansible.builtin.fail:
