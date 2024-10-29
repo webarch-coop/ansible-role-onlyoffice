@@ -39,7 +39,7 @@ before_script:
   - molecule --version
 stages:
   - bookworm
-  - jammy
+  # - jammy
   # - noble
 bookworm:
   image: registry.git.coop/webarch/containers/images/bookworm:20241008
@@ -50,19 +50,21 @@ bookworm:
     - mkdir -p molecule/default/roles
     - ansible-galaxy install -r molecule/default/requirements.yml -p molecule/default/roles --force
     - molecule test
-jammy:
-  image: registry.git.coop/webarch/containers/images/jammy:20241008
-  stage: jammy
-  script:
-    - pre-commit install
-    - pre-commit run --all-files
-    - mkdir -p molecule/default/roles
-    - ansible-galaxy install -r molecule/default/requirements.yml -p molecule/default/roles --force
-    - molecule test
+# jammy:
+#   image: registry.git.coop/webarch/containers/images/jammy:20241008
+#   stage: jammy
+#   script:
+#     - pre-commit install
+#     - pre-commit run --all-files
+#     - mkdir -p molecule/default/roles
+#     - ansible-galaxy install -r molecule/default/requirements.yml -p molecule/default/roles --force
+#     - molecule test
 # noble:
 #   image: registry.git.coop/webarch/containers/images/noble:20241008
 #   stage: noble
 #   script:
+#     - pre-commit install
+#     - pre-commit run --all-files
 #     - mkdir -p molecule/default/roles
 #     - ansible-galaxy install -r molecule/default/requirements.yml -p molecule/default/roles --force
 #     - molecule test

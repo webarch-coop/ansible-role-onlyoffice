@@ -80,6 +80,12 @@
         - name: Debug ONLYOFFICE serverInfo
           ansible.builtin.debug:
             var: molecule_onlyoffice_info.content.serverInfo
+          when: molecule_onlyoffice_info.content.serverInfo is defined
+
+        - name: Debug ONLYOFFICE info
+          ansible.builtin.debug:
+            var: molecule_onlyoffice_info.content
+          when: molecule_onlyoffice_info.content.serverInfo is not defined
 
       rescue:
 
@@ -178,6 +184,25 @@
         - name: Debug molecule_onlyoffice_documentserver_logs.files
           ansible.builtin.debug:
             var: molecule_onlyoffice_documentserver_logs.files
+
+        - name: Slurp the log files
+          ansible.builtin.slurp:
+            src: "{{ molecule_onlyoffice_documentserver_log_path }}"
+          loop: "{{ molecule_onlyoffice_documentserver_logs.files | community.general.json_query('[].path') }}"
+          loop_control:
+            loop_var: molecule_onlyoffice_documentserver_log_path
+          register: molecule_onlyoffice_documentserver_log_files_b64encoded
+
+        - name: Decode the base64 encoded log files
+          ansible.builtin.set_fact:
+            molecule_onlyoffice_documentserver_log_files_content: >-
+              {{ molecule_onlyoffice_documentserver_log_files_b64encoded |
+              community.general.json_query('results[].content') |
+              map('ansible.builtin.b64decode') }}
+
+        - name: Debug the slurped log file contents
+          ansible.builtin.debug:
+            var: molecule_onlyoffice_documentserver_log_files_content
 
         - name: Fail
           ansible.builtin.fail:
