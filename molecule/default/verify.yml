@@ -178,15 +178,21 @@
           ansible.builtin.uri:
             url: "http://{{ ansible_facts.default_ipv4.address }}:82/info/info.json"
             return_content: true
-          register: molecule_onlyoffice_info
+          register: molecule_onlyoffice_info_get
 
-        - name: Set a fact for the ONLYOFFICE info content
-          ansible.builtin.debug:
-            molecule_onlyoffice_info_content: "{{ molecule_onlyoffice_info.content }}"
+        - name: Set a fact for the ONLYOFFICE info
+          ansible.builtin.set_fact:
+            molecule_onlyoffice_info: "{{ molecule_onlyoffice_info_get | ansible.builtin.from_json }}"
 
         - name: Debug ONLYOFFICE info content ServerInfo
           ansible.builtin.debug:
-            var: molecule_onlyoffice_info_content.serverInfo
+            var: molecule_onlyoffice_info.content.serverInfo
+          when: molecule_onlyoffice_info.content.serverInfo is defined
+
+        - name: Debug ONLYOFFICE info content
+          ansible.builtin.debug:
+            var: molecule_onlyoffice_info.content
+          when: molecule_onlyoffice_info.content.serverInfo is not defined
 
       rescue:
 
