@@ -1,4 +1,4 @@
-# Copyright 2020-2024 Chris Croome
+# Copyright 2020-2025 Chris Croome
 #
 # This file is part of the Webarchitects ONLYOFFICE Ansible role.
 #
@@ -89,7 +89,7 @@ onlyoffice_debconf:
     vtype: boolean
 # https://github.com/ONLYOFFICE/DocumentServer/blob/master/CHANGELOG.md
 # see vars/main.yml for the full versions strings that are required here:
-onlyoffice_docserver_version: 8.2.2-22
+onlyoffice_docserver_version: 8.3.0-94
 onlyoffice_docservice_host: localhost
 onlyoffice_docservice_port: "8000"
 onlyoffice_ds_host: localhost

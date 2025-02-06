@@ -1,4 +1,4 @@
-# Copyright 2020-2024 Chris Croome
+# Copyright 2020-2025 Chris Croome
 #
 # This file is part of the Webarchitects ONLYOFFICE Ansible role.
 #
@@ -25,13 +25,13 @@ repos:
           - templates
   # https://github.com/jackdewinter/pymarkdown/releases
   - repo: https://github.com/jackdewinter/pymarkdown.git
-    rev: v0.9.25
+    rev: v0.9.27
     hooks:
       - id: pymarkdown
         name: Markdown Lint
   # https://github.com/ansible/ansible-lint/releases
   - repo: https://github.com/ansible/ansible-lint.git
-    rev: v24.10.0
+    rev: v25.1.2
     hooks:
       - id: ansible-lint
         name: Ansible Lint

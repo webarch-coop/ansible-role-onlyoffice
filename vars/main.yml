@@ -1,4 +1,4 @@
-# Copyright 2020-2024 Chris Croome
+# Copyright 2020-2025 Chris Croome
 #
 # This file is part of the Webarchitects ONLYOFFICE Ansible role.
 #
@@ -119,6 +119,7 @@ onlyoffice_pkg:
 # Get the onlyoffice-documentserver versions using the following command on a server with onlyoffice-documentserver installed
 # apt-get update && apt-cache madison onlyoffice-documentserver | awk '{ print $3 }' | sed 's/^/  - /'
 onlyoffice_docserver_versions:
+  - 8.3.0-94
   - 8.2.2-22
   - 8.2.1-38
   - 8.2.0-143
