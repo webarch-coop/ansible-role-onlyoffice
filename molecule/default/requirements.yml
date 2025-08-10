@@ -11,7 +11,7 @@
 - name: apt
   src: https://git.coop/webarch/apt.git
   # https://git.coop/webarch/apt/-/releases
-  version: 4.7.0  # apt
+  version: 4.9.0  # apt
   scm: git
 
 - name: etchosts
@@ -23,7 +23,7 @@
 - name: mariadb
   src: https://git.coop/webarch/mariadb.git
   # https://git.coop/webarch/mariadb/-/releases
-  version: 3.6.1  # mariadb
+  version: 3.7.0  # mariadb
   scm: git
 
 - name: nginx
@@ -47,6 +47,6 @@
 - name: users
   src: https://git.coop/webarch/users.git
   # https://git.coop/webarch/users/-/releases
-  version: 5.9.0  # users
+  version: 5.21.0  # users
   scm: git
 ...
