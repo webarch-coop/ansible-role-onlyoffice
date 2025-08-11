@@ -11,6 +11,39 @@
 - name: ONLYOFFICE checks
   block:
 
+    - name: Read facts
+      ansible.builtin.setup:
+
+    - name: Debug ansible_facts.ansible_local.dpkg.installed
+      ansible.builtin.debug:
+        var: ansible_facts.ansible_local.dpkg.installed
+        verbosity: "{% if ansible_check_mode | bool or ansible_diff_mode | bool %}0{% else %}1{% endif %}"
+
+    - name: Check list of install packages is defined
+      ansible.builtin.assert:
+        that:
+          - ansible_facts.ansible_local.dpkg.installed is defined
+          - ansible_facts.ansible_local.dpkg.installed | ansible.builtin.type_debug == "list"
+        quiet: "{% if ansible_verbosity == 0 %}true{% else %}false{% endif %}"
+
+    - name: Check database server requirements are present
+      ansible.builtin.assert:
+        that:
+          - ("mariadb-server" or "postgresql") in ansible_facts.ansible_local.dpkg.installed
+        quiet: "{% if ansible_verbosity == 0 %}true{% else %}false{% endif %}"
+
+    - name: Check RabbitMQ is present
+      ansible.builtin.assert:
+        that:
+          - ("rabbitmq-server" in ansible_facts.ansible_local.dpkg.installed)
+        quiet: "{% if ansible_verbosity == 0 %}true{% else %}false{% endif %}"
+
+    - name: Check web server requirements are present
+      ansible.builtin.assert:
+        that:
+          - ("nginx" or "nginx-extras" or "nginx-full" or "nginx-light") in ansible_facts.ansible_local.dpkg.installed
+        quiet: "{% if ansible_verbosity == 0 %}true{% else %}false{% endif %}"
+
     - name: Check the latest version of ONLYOFFICE DocumentServer
       ansible.builtin.uri:
         url: https://github.com/ONLYOFFICE/DocumentServer/releases/latest
@@ -30,23 +63,6 @@
         that:
           - onlyoffice_docserver_version in onlyoffice_docserver_versions
           - onlyoffice_docserver_latest in ( onlyoffice_docserver_versions | map('regex_replace', '[-].*$') )
-        quiet: "{% if ansible_verbosity == 0 %}true{% else %}false{% endif %}"
-
-    - name: Read facts
-      ansible.builtin.setup:
-
-    - name: Debug ansible_facts.ansible_local.dpkg.installed
-      ansible.builtin.debug:
-        var: ansible_facts.ansible_local.dpkg.installed
-
-    - name: Check requirements are present
-      ansible.builtin.assert:
-        that:
-          - ansible_facts.ansible_local.dpkg.installed is defined
-          - ansible_facts.ansible_local.dpkg.installed | ansible.builtin.type_debug == "list"
-          - ("mariadb-server" or "postgresql" in ansible_facts.ansible_local.dpkg.installed)
-          - ("rabbitmq-server" in ansible_facts.ansible_local.dpkg.installed)
-          - ("nginx" or "nginx-extras" or "nginx-full" or "nginx-light" in ansible_facts.ansible_local.dpkg.installed)
         quiet: "{% if ansible_verbosity == 0 %}true{% else %}false{% endif %}"
 
     - name: Check ONLYOFFICE info

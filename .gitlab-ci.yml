@@ -42,6 +42,7 @@ stages:
   - bookworm
   - jammy
   - noble
+  - trixie
 bookworm:
   image: registry.git.coop/webarch/containers/images/bookworm:20250805
   stage: bookworm
@@ -66,6 +67,13 @@ noble:
   script:
     - pre-commit install
     - pre-commit run --all-files
+    - mkdir -p molecule/default/roles
+    - ansible-galaxy install -r molecule/default/requirements.yml -p molecule/default/roles --force
+    - molecule test
+trixie:
+  image: registry.git.coop/webarch/containers/images/trixie:20250805
+  stage: trixie
+  script:
     - mkdir -p molecule/default/roles
     - ansible-galaxy install -r molecule/default/requirements.yml -p molecule/default/roles --force
     - molecule test
