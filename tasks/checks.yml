@@ -17,7 +17,9 @@
     - name: Debug ansible_facts.ansible_local.dpkg.installed
       ansible.builtin.debug:
         var: ansible_facts.ansible_local.dpkg.installed
-        verbosity: "{% if ansible_check_mode | bool or ansible_diff_mode | bool %}0{% else %}1{% endif %}"
+        verbosity: "{% if ansible_check_mode | bool or ansible_diff_mode | bool %}1{% else %}2{% endif %}"
+      tags:
+        - debug
 
     - name: Check list of install packages is defined
       ansible.builtin.assert:
