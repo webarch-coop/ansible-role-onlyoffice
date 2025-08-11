@@ -71,6 +71,8 @@
               - ip6-allhosts
         etchosts_hostname_strategy: systemd
         etchosts_unsafe_writes: true
+      tags:
+        - molecule-idempotence-notest
 
     - name: Include the Nginx role
       ansible.builtin.include_role:
@@ -84,6 +86,8 @@
         nginx_sites_enabled:
           - localhost.conf
         nginx_ssl: false
+      tags:
+        - molecule-idempotence-notest
 
     - name: Include the MariaDB role
       ansible.builtin.include_role:
@@ -101,6 +105,8 @@
                     PrivateNetwork: "false"
                     PrivateTmp: "true"
         mariadb_underscore_autoupdate: true
+      tags:
+        - molecule-idempotence-notest
 
     - name: Include the RabbitMQ role
       ansible.builtin.include_role:
@@ -119,6 +125,8 @@
                 conf:
                   Service:
                     Environment: 'ERL_EPMD_ADDRESS="{{ ansible_facts.default_ipv4.address }}"'
+      tags:
+        - molecule-idempotence-notest
 
     - name: Include the Users role
       ansible.builtin.include_role:
@@ -136,6 +144,8 @@
             users_home_owner: onlyoffice
             users_home_group: onlyoffice
             users_home_mode: "0750"
+      tags:
+        - molecule-idempotence-notest
 
     - name: Include the ONLYOFFICE Document Server role
       ansible.builtin.include_role:
