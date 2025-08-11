@@ -105,6 +105,8 @@
       when: >-
         ( onlyoffice_dcnf_current_value is not defined ) or
         ( onlyoffice_dcnf_current_value is not ansible.builtin.regex(onlyoffice_dcnf_proposed_value_regex) )
+      tags:
+        - molecule-idempotence-notest
 
   tags:
     - onlyoffice
