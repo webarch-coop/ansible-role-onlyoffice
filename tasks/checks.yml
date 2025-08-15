@@ -30,8 +30,9 @@
 
     - name: Check database server requirements are present
       ansible.builtin.assert:
-        that:
-          - ("mariadb-server" or "postgresql") in ansible_facts.ansible_local.dpkg.installed
+        that: >-
+          ("mariadb-server" in ansible_facts.ansible_local.dpkg.installed) or
+          ("postgresql" in ansible_facts.ansible_local.dpkg.installed)
         quiet: "{% if ansible_verbosity == 0 %}true{% else %}false{% endif %}"
 
     - name: Check RabbitMQ is present
@@ -42,8 +43,11 @@
 
     - name: Check web server requirements are present
       ansible.builtin.assert:
-        that:
-          - ("nginx" or "nginx-extras" or "nginx-full" or "nginx-light") in ansible_facts.ansible_local.dpkg.installed
+        that: >-
+          ("nginx" in ansible_facts.ansible_local.dpkg.installed) or
+          ("nginx-extras" in ansible_facts.ansible_local.dpkg.installed) or
+          ("nginx-full" in ansible_facts.ansible_local.dpkg.installed) or
+          ("nginx-light" in ansible_facts.ansible_local.dpkg.installed)
         quiet: "{% if ansible_verbosity == 0 %}true{% else %}false{% endif %}"
 
     - name: Check the latest version of ONLYOFFICE DocumentServer
