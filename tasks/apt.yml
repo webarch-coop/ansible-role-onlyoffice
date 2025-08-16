@@ -35,11 +35,12 @@
         label: "{{ file.path | basename }}"
       when: (onlyoffice_old_apt_list_files.matched >= 1)
 
-    - name: Legacy ONLYOFFICE support@onlyoffice.com GPG public key absent
+    - name: Legacy ONLYOFFICE support@onlyoffice.com GPG public key absent using apt-key on older distros
       ansible.builtin.apt_key:
         # keyserver: keyserver.ubuntu.com
         id: 8320CA65CB2DE8E5
         state: absent
+      when: ansible_facts.distribution_release is regex('^bookworm|jammy|noble')
 
     - name: Apt keyrings directory present
       ansible.builtin.file:
