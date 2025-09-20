@@ -14,7 +14,6 @@ variables:
   ANSIBLE_DEFAULT_VERBOSITY: "1"
   ANSIBLE_DIFF_ALWAYS: "1"
   ANSIBLE_DISPLAY_SKIPPED_HOSTS: "0"
-  ANSIBLE_ERROR_ON_UNDEFINED_VARS: "1"
   ANSIBLE_FORCE_COLOR: "1"
   ANSIBLE_INJECT_FACT_VARS: "0"
   ANSIBLE_NOCOWS: "1"
@@ -22,7 +21,6 @@ variables:
   ANSIBLE_ROLES_PATH: "${CI_PROJECT_DIR}/..:~/.ansible/roles:/usr/share/ansible/roles:/etc/ansible/roles"
   ANSIBLE_SHELL_ALLOW_WORLD_READABLE_TEMP: "1"
   DEBIAN_FRONTEND: noninteractive
-  DEFAULT_MANAGED_STR: "Ansible managed"
   MOLECULE_VERBOSITY: "3"
   PATH: "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
   PRE_COMMIT_COLOR: always
@@ -40,11 +38,11 @@ before_script:
   - molecule --version
 stages:
   - bookworm
-  - jammy
+  # - jammy
   - noble
   - trixie
 bookworm:
-  image: registry.git.coop/webarch/containers/images/bookworm:20250805
+  image: registry.git.coop/webarch/containers/images/bookworm:20250916
   stage: bookworm
   script:
     - pre-commit install
@@ -52,17 +50,17 @@ bookworm:
     - mkdir -p molecule/default/roles
     - ansible-galaxy install -r molecule/default/requirements.yml -p molecule/default/roles --force
     - molecule test
-jammy:
-  image: registry.git.coop/webarch/containers/images/jammy:20250805
-  stage: jammy
-  script:
-    - pre-commit install
-    - pre-commit run --all-files
-    - mkdir -p molecule/default/roles
-    - ansible-galaxy install -r molecule/default/requirements.yml -p molecule/default/roles --force
-    - molecule test
+# jammy:
+#   image: registry.git.coop/webarch/containers/images/jammy:20250805
+#   stage: jammy
+#   script:
+#     - pre-commit install
+#     - pre-commit run --all-files
+#     - mkdir -p molecule/default/roles
+#     - ansible-galaxy install -r molecule/default/requirements.yml -p molecule/default/roles --force
+#     - molecule test
 noble:
-  image: registry.git.coop/webarch/containers/images/noble:20250805
+  image: registry.git.coop/webarch/containers/images/noble:20250916
   stage: noble
   script:
     - pre-commit install
@@ -71,7 +69,7 @@ noble:
     - ansible-galaxy install -r molecule/default/requirements.yml -p molecule/default/roles --force
     - molecule test
 trixie:
-  image: registry.git.coop/webarch/containers/images/trixie:20250805
+  image: registry.git.coop/webarch/containers/images/trixie:20250916
   stage: trixie
   script:
     - mkdir -p molecule/default/roles

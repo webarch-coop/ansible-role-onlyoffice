@@ -23,7 +23,7 @@
 - name: mariadb
   src: https://git.coop/webarch/mariadb.git
   # https://git.coop/webarch/mariadb/-/releases
-  version: 3.7.0  # mariadb
+  version: 3.8.0  # mariadb
   scm: git
 
 - name: nginx
@@ -47,6 +47,6 @@
 - name: users
   src: https://git.coop/webarch/users.git
   # https://git.coop/webarch/users/-/releases
-  version: 5.21.0  # users
+  version: 5.23.0  # users
   scm: git
 ...
