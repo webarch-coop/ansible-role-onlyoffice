@@ -41,7 +41,7 @@
 - name: systemd
   src: https://git.coop/webarch/systemd.git
   # https://git.coop/webarch/systemd/-/releases
-  version: 2.5.2  # systemd
+  version: 2.6.0  # systemd
   scm: git
 
 - name: users
