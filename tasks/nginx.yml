@@ -138,6 +138,20 @@
     - name: Nginx localhost for ONLYOFFICE info
       block:
 
+        - name: Debug onlyoffice_nginx_localhost_domain
+          ansible.builtin.debug:
+            var: onlyoffice_nginx_localhost_domain
+            verbosity: "{% if ansible_check_mode | bool or ansible_diff_mode | bool %}0{% else %}1{% endif %}"
+          tags:
+            - debug
+
+        - name: Debug onlyoffice_nginx_localhost_domain | ansible.utils.ipaddr
+          ansible.builtin.debug:
+            msg: "{{ onlyoffice_nginx_localhost_domain | ansible.utils.ipaddr }}"
+            verbosity: "{% if ansible_check_mode | bool or ansible_diff_mode | bool %}0{% else %}1{% endif %}"
+          tags:
+            - debug
+
         - name: Nginx localhost info configuration in place
           ansible.builtin.template:
             src: onlyoffice_localhost.conf.j2

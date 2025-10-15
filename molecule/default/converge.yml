@@ -132,7 +132,10 @@
       ansible.builtin.include_role:
         name: users
       vars:  # noqa var-naming[no-role-prefix]
+        users_apache: false
+        users_chroot: false
         users_mariadb: true
+        users_php: false
         users:
           onlyoffice:
             users_state: present
