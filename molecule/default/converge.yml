@@ -135,7 +135,7 @@
         users_apache: false
         users_chroot: false
         users_mariadb: true
-        users_php: false
+        users_phpfpm: false
         users:
           onlyoffice:
             users_state: present
