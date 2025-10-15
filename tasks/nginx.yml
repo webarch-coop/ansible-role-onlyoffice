@@ -52,6 +52,11 @@
         quiet: "{% if ansible_verbosity == 0 %}true{% else %}false{% endif %}"
       when: not ansible_check_mode | bool
 
+    - name: Nginx configtest  # noqa: command-instead-of-module
+      ansible.builtin.command: service nginx configtest
+      check_mode: false
+      changed_when: false
+
     - name: Check if the original /etc/onlyoffice/documentserver/nginx/ds.conf exists
       ansible.builtin.stat:
         path: /etc/onlyoffice/documentserver/nginx/ds.conf
@@ -76,8 +81,8 @@
 
     - name: Ensure that /etc/nginx/conf.d/ds.conf is a symlink to /etc/onlyoffice/documentserver/nginx/ds.conf
       ansible.builtin.file:
-        src: "/etc/onlyoffice/documentserver/nginx/ds.conf"
-        dest: "/etc/nginx/conf.d/ds.conf"
+        src: /etc/onlyoffice/documentserver/nginx/ds.conf
+        dest: /etc/nginx/conf.d/ds.conf
         state: link
         follow: false
         mode: "0777"
@@ -85,6 +90,11 @@
         group: root
       when: onlyoffice_nginx_ds_conf_original.stat.exists | bool
       notify: Restart nginx
+
+    - name: Nginx configtest  # noqa: command-instead-of-module
+      ansible.builtin.command: service nginx configtest
+      check_mode: false
+      changed_when: false
 
     # https://helpcenter.onlyoffice.com/server/linux/document/switch-to-https.aspx
     - name: Nginx /etc/onlyoffice/documentserver/nginx/ds.conf configuration in place
@@ -97,6 +107,11 @@
         backup: true
       notify: Restart nginx
 
+    - name: Nginx configtest  # noqa: command-instead-of-module
+      ansible.builtin.command: service nginx configtest
+      check_mode: false
+      changed_when: false
+
     - name: Nginx HTTP to HTTPS redirect configuration in place
       ansible.builtin.template:
         src: onlyoffice_redirect.conf.j2
@@ -106,6 +121,11 @@
         mode: "0644"
         backup: true
       notify: Restart nginx
+
+    - name: Nginx configtest  # noqa: command-instead-of-module
+      ansible.builtin.command: service nginx configtest
+      check_mode: false
+      changed_when: false
 
     - name: Check if the Nginx HTTP to HTTPS redirect configuration is present
       ansible.builtin.stat:
@@ -128,12 +148,22 @@
         - onlyoffice_nginx_https_redirect_config.stat.exists | bool
       notify: Restart nginx
 
+    - name: Nginx configtest  # noqa: command-instead-of-module
+      ansible.builtin.command: service nginx configtest
+      check_mode: false
+      changed_when: false
+
     - name: Nginx HTTP to HTTPS redirect configuration disabled
       ansible.builtin.file:
         path: /etc/nginx/sites-enabled/onlyoffice_redirect.conf
         state: absent
       when: not onlyoffice_ssl | bool
       notify: Restart nginx
+
+    - name: Nginx configtest  # noqa: command-instead-of-module
+      ansible.builtin.command: service nginx configtest
+      check_mode: false
+      changed_when: false
 
     - name: Nginx localhost for ONLYOFFICE info
       block:
@@ -162,6 +192,11 @@
             backup: true
           notify: Restart nginx
 
+        - name: Nginx configtest  # noqa: command-instead-of-module
+          ansible.builtin.command: service nginx configtest
+          check_mode: false
+          changed_when: false
+
         - name: Check if the Nginx localhost configuration is present
           ansible.builtin.stat:
             path: /etc/nginx/sites-available/onlyoffice_localhost.conf
@@ -180,6 +215,11 @@
             - onlyoffice_nginx_https_localhost_config.stat.exists is defined
             - onlyoffice_nginx_https_localhost_config.stat.exists | bool
           notify: Restart nginx
+
+        - name: Nginx configtest  # noqa: command-instead-of-module
+          ansible.builtin.command: service nginx configtest
+          check_mode: false
+          changed_when: false
 
       when: onlyoffice_nginx_localhost | bool
 
@@ -217,6 +257,11 @@
             mode: "0644"
             backup: true
           notify: Restart nginx
+
+        - name: Nginx configtest  # noqa: command-instead-of-module
+          ansible.builtin.command: service nginx configtest
+          check_mode: false
+          changed_when: false
 
       when: >-
         ( ( onlyoffice_docservice_port is defined ) and ( onlyoffice_docservice_port != "8000" ) ) or
