@@ -97,6 +97,7 @@ onlyoffice_pkg:
   - docspace-identity-api
   - docspace-identity-authorization
   - docspace-login
+  - docspace-management
   - docspace-migration-runner
   - docspace-notify
   - docspace-people-server
@@ -107,6 +108,7 @@ onlyoffice_pkg:
   - docspace-ssoauth
   - docspace-studio
   - docspace-studio-notify
+  - docspace-telegram
   - onlyoffice-communityserver
   - onlyoffice-controlpanel
   - onlyoffice-desktopeditors
