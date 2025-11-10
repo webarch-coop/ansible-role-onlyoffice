@@ -21,6 +21,12 @@
       tags:
         - debug
 
+    - name: Check that onlyoffice_docserver_semver is a semver
+      ansible.builtin.assert:
+        that:
+          - onlyoffice_docserver_semver is ansible.builtin.version('6.1.0', 'ge', version_type='semver')
+        quiet: "{% if ansible_verbosity == 0 %}true{% else %}false{% endif %}"
+
     - name: Check list of install packages is defined
       ansible.builtin.assert:
         that:
