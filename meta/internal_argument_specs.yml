@@ -55,6 +55,10 @@ argument_specs:
         type: str
         required: false
         description: Internal variable for an existing debconf value.
+      onlyoffice_dcnf_existing:
+        type: list
+        required: false
+        description: Internal  list of the existing debconf values.
       onlyoffice_dcnf_proposed_value:
         type: str
         required: false
@@ -230,6 +234,10 @@ argument_specs:
         type: str
         required: false
         description: Internal string for the ONLYOFFICE services.CoAuthoring.secret.session.string.
+      onlyoffice_mariadb_127_users:
+        type: list
+        required: false
+        description: Internal list of MariaDB users for 127.0.0.1.
       onlyoffice_mariadb_info:
         type: dict
         required: false

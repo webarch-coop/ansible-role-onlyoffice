@@ -57,7 +57,7 @@
 
         - name: Decode the base64 encoded version of the JWT secret file and set a variable
           ansible.builtin.set_fact:
-            onlyoffice_jwt_secret: "{{ onlyoffice_jwt_secret_b64encoded['content'] | b64decode | trim }}"
+            onlyoffice_jwt_secret: "{{ onlyoffice_jwt_secret_b64encoded['content'] | ansible.builtin.b64decode | trim }}"
           no_log: true
 
       when: onlyoffice_jwt_secret_file_check.stat.exists | bool
@@ -89,7 +89,7 @@
 
         - name: Decode the base64 encoded version of the FS secret file and set a variable
           ansible.builtin.set_fact:
-            onlyoffice_fs_secret: "{{ onlyoffice_fs_secret_b64encoded['content'] | b64decode | trim }}"
+            onlyoffice_fs_secret: "{{ onlyoffice_fs_secret_b64encoded['content'] | ansible.builtin.b64decode | trim }}"
           no_log: true
 
       when: onlyoffice_fs_secret_file_check.stat.exists | bool
@@ -131,7 +131,7 @@
 
     - name: Create a list of the existing debconf values
       ansible.builtin.set_fact:
-        onlyoffice_dcnf_existing: "{{ onlyoffice_dcnf_current.current | dict2items }}"
+        onlyoffice_dcnf_existing: "{{ onlyoffice_dcnf_current.current | ansible.builtin.dict2items }}"
       no_log: true
       when:
         - onlyoffice_dcnf_current.current is defined
