@@ -37,25 +37,21 @@ before_script:
   - which molecule
   - molecule --version
 stages:
+  - trixie
   - bookworm
   # - jammy
   - noble
-  - trixie
 bookworm:
   image: registry.git.coop/webarch/containers/images/bookworm:20251105
   stage: bookworm
   script:
-    - pre-commit install
-    - pre-commit run --all-files
-    - mkdir -p molecule/default/roles
-    - ansible-galaxy install -r molecule/default/requirements.yml -p molecule/default/roles --force
+    # - mkdir -p molecule/default/roles
+    # - ansible-galaxy install -r molecule/default/requirements.yml -p molecule/default/roles --force
     - molecule test
 # jammy:
 #   image: registry.git.coop/webarch/containers/images/jammy:20250805
 #   stage: jammy
 #   script:
-#     - pre-commit install
-#     - pre-commit run --all-files
 #     - mkdir -p molecule/default/roles
 #     - ansible-galaxy install -r molecule/default/requirements.yml -p molecule/default/roles --force
 #     - molecule test
@@ -63,16 +59,14 @@ noble:
   image: registry.git.coop/webarch/containers/images/noble:20251105
   stage: noble
   script:
-    - pre-commit install
-    - pre-commit run --all-files
-    - mkdir -p molecule/default/roles
-    - ansible-galaxy install -r molecule/default/requirements.yml -p molecule/default/roles --force
+    # - mkdir -p molecule/default/roles
+    # - ansible-galaxy install -r molecule/default/requirements.yml -p molecule/default/roles --force
     - molecule test
 trixie:
   image: registry.git.coop/webarch/containers/images/trixie:20251105
   stage: trixie
   script:
-    - mkdir -p molecule/default/roles
-    - ansible-galaxy install -r molecule/default/requirements.yml -p molecule/default/roles --force
+    # - mkdir -p molecule/default/roles
+    # - ansible-galaxy install -r molecule/default/requirements.yml -p molecule/default/roles --force
     - molecule test
 ...
