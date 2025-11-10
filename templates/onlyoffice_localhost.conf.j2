@@ -7,7 +7,7 @@ server {
     stub_status on;
     access_log off;
     allow 127.0.0.1;
-{% if onlyoffice_nginx_localhost_domain | ansible.utils.ipaddr | bool and onlyoffice_nginx_localhost_domain != "127.0.0.1" %}
+{% if onlyoffice_nginx_localhost_domain is ansible.utils.ipv4_address | bool and onlyoffice_nginx_localhost_domain != "127.0.0.1" %}
     allow {{ onlyoffice_nginx_localhost_domain }};
 {% endif %}
 {% if ansible_host is defined and ansible_host != "127.0.0.1" %}
@@ -20,7 +20,7 @@ server {
   location ~* ^(\/[\d]+\.[\d]+\.[\d]+[\.|-][\d]+)?\/(info)(\/.*)$ {
     proxy_pass http://docservice/$2$3;
     allow 127.0.0.1;
-{% if onlyoffice_nginx_localhost_domain | ansible.utils.ipaddr | bool and onlyoffice_nginx_localhost_domain != "127.0.0.1" %}
+{% if onlyoffice_nginx_localhost_domain is ansible.utils.ipv4_address | bool and onlyoffice_nginx_localhost_domain != "127.0.0.1" %}
     allow {{ onlyoffice_nginx_localhost_domain }};
 {% endif %}
 {% if ansible_host is defined and ansible_host != "127.0.0.1" %}
