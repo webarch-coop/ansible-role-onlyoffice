@@ -35,7 +35,8 @@
 - name: rabbitmq
   src: https://git.coop/webarch/rabbitmq.git
   # https://git.coop/webarch/rabbitmq/-/releases
-  version: 2.4.0  # rabbitmq
+  # version: 2.4.0  # rabbitmq
+  version: master  # rabbitmq
   scm: git
 
 - name: systemd
