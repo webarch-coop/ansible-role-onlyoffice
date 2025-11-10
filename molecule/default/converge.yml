@@ -165,4 +165,9 @@
         onlyoffice_rabbitmq_host: "{{ ansible_facts.default_ipv4.address }}"
         onlyoffice_ssl: false
         onlyoffice_wopi: ignore
+
+    - name: Include the ONLYOFFICE Document Server role verify argument spec tasks
+      ansible.builtin.include_role:
+        name: onlyoffice
+        tasks_from: verify.yml
 ...
