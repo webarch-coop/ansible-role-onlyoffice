@@ -132,7 +132,7 @@ argument_specs:
         description: Internal URL for the ONLYOFFICE GPG key.
       onlyoffice_info:
         type: dict
-        required: true
+        required: false
         description: Internal dictionary for the results from using the URI module to request info.json.
       onlyoffice_internal_argument_spec:
         type: dict
