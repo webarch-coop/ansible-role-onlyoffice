@@ -27,7 +27,7 @@
 
         - name: Set a fact for the ONLYOFFICE Document Server local.json
           ansible.builtin.set_fact:
-            onlyoffice_local_json: "{{ onlyoffice_local_json_b64encoded['content'] | b64decode | from_json }}"
+            onlyoffice_local_json: "{{ onlyoffice_local_json_b64encoded['content'] | ansible.builtin.b64decode | ansible.builtin.from_json }}"
           no_log: true
 
         - name: Debug ONLYOFFICE Document Server local.json

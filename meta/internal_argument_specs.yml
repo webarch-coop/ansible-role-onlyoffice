@@ -47,6 +47,10 @@ argument_specs:
             type: str
             required: true
             description: Value for the debconf question.
+      onlyoffice_dcnf_current:
+        type: dict
+        required: false
+        description: Internal dictionary for the results from getting existing debconf values for onlyoffice-documentserver.
       onlyoffice_dcnf_current_value:
         type: str
         required: false
@@ -71,6 +75,10 @@ argument_specs:
         type: str
         required: false
         description: Internal variable for the latest version of ONLYOFFICE DocumentServer.
+      onlyoffice_docserver_semver:
+        type: str
+        required: true
+        description: Internal string for the semantic version of ONLYOFFICE DocumentServer required.
       onlyoffice_docserver_versions:
         type: list
         elements: str
@@ -80,6 +88,14 @@ argument_specs:
         type: str
         required: false
         description: Internal ONLYOFFICE filesystem secret.
+      onlyoffice_fs_secret_b64encoded:
+        type: dict
+        required: false
+        description: Internal dictionary for the results from slurping /root/.onlyoffice.fs.secret.
+      onlyoffice_fs_secret_file_check:
+        type: dict
+        required: false
+        description: Internal dictionary for the results from statting /root/.onlyoffice.fs.secret.
       onlyoffice_gpg:
         type: dict
         required: false
@@ -114,6 +130,10 @@ argument_specs:
         type: str
         required: true
         description: Internal URL for the ONLYOFFICE GPG key.
+      onlyoffice_info:
+        type: dict
+        required: true
+        description: Internal dictionary for the results from using the URI module to request info.json.
       onlyoffice_internal_argument_spec:
         type: dict
         required: true
@@ -178,10 +198,103 @@ argument_specs:
         type: str
         required: true
         description: Internal ONLYOFFICE JWT secret.
+      onlyoffice_jwt_secret_b64encoded:
+        type: dict
+        required: false
+        description: Internal dictionary for the results from slurping /root/.onlyoffice.jwt.secret.
+      onlyoffice_jwt_secret_file_check:
+        type: dict
+        required: false
+        description: Internal dictionary for the results from statting /root/.onlyoffice.jwt.secret.
+      onlyoffice_local_fs_secretstring:
+        type: str
+        required: false
+        description: Internal string for the ONLYOFFICE storage.fs.secretstring.
+      onlyoffice_local_json:
+        type: dict
+        required: false
+        description: Internal dictionary for the ONLYOFFICE Document Server local.json.
+      onlyoffice_local_json_b64encoded:
+        type: dict
+        required: false
+        description: Internal dictionary for the result from slurping /etc/onlyoffice/documentserver/local.json.
+      onlyoffice_local_json_backup_file:
+        type: dict
+        required: false
+        description: Internal dictionary for the result from statting /etc/onlyoffice/documentserver/local.json.original.
+      onlyoffice_local_json_file:
+        type: dict
+        required: false
+        description: Internal dictionary for the result from statting /etc/onlyoffice/documentserver/local.json.
+      onlyoffice_local_session_string:
+        type: str
+        required: false
+        description: Internal string for the ONLYOFFICE services.CoAuthoring.secret.session.string.
+      onlyoffice_mariadb_info:
+        type: dict
+        required: false
+        description: Internal dictionary for the results from community.mysql.mysql_info run with the users filter.
+      onlyoffice_mariadb_lo_users:
+        type: list
+        elements: str
+        required: false
+        description: Internal list of MariaDB users present.
+      onlyoffice_mariadb_socket_path:
+        type: dict
+        required: false
+        description: Internal dictionary for the result from statting the MariaDB socket path.
+      onlyoffice_mariadb_systemd_conf:
+        type: dict
+        required: false
+        description: Internal dictionary for the result from statting /etc/systemd/system/mariadb.service.d/mariadb.conf.
+      onlyoffice_mariadb_systemd_conf_b64encoded:
+        type: dict
+        required: false
+        description: Internal dictionary for the result from slurping /etc/systemd/system/mariadb.service.d/mariadb.conf.
+      onlyoffice_mariadb_systemd_conf_path:
+        type: dict
+        required: false
+        description: Internal dictionary for the result from statting /etc/systemd/system/mariadb.service.d/mariadb.conf.
+      onlyoffice_munin_etc_plugins_path:
+        type: dict
+        required: false
+        description: Internal dictionary for the result from statting /etc/munin/plugins.
+      onlyoffice_munin_usr_local_share_munin_plugins_path:
+        type: dict
+        required: false
+        description: Internal dictionary for the result from statting /usr/local/share/munin/plugins.
+      onlyoffice_munin_usr_share_munin_plugins_plugin_path:
+        type: dict
+        required: false
+        description: Internal dictionary for the result from statting /usr/share/munin/plugins/plugin.sh.
+      onlyoffice_nginx_ds_conf_backup:
+        type: dict
+        required: false
+        description: Internal dictionary for the result from statting /etc/onlyoffice/documentserver/nginx/ds.conf.ansible.backup.
+      onlyoffice_nginx_ds_conf_original:
+        type: dict
+        required: false
+        description: Internal dictionary for the result from statting /etc/onlyoffice/documentserver/nginx/ds.conf.
+      onlyoffice_nginx_http_common_conf_backup:
+        type: dict
+        required: false
+        description: Internal dictionary for the result from statting /etc/onlyoffice/documentserver/nginx/includes/http-common.conf.ansible.backup.
+      onlyoffice_nginx_http_common_conf_original:
+        type: dict
+        required: false
+        description: Internal dictionary for the result from statting /etc/onlyoffice/documentserver/nginx/includes/http-common.conf.
+      onlyoffice_nginx_https_localhost_config:
+        type: dict
+        required: false
+        description: Internal dictionary for the result from statting /etc/nginx/sites-available/onlyoffice_localhost.conf.
+      onlyoffice_nginx_https_redirect_config:
+        type: dict
+        required: false
+        description: Internal dictionary for the result from statting /etc/nginx/sites-available/onlyoffice_redirect.conf.
       onlyoffice_old_apt_list_files:
         type: dict
         required: false
-        description: Internal vairable for the results of the find module.
+        description: Internal variable for the results of the find module.
       onlyoffice_preferences:
         type: dict
         required: false

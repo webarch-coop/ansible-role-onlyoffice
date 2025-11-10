@@ -14,6 +14,9 @@ ansible_managed: "Ansible managed"
 onlyofficevarnames: "{{ q('varnames', '^onlyoffice_') | sort }}"
 onlyofficehostvars: "{{ dict(onlyofficevarnames | list | zip(q('vars', *onlyofficevarnames))) }}"
 
+# Semantic version
+onlyoffice_docserver_semver: "{{ onlyoffice_docserver_version | map('regex_replace', '[-].*$') }}"
+
 # Ansible JMESPath queries
 # https://docs.ansible.com/ansible/latest/collections/community/general/docsite/filter_guide_selecting_json_data.html
 onlyoffice_jpq_db_host: "[?question=='onlyoffice/db-host'].value|[0]"

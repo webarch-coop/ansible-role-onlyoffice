@@ -25,14 +25,21 @@ map $http_cloudfront_forwarded_proto:$http_x_forwarded_proto $the_scheme {
 }
 
 map $http_x_forwarded_host $the_host {
+{% if onlyoffice_docserver_semver is ansible.builtin.version('9.1.0', 'ge', version_type='semver') %}
     ~^([^,]+)  $1;
+{% endif %}
     default $http_x_forwarded_host;
     "" $this_host;
 }
 
 map $http_upgrade $proxy_connection {
+{% if onlyoffice_docserver_semver is ansible.builtin.version('9.1.0', 'ge', version_type='semver') %}
   websocket upgrade;
   default close;
+{% else %}
+  default upgrade;
+  "" close;
+{% endif %}
 }
 
 map $http_x_forwarded_prefix $the_prefix {
@@ -46,4 +53,4 @@ proxy_set_header X-Forwarded-Host $the_host;
 proxy_set_header X-Forwarded-Proto $the_scheme;
 proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
 
-# vim: syntax=nginx
+# vim: syntax=nginx{# vim: syntax=jinja2 #}
