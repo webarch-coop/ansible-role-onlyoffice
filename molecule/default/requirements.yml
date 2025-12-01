@@ -41,12 +41,12 @@
 - name: systemd
   src: https://git.coop/webarch/systemd.git
   # https://git.coop/webarch/systemd/-/releases
-  version: 2.11.4  # systemd
+  version: 2.11.5  # systemd
   scm: git
 
 - name: users
   src: https://git.coop/webarch/users.git
   # https://git.coop/webarch/users/-/releases
-  version: 5.25.0  # users
+  version: 5.27.0  # users
   scm: git
 ...
