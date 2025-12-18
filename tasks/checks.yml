@@ -75,6 +75,7 @@
         that:
           - onlyoffice_docserver_version in onlyoffice_docserver_versions
           - onlyoffice_docserver_latest in ( onlyoffice_docserver_versions | map('regex_replace', '[-].*$') )
+        fail_msg: "The latest version of ONLYOFFICE DocumentServer is {{ onlyoffice_docserver_version }}, this version is missing from the onlyoffice_docserver_versions list in vars/main.yml"
         quiet: "{% if ansible_verbosity == 0 %}true{% else %}false{% endif %}"
 
     - name: Check ONLYOFFICE info
