@@ -355,7 +355,7 @@ argument_specs:
         description: Use ansible.builtin.validate_argument_spec module to validate role argument specs.
       onlyoffice_wopi:
         type: str
-        required: true
+        required: false
         description: Fail if local.json wopi config is not defined by this role or ignore it.
         choices:
           - fail
