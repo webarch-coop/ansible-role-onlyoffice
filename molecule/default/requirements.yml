@@ -11,7 +11,7 @@
 - name: apt
   src: https://git.coop/webarch/apt.git
   # https://git.coop/webarch/apt/-/releases
-  version: 4.12.1  # apt
+  version: 4.13.1  # apt
   scm: git
 
 - name: etchosts
@@ -47,6 +47,6 @@
 - name: users
   src: https://git.coop/webarch/users.git
   # https://git.coop/webarch/users/-/releases
-  version: 5.34.1  # users
+  version: 5.43.0  # users
   scm: git
 ...
