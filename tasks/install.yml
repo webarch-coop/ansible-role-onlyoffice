@@ -62,7 +62,6 @@
           ansible.builtin.set_fact:
             onlyoffice_docserver_available_versions: >-
               {{- onlyoffice_apt_cache_madison.stdout_lines
-              | map('split', ' ')
               | map('regex_replace', '^onlyoffice-documentserver[ ][|][ ]')
               | map('regex_replace', '[ ][|][ ].*Packages$')
               | map('trim')
