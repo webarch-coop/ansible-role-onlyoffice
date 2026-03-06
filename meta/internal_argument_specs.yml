@@ -18,6 +18,10 @@ argument_specs:
         type: dict
         required: true
         description: Argument spec dictionary.
+      onlyoffice_apt_cache_madison:
+        type: dict
+        required: false
+        description: Result from running the command module.
       onlyoffice_apt_deps:
         type: dict
         required: false
@@ -71,6 +75,11 @@ argument_specs:
         type: str
         required: false
         description: Internal variable for the version of the onlyoffice-documentserver installed.
+      onlyoffice_docserver_available_versions:
+        type: list
+        elements: str
+        required: false
+        description: List of available ONLYOFFICE DocumentServer versions.
       onlyoffice_docserver_headers:
         type: dict
         required: false

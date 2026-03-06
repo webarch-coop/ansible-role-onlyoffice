@@ -51,6 +51,31 @@
           check_mode: false
           changed_when: false
 
+        - name: Run apt-cache madison onlyoffice-documentserver to get available versions
+          ansible.builtin.command:
+            cmd: apt-cache madison onlyoffice-documentserver
+          check_mode: false
+          changed_when: false
+          register: onlyoffice_apt_cache_madison
+
+        - name: Set a fact for the available ONLYOFFICE Document Server versions
+          ansible.builtin.set_fact:
+            onlyoffice_docserver_available_versions: "{{ onlyoffice_apt_cache_madison.stdout_lines.split(' ')[3] }}"
+
+        - name: Debug onlyoffice_docserver_available_versions
+          ansible.builtin.debug:
+            var: onlyoffice_docserver_available_versions
+            verbosity: "{% if ansible_check_mode | bool or ansible_diff_mode | bool %}1{% else %}2{% endif %}"
+          tags:
+            - debug
+
+        - name: Fail if the version of ONLYOFFICE Document Server to be installed is not available
+          ansible.builtin.fail:
+            msg: >-
+              The version of ONLYOFFICE to be installed, {{ onlyoffice_docserver_version }} is not in the available versions,
+              {{ onlyoffice_docserver_available_versions | ansible.builtin.join(', ') }}
+          when: onlyoffice_docserver_version not in onlyoffice_docserver_available_versions
+
         - name: "ONLYOFFICE Document Server to be installed {{ onlyoffice_docserver_version }}"
           ansible.builtin.debug:
             msg: "The next task will apt install onlyoffice-documentserver={{ onlyoffice_docserver_version }} and this may take some time."
