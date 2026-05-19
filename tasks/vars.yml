@@ -31,12 +31,12 @@
         onlyoffice_rabbitmq_pwd: "{{ rabbitmq_password }}"
 
     - name: Root JWT secret present
-      ansible.builtin.shell: |-
-        set -e -o pipefail
-        pwgen -cns 32 1 > \
-        /root/.onlyoffice.jwt.secret && \
-        chmod 0600 /root/.onlyoffice.jwt.secret
-      args:
+      ansible.builtin.shell:
+        cmd: |-
+          set -e -o pipefail
+          pwgen -cns 32 1 > \
+          /root/.onlyoffice.jwt.secret && \
+          chmod 0600 /root/.onlyoffice.jwt.secret
         creates: /root/.onlyoffice.jwt.secret
         executable: "{{ ansible_facts.ansible_local.bash.path }}"
       no_log: true
@@ -63,12 +63,12 @@
       when: onlyoffice_jwt_secret_file_check.stat.exists | bool
 
     - name: Root FS secret present
-      ansible.builtin.shell: |-
-        set -e -o pipefail
-        pwgen -cns 20 1 > \
-        /root/.onlyoffice.fs.secret && \
-        chmod 0600 /root/.onlyoffice.fs.secret
-      args:
+      ansible.builtin.shell:
+        cmd: |-
+          set -e -o pipefail
+          pwgen -cns 20 1 > \
+          /root/.onlyoffice.fs.secret && \
+          chmod 0600 /root/.onlyoffice.fs.secret
         creates: /root/.onlyoffice.fs.secret
         executable: "{{ ansible_facts.ansible_local.bash.path }}"
       no_log: true
@@ -107,16 +107,17 @@
     #       failed_when: not onlyoffice_documentserver_update_securelink.stat.exists
 
     #     - name: Run /usr/bin/documentserver-update-securelink.sh
-    #       ansible.builtin.command: "/usr/bin/documentserver-update-securelink.sh {{ onlyoffice_jwt_secret }}"
+    #       ansible.builtin.command:
+    #         cmd: "/usr/bin/documentserver-update-securelink.sh {{ onlyoffice_jwt_secret }}"
     #       no_log: true
     #       changed_when: true
 
     #   when: >-
-    #     ( onlyoffice_local_json.services.CoAuthoring.secret.session.string is not defined ) or
-    #     ( onlyoffice_local_json.services.CoAuthoring.secret.session.string | length == 0 ) or
-    #     ( onlyoffice_local_json.storage.fs.secretString is not defined ) or
-    #     ( onlyoffice_local_json.storage.fs.secretString | length == 0 ) or
-    #     ( onlyoffice_local_json.services.CoAuthoring.secret.session.string != onlyoffice_jwt_secret )
+    #     (onlyoffice_local_json.services.CoAuthoring.secret.session.string is not defined) or
+    #     (onlyoffice_local_json.services.CoAuthoring.secret.session.string | length == 0) or
+    #     (onlyoffice_local_json.storage.fs.secretString is not defined) or
+    #     (onlyoffice_local_json.storage.fs.secretString | length == 0) or
+    #     (onlyoffice_local_json.services.CoAuthoring.secret.session.string != onlyoffice_jwt_secret)
 
     - name: Get existing debconf values for onlyoffice-documentserver
       ansible.builtin.debconf:

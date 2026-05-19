@@ -27,12 +27,13 @@
       when: (onlyoffice_old_apt_list_files.matched >= 1)
 
     - name: Disable legacy ONLYOFFICE apt list files
-      ansible.builtin.command: "mv {{ file.path }} {{ file.path }}.ansible.save"
-      changed_when: true
+      ansible.builtin.command:
+        cmd: "mv {{ file.path }} {{ file.path }}.ansible.save"
       loop: "{{ onlyoffice_old_apt_list_files.files }}"
       loop_control:
         loop_var: file
         label: "{{ file.path | basename }}"
+      changed_when: true
       when: (onlyoffice_old_apt_list_files.matched >= 1)
 
     - name: Legacy ONLYOFFICE support@onlyoffice.com GPG public key absent using apt-key on older distros
@@ -82,10 +83,11 @@
             quiet: "{% if ansible_verbosity == 0 %}true{% else %}false{% endif %}"
 
         - name: ONLYOFFICE gpg key dearmored
-          ansible.builtin.shell: |-
-            set -e -o pipefail
-            gpg --dearmor < /root/onlyoffice.asc > /etc/apt/keyrings/onlyoffice.gpg
-            chmod 644 /etc/apt/keyrings/onlyoffice.gpg
+          ansible.builtin.shell:
+            cmd: |-
+              set -e -o pipefail
+              gpg --dearmor < /root/onlyoffice.asc > /etc/apt/keyrings/onlyoffice.gpg
+              chmod 644 /etc/apt/keyrings/onlyoffice.gpg
           args:
             executable: "{{ ansible_facts.ansible_local.bash.path }}"
           check_mode: false
@@ -97,14 +99,15 @@
           register: onlyoffice_gpg_file
 
         - name: ONLYOFFICE gpg key check command
-          ansible.builtin.command: >
-            gpg --with-colons
-            {% if ansible_facts.ansible_local.gpg.version is version('2.2.12', '<') %}
-            --with-fingerprint --with-subkey-fingerprint
-            {% else %}
-            --show-keys
-            {% endif %}
-            /etc/apt/keyrings/onlyoffice.gpg
+          ansible.builtin.command:
+            cmd: >-
+              gpg --with-colons
+              {% if ansible_facts.ansible_local.gpg.version is version('2.2.12', '<') %}
+              --with-fingerprint --with-subkey-fingerprint
+              {% else %}
+              --show-keys
+              {% endif %}
+              /etc/apt/keyrings/onlyoffice.gpg
           when: (onlyoffice_gpg_file.stat.exists | bool)
           check_mode: false
           changed_when: false
@@ -227,7 +230,7 @@
                 before: "{{ onlyoffice_sources_contents_prior | ansible.builtin.to_nice_yaml }}"
                 after: "{{ onlyoffice_sources.repo | string | community.general.jc('ini') | ansible.builtin.to_nice_yaml }}"
               when:
-                - ( ansible_check_mode | bool ) or ( ansible_diff_mode | bool )
+                - (ansible_check_mode | bool) or (ansible_diff_mode | bool)
                 - onlyoffice_sources_contents_prior is defined
                 - onlyoffice_sources.repo is defined
 

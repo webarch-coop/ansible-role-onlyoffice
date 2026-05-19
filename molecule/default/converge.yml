@@ -29,7 +29,8 @@
         var: ansible_facts.user_dir
 
     - name: Run hostname -f
-      ansible.builtin.command: hostname -f
+      ansible.builtin.command:
+        cmd: hostname -f
       check_mode: false
       changed_when: false
       register: molecule_hostname_f

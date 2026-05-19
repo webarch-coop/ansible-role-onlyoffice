@@ -53,7 +53,8 @@
       when: not ansible_check_mode | bool
 
     - name: Nginx configtest  # noqa: command-instead-of-module
-      ansible.builtin.command: service nginx configtest
+      ansible.builtin.command:
+        cmd: service nginx configtest
       check_mode: false
       changed_when: false
 
@@ -92,7 +93,8 @@
       notify: Restart nginx
 
     - name: Nginx configtest  # noqa: command-instead-of-module
-      ansible.builtin.command: service nginx configtest
+      ansible.builtin.command:
+        cmd: service nginx configtest
       check_mode: false
       changed_when: false
 
@@ -108,7 +110,8 @@
       notify: Restart nginx
 
     - name: Nginx configtest  # noqa: command-instead-of-module
-      ansible.builtin.command: service nginx configtest
+      ansible.builtin.command:
+        cmd: service nginx configtest
       check_mode: false
       changed_when: false
 
@@ -123,7 +126,8 @@
       notify: Restart nginx
 
     - name: Nginx configtest  # noqa: command-instead-of-module
-      ansible.builtin.command: service nginx configtest
+      ansible.builtin.command:
+        cmd: service nginx configtest
       check_mode: false
       changed_when: false
 
@@ -149,7 +153,8 @@
       notify: Restart nginx
 
     - name: Nginx configtest  # noqa: command-instead-of-module
-      ansible.builtin.command: service nginx configtest
+      ansible.builtin.command:
+        cmd: service nginx configtest
       check_mode: false
       changed_when: false
 
@@ -161,7 +166,8 @@
       notify: Restart nginx
 
     - name: Nginx configtest  # noqa: command-instead-of-module
-      ansible.builtin.command: service nginx configtest
+      ansible.builtin.command:
+        cmd: service nginx configtest
       check_mode: false
       changed_when: false
 
@@ -193,7 +199,8 @@
           notify: Restart nginx
 
         - name: Nginx configtest  # noqa: command-instead-of-module
-          ansible.builtin.command: service nginx configtest
+          ansible.builtin.command:
+            cmd: service nginx configtest
           check_mode: false
           changed_when: false
 
@@ -217,7 +224,8 @@
           notify: Restart nginx
 
         - name: Nginx configtest  # noqa: command-instead-of-module
-          ansible.builtin.command: service nginx configtest
+          ansible.builtin.command:
+            cmd: service nginx configtest
           check_mode: false
           changed_when: false
 
@@ -259,13 +267,14 @@
           notify: Restart nginx
 
         - name: Nginx configtest  # noqa: command-instead-of-module
-          ansible.builtin.command: service nginx configtest
+          ansible.builtin.command:
+            cmd: service nginx configtest
           check_mode: false
           changed_when: false
 
       when: >-
-        ( ( onlyoffice_docservice_port is defined ) and ( onlyoffice_docservice_port != "8000" ) ) or
-        ( ( onlyoffice_docservice_host is defined ) and ( onlyoffice_docservice_host != "localhost" ) )
+        ((onlyoffice_docservice_port is defined) and (onlyoffice_docservice_port != "8000")) or
+        ((onlyoffice_docservice_host is defined) and (onlyoffice_docservice_host != "localhost"))
 
     - name: Robots.txt in place
       ansible.builtin.template:
@@ -288,7 +297,8 @@
       notify: Restart nginx
 
     - name: Nginx configtest  # noqa: command-instead-of-module
-      ansible.builtin.command: service nginx configtest
+      ansible.builtin.command:
+        cmd: service nginx configtest
       check_mode: false
       changed_when: false
       notify: Restart nginx
