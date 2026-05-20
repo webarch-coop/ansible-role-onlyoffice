@@ -37,6 +37,9 @@ before_script:
   - yamllint --version
   - which molecule
   - molecule --version
+  # The images should have ansible.mysql...
+  - ansible-galaxy collection install ansible.mysql
+  - ansible-galaxy collection list
 stages:
   - trixie
   - bookworm
