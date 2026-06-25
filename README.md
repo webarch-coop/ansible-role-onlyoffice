@@ -2,6 +2,8 @@
 
 [![pipeline status](https://git.coop/webarch/onlyoffice/badges/master/pipeline.svg)](https://git.coop/webarch/onlyoffice/-/commits/master)
 
+**We are no longer updating this role as Nextcloud 34.x requires [Euro-Office](https://git.coop/webarch/eurooffice) to be used in place of ONLYOFFICE.**
+
 This Ansible role is based on the instructions for [Installing ONLYOFFICE Docs Community Edition for Debian, Ubuntu, and derivatives](https://helpcenter.onlyoffice.com/installation/docs-community-install-ubuntu.aspx).
 
 ## Usage
