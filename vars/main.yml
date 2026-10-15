@@ -83,21 +83,19 @@ onlyoffice_gpg_fingerprints_query: "[?type=='fpr'].user_id"
 
 # Get the packages available using the following command
 # grep Package /var/lib/apt/lists/*onlyoffice*_Packages | awk '{print $2}' | sort -u | sed 's/^/  - /' | sort -u
-# or
-# cat /var/lib/apt/lists/*onlyoffice*_Packages | jc --pkg-index-deb | jp [].package | yq -o=yaml -P | sed 's/^/  /' | sort -u
 onlyoffice_pkg:
   - docspace
   - docspace-ai
-  - docspace-ai-service
+  - docspace-ai-worker
   - docspace-api
   - docspace-api-system
   - docspace-backup
-  - docspace-backup-background
+  - docspace-backup-worker
   - docspace-clear-events
   - docspace-common
   - docspace-doceditor
   - docspace-files
-  - docspace-files-services
+  - docspace-files-worker
   - docspace-healthchecks
   - docspace-identity-api
   - docspace-identity-authorization
@@ -115,6 +113,36 @@ onlyoffice_pkg:
   - docspace-studio
   - docspace-studio-notify
   - docspace-telegram
+  - onlyoffice-apps
+  - onlyoffice-apps-ai
+  - onlyoffice-apps-ai-chat
+  - onlyoffice-apps-ai-worker
+  - onlyoffice-apps-api
+  - onlyoffice-apps-api-system
+  - onlyoffice-apps-backup
+  - onlyoffice-apps-backup-worker
+  - onlyoffice-apps-clear-events
+  - onlyoffice-apps-common
+  - onlyoffice-apps-doceditor
+  - onlyoffice-apps-files
+  - onlyoffice-apps-files-worker
+  - onlyoffice-apps-healthchecks
+  - onlyoffice-apps-identity-api
+  - onlyoffice-apps-identity-authorization
+  - onlyoffice-apps-login
+  - onlyoffice-apps-management
+  - onlyoffice-apps-mcp
+  - onlyoffice-apps-migration-runner
+  - onlyoffice-apps-notify
+  - onlyoffice-apps-people-server
+  - onlyoffice-apps-plugins
+  - onlyoffice-apps-proxy
+  - onlyoffice-apps-sdk
+  - onlyoffice-apps-socket
+  - onlyoffice-apps-ssoauth
+  - onlyoffice-apps-studio
+  - onlyoffice-apps-studio-notify
+  - onlyoffice-apps-telegram
   - onlyoffice-communityserver
   - onlyoffice-controlpanel
   - onlyoffice-desktopeditors
@@ -132,6 +160,7 @@ onlyoffice_pkg:
 # Get the onlyoffice-documentserver versions using the following command on a server with onlyoffice-documentserver installed
 # apt-get update && apt-cache madison onlyoffice-documentserver | awk '{ print $3 }' | sed 's/^/  - /'
 onlyoffice_docserver_versions:
+  - 10.0.0-169
   - 9.4.0-129
   - 9.3.1-10
   - 9.3.0-138

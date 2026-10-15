@@ -102,7 +102,7 @@
         quiet: "{% if ansible_verbosity == 0 %}true{% else %}false{% endif %}"
 
     - name: Query the MariaDB databases, users and version using a socket
-      community.mysql.mysql_info:
+      ansible.mariadb.mariadb_info:
         filter:
           - users
         return_empty_dbs: true
@@ -126,7 +126,7 @@
       when: onlyoffice_mariadb_info.users.localhost is defined
 
     - name: Ensure MariaDB user can login using 127.0.0.1
-      community.mysql.mysql_query:
+      ansible.mariadb.mariadb_query:
         query:
           - CREATE USER '{{ onlyoffice_debconf | community.general.json_query(onlyoffice_jpq_db_user) }}'@'127.0.0.1' IDENTIFIED BY '{{ onlyoffice_db_pwd }}'
           - GRANT {% for onlyoffice_mariadb_p in onlyoffice_mariadb_priv %}{{ onlyoffice_mariadb_p }}{% if not loop.last %},{% endif %}{% endfor %} ON {{ onlyoffice_debconf | community.general.json_query(onlyoffice_jpq_db_name) }}.* TO '{{ onlyoffice_debconf | community.general.json_query(onlyoffice_jpq_db_name) }}'@'127.0.0.1'
@@ -136,7 +136,7 @@
       when: (onlyoffice_mariadb_info.users['127.0.0.1'] is not defined) or (onlyoffice_debconf | community.general.json_query(onlyoffice_jpq_db_user) not in onlyoffice_mariadb_127_users)
 
     - name: Ensure MariaDB user can login using localhost
-      community.mysql.mysql_query:
+      ansible.builtin.mariadb_query:
         query:
           - CREATE USER '{{ onlyoffice_debconf | community.general.json_query(onlyoffice_jpq_db_user) }}'@'localhost' IDENTIFIED BY '{{ onlyoffice_db_pwd }}'
           - GRANT {% for onlyoffice_mariadb_p in onlyoffice_mariadb_priv %}{{ onlyoffice_mariadb_p }}{% if not loop.last %},{% endif %}{% endfor %} ON {{ onlyoffice_debconf | community.general.json_query(onlyoffice_jpq_db_name) }}.* TO '{{ onlyoffice_debconf | community.general.json_query(onlyoffice_jpq_db_name) }}'@'localhost'
